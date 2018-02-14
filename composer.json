@@ -6,7 +6,7 @@
   "authors": [],
   "require": {
     "php": "~5.6 || >=7.0",
-    "2dotstwice/value-objects": "~2.0",
+    "2dotstwice/value-objects": "1.x-dev",
     "symfony/serializer": "~2.3"
   },
   "require-dev": {

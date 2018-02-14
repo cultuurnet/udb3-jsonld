@@ -4,24 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1050c51255f76c82757da0fba86d5f1e",
+    "content-hash": "f4178014607fc0e1eccdb203c469b75c",
     "packages": [
         {
             "name": "2dotstwice/value-objects",
-            "version": "v2.0",
+            "version": "1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/2dotstwice/value-objects.git",
-                "reference": "7a52acc05f24381bdcdf0abbba21e113c2e8c374"
+                "reference": "94c2799eb4ff84c0a7cc52185b86655946522100"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/2dotstwice/value-objects/zipball/7a52acc05f24381bdcdf0abbba21e113c2e8c374",
-                "reference": "7a52acc05f24381bdcdf0abbba21e113c2e8c374",
+                "url": "https://api.github.com/repos/2dotstwice/value-objects/zipball/94c2799eb4ff84c0a7cc52185b86655946522100",
+                "reference": "94c2799eb4ff84c0a7cc52185b86655946522100",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1"
+                "php": ">=5.6"
             },
             "require-dev": {
                 "phing/phing": "~2.11",
@@ -51,7 +51,7 @@
                 }
             ],
             "description": "Classes, traits, interfaces, ... to work with value objects.",
-            "time": "2018-02-14T13:59:24+00:00"
+            "time": "2018-02-14 16:19:51"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -2326,7 +2326,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "2dotstwice/value-objects": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
