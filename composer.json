@@ -1,11 +1,13 @@
 {
-  "name": "cultuurnet/udb3-jsonld",
+  "name": "cultuurnet/udb3-models",
   "description": "",
   "type": "library",
   "license": "Apache-2.0",
   "authors": [],
   "require": {
-    "php": "~5.6 || >=7.0"
+    "php": "~5.6 || >=7.0",
+    "cultuurnet/valueobjects": "~3.0",
+    "symfony/serializer": "~2.3"
   },
   "require-dev": {
     "phpunit/phpunit": "~5.7",
@@ -15,12 +17,12 @@
   },
   "autoload": {
     "psr-4": {
-      "CultuurNet\\UDB3\\JSONLD\\": "src/"
+      "CultuurNet\\UDB3\\Model\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "CultuurNet\\UDB3\\JSONLD\\": "tests/"
+      "CultuurNet\\UDB3\\Model\\": "tests/"
     }
   },
   "minimum-stability": "dev",
