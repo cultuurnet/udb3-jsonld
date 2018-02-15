@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Model\Event;
+namespace CultuurNet\UDB3\Model\Offer;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Term\Facilities;
@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Language;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 
-interface Event
+interface Offer
 {
     /**
      * @return UUID

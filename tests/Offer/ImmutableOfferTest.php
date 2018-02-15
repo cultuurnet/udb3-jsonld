@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Model\Event;
+namespace CultuurNet\UDB3\Model\Offer;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Term\CategoryID;
@@ -17,25 +17,25 @@ use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use PHPUnit\Framework\TestCase;
 
-class ImmutableEventTest extends TestCase
+class ImmutableOfferTest extends TestCase
 {
     /**
      * @test
      */
     public function it_returns_the_initial_properties_and_some_sensible_defaults()
     {
-        $event = $this->getEvent();
+        $offer = $this->getOffer();
 
-        $this->assertEquals($this->getId(), $event->getId());
-        $this->assertEquals($this->getMainLanguage(), $event->getMainLanguage());
-        $this->assertEquals($this->getTitle(), $event->getTitle());
-        $this->assertEquals($this->getType(), $event->getType());
+        $this->assertEquals($this->getId(), $offer->getId());
+        $this->assertEquals($this->getMainLanguage(), $offer->getMainLanguage());
+        $this->assertEquals($this->getTitle(), $offer->getTitle());
+        $this->assertEquals($this->getType(), $offer->getType());
 
-        $this->assertNull($event->getTheme());
-        $this->assertNull($event->getDescription());
+        $this->assertNull($offer->getTheme());
+        $this->assertNull($offer->getDescription());
 
-        $this->assertEquals(new Facilities(), $event->getFacilities());
-        $this->assertEquals(new Terms($this->getType()), $event->getTerms());
+        $this->assertEquals(new Facilities(), $offer->getFacilities());
+        $this->assertEquals(new Terms($this->getType()), $offer->getTerms());
     }
 
     /**
@@ -48,12 +48,12 @@ class ImmutableEventTest extends TestCase
             ->withTranslation(new Language('nl'), new Title('foo UPDATED'))
             ->withTranslation(new Language('en'), new Title('bar'));
 
-        $event = $this->getEvent();
-        $updatedEvent = $event->withTitle($updatedTitle);
+        $offer = $this->getOffer();
+        $updatedOffer = $offer->withTitle($updatedTitle);
 
-        $this->assertNotEquals($updatedEvent, $event);
-        $this->assertEquals($originalTitle, $event->getTitle());
-        $this->assertEquals($updatedTitle, $updatedEvent->getTitle());
+        $this->assertNotEquals($updatedOffer, $offer);
+        $this->assertEquals($originalTitle, $offer->getTitle());
+        $this->assertEquals($updatedTitle, $updatedOffer->getTitle());
     }
 
     /**
@@ -66,12 +66,12 @@ class ImmutableEventTest extends TestCase
             new Description('lorem')
         );
 
-        $event = $this->getEvent();
-        $updatedEvent = $event->withDescription($description);
+        $offer = $this->getOffer();
+        $updatedOffer = $offer->withDescription($description);
 
-        $this->assertNotEquals($updatedEvent, $event);
-        $this->assertNull($event->getDescription());
-        $this->assertEquals($description, $updatedEvent->getDescription());
+        $this->assertNotEquals($updatedOffer, $offer);
+        $this->assertNull($offer->getDescription());
+        $this->assertEquals($description, $updatedOffer->getDescription());
     }
 
     /**
@@ -87,12 +87,12 @@ class ImmutableEventTest extends TestCase
         $updatedDescription = $initialDescription
             ->withTranslation(new Language('fr'), new Description('ipsum'));
 
-        $event = $this->getEvent()->withDescription($initialDescription);
-        $updatedEvent = $event->withDescription($updatedDescription);
+        $offer = $this->getOffer()->withDescription($initialDescription);
+        $updatedOffer = $offer->withDescription($updatedDescription);
 
-        $this->assertNotEquals($updatedEvent, $event);
-        $this->assertEquals($initialDescription, $event->getDescription());
-        $this->assertEquals($updatedDescription, $updatedEvent->getDescription());
+        $this->assertNotEquals($updatedOffer, $offer);
+        $this->assertEquals($initialDescription, $offer->getDescription());
+        $this->assertEquals($updatedDescription, $updatedOffer->getDescription());
     }
 
     /**
@@ -105,12 +105,12 @@ class ImmutableEventTest extends TestCase
             new Description('lorem')
         );
 
-        $event = $this->getEvent()->withDescription($description);
-        $updatedEvent = $event->withoutDescription();
+        $offer = $this->getOffer()->withDescription($description);
+        $updatedOffer = $offer->withoutDescription();
 
-        $this->assertNotEquals($event, $updatedEvent);
-        $this->assertEquals($description, $event->getDescription());
-        $this->assertNull($updatedEvent->getDescription());
+        $this->assertNotEquals($offer, $updatedOffer);
+        $this->assertEquals($description, $offer->getDescription());
+        $this->assertNull($updatedOffer->getDescription());
     }
 
     /**
@@ -121,12 +121,12 @@ class ImmutableEventTest extends TestCase
         $originalType = $this->getType();
         $updatedType = new Type(new CategoryID('0.26.1.0.0'), new CategoryLabel('exhibition'));
 
-        $event = $this->getEvent();
-        $updatedEvent = $event->withType($updatedType);
+        $offer = $this->getOffer();
+        $updatedOffer = $offer->withType($updatedType);
 
-        $this->assertNotEquals($updatedEvent, $event);
-        $this->assertEquals($originalType, $event->getType());
-        $this->assertEquals($updatedType, $updatedEvent->getType());
+        $this->assertNotEquals($updatedOffer, $offer);
+        $this->assertEquals($originalType, $offer->getType());
+        $this->assertEquals($updatedType, $updatedOffer->getType());
     }
 
     /**
@@ -136,12 +136,12 @@ class ImmutableEventTest extends TestCase
     {
         $theme = new Theme(new CategoryID('0.50.4.1.0'), new CategoryLabel('blues'));
 
-        $event = $this->getEvent();
-        $updatedEvent = $event->withTheme($theme);
+        $offer = $this->getOffer();
+        $updatedOffer = $offer->withTheme($theme);
 
-        $this->assertNotEquals($updatedEvent, $event);
-        $this->assertNull($event->getTheme());
-        $this->assertEquals($theme, $updatedEvent->getTheme());
+        $this->assertNotEquals($updatedOffer, $offer);
+        $this->assertNull($offer->getTheme());
+        $this->assertEquals($theme, $updatedOffer->getTheme());
     }
 
     /**
@@ -152,12 +152,12 @@ class ImmutableEventTest extends TestCase
         $theme = new Theme(new CategoryID('0.50.4.1.0'), new CategoryLabel('blues'));
         $updatedTheme = new Theme(new CategoryID('0.50.4.2.0'), new CategoryLabel('jazz'));
 
-        $event = $this->getEvent()->withTheme($theme);
-        $updatedEvent = $event->withTheme($updatedTheme);
+        $offer = $this->getOffer()->withTheme($theme);
+        $updatedOffer = $offer->withTheme($updatedTheme);
 
-        $this->assertNotEquals($updatedEvent, $event);
-        $this->assertEquals($theme, $event->getTheme());
-        $this->assertEquals($updatedTheme, $updatedEvent->getTheme());
+        $this->assertNotEquals($updatedOffer, $offer);
+        $this->assertEquals($theme, $offer->getTheme());
+        $this->assertEquals($updatedTheme, $updatedOffer->getTheme());
     }
 
     /**
@@ -167,12 +167,12 @@ class ImmutableEventTest extends TestCase
     {
         $theme = new Theme(new CategoryID('0.50.4.1.0'), new CategoryLabel('blues'));
 
-        $event = $this->getEvent()->withTheme($theme);
-        $updatedEvent = $event->withoutTheme();
+        $offer = $this->getOffer()->withTheme($theme);
+        $updatedOffer = $offer->withoutTheme();
 
-        $this->assertNotEquals($updatedEvent, $event);
-        $this->assertEquals($theme, $event->getTheme());
-        $this->assertNull($updatedEvent->getTheme());
+        $this->assertNotEquals($updatedOffer, $offer);
+        $this->assertEquals($theme, $offer->getTheme());
+        $this->assertNull($updatedOffer->getTheme());
     }
 
     /**
@@ -187,12 +187,12 @@ class ImmutableEventTest extends TestCase
             )
         );
 
-        $event = $this->getEvent();
-        $updatedEvent = $event->withFacilities($facilities);
+        $offer = $this->getOffer();
+        $updatedOffer = $offer->withFacilities($facilities);
 
-        $this->assertNotEquals($event, $updatedEvent);
-        $this->assertEquals(new Facilities(), $event->getFacilities());
-        $this->assertEquals($facilities, $updatedEvent->getFacilities());
+        $this->assertNotEquals($offer, $updatedOffer);
+        $this->assertEquals(new Facilities(), $offer->getFacilities());
+        $this->assertEquals($facilities, $updatedOffer->getFacilities());
     }
 
     /**
@@ -218,12 +218,12 @@ class ImmutableEventTest extends TestCase
             )
         );
 
-        $event = $this->getEvent()->withFacilities($facilities);
-        $updatedEvent = $event->withFacilities($updatedFacilities);
+        $offer = $this->getOffer()->withFacilities($facilities);
+        $updatedOffer = $offer->withFacilities($updatedFacilities);
 
-        $this->assertNotEquals($event, $updatedEvent);
-        $this->assertEquals($facilities, $event->getFacilities());
-        $this->assertEquals($updatedFacilities, $updatedEvent->getFacilities());
+        $this->assertNotEquals($offer, $updatedOffer);
+        $this->assertEquals($facilities, $offer->getFacilities());
+        $this->assertEquals($updatedFacilities, $updatedOffer->getFacilities());
     }
 
     /**
@@ -238,24 +238,24 @@ class ImmutableEventTest extends TestCase
             )
         );
 
-        $event = $this->getEvent()->withFacilities($facilities);
-        $updatedEvent = $event->withoutFacilities();
+        $offer = $this->getOffer()->withFacilities($facilities);
+        $updatedOffer = $offer->withoutFacilities();
 
-        $this->assertNotEquals($event, $updatedEvent);
-        $this->assertEquals($facilities, $event->getFacilities());
-        $this->assertEquals(new Facilities(), $updatedEvent->getFacilities());
+        $this->assertNotEquals($offer, $updatedOffer);
+        $this->assertEquals($facilities, $offer->getFacilities());
+        $this->assertEquals(new Facilities(), $updatedOffer->getFacilities());
     }
 
     /**
      * @test
      * @dataProvider termsDataProvider
      *
-     * @param Event $event
+     * @param Offer $offer
      * @param Terms $expectedTerms
      */
-    public function it_should_return_all_terms(Event $event, Terms $expectedTerms)
+    public function it_should_return_all_terms(Offer $offer, Terms $expectedTerms)
     {
-        $this->assertEquals($expectedTerms, $event->getTerms());
+        $this->assertEquals($expectedTerms, $offer->getTerms());
     }
 
     /**
@@ -263,7 +263,7 @@ class ImmutableEventTest extends TestCase
      */
     public function termsDataProvider()
     {
-        $event = $this->getEvent();
+        $offer = $this->getOffer();
         $type = $this->getType();
         $theme = new Theme(new CategoryID('0.50.4.1.0'), new CategoryLabel('blues'));
 
@@ -279,20 +279,20 @@ class ImmutableEventTest extends TestCase
         );
 
         return [
-            'event_with_type' => [
-                'event' => $event,
+            'offer_with_type' => [
+                'offer' => $offer,
                 'expectedTerms' => new Terms($type),
             ],
-            'event_with_type_and_theme' => [
-                'event' => $event->withTheme($theme),
+            'offer_with_type_and_theme' => [
+                'offer' => $offer->withTheme($theme),
                 'expectedTerms' => new Terms($type, $theme),
             ],
-            'event_with_type_and_facilities' => [
-                'event' => $event->withFacilities($facilities),
+            'offer_with_type_and_facilities' => [
+                'offer' => $offer->withFacilities($facilities),
                 'expectedTerms' => new Terms($type, ...$facilities->toArray()),
             ],
-            'event_with_type_and_theme_and_facilities' => [
-                'event' => $event->withTheme($theme)->withFacilities($facilities),
+            'offer_with_type_and_theme_and_facilities' => [
+                'offer' => $offer->withTheme($theme)->withFacilities($facilities),
                 'expectedTerms' => new Terms($type, $theme, ...$facilities->toArray()),
             ],
         ];
@@ -337,11 +337,11 @@ class ImmutableEventTest extends TestCase
     }
 
     /**
-     * @return ImmutableEvent
+     * @return ImmutableOffer
      */
-    private function getEvent()
+    private function getOffer()
     {
-        return new ImmutableEvent(
+        return new MockImmutableOffer(
             $this->getId(),
             $this->getMainLanguage(),
             $this->getTitle(),

@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Model\Event;
+namespace CultuurNet\UDB3\Model\Offer;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Term\Facilities;
@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Language;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 
-class ImmutableEvent implements Event
+abstract class ImmutableOffer implements Offer
 {
     /**
      * @var UUID
@@ -94,7 +94,7 @@ class ImmutableEvent implements Event
 
     /**
      * @param TranslatedTitle $title
-     * @return ImmutableEvent
+     * @return ImmutableOffer
      */
     public function withTitle(TranslatedTitle $title)
     {
@@ -113,7 +113,7 @@ class ImmutableEvent implements Event
 
     /**
      * @param TranslatedDescription $translatedDescription
-     * @return ImmutableEvent
+     * @return ImmutableOffer
      */
     public function withDescription(TranslatedDescription $translatedDescription)
     {
@@ -123,7 +123,7 @@ class ImmutableEvent implements Event
     }
 
     /**
-     * @return ImmutableEvent
+     * @return ImmutableOffer
      */
     public function withoutDescription()
     {
@@ -142,7 +142,7 @@ class ImmutableEvent implements Event
 
     /**
      * @param Type $type
-     * @return ImmutableEvent
+     * @return ImmutableOffer
      */
     public function withType(Type $type)
     {
@@ -161,7 +161,7 @@ class ImmutableEvent implements Event
 
     /**
      * @param Theme $theme
-     * @return ImmutableEvent
+     * @return ImmutableOffer
      */
     public function withTheme(Theme $theme)
     {
@@ -171,7 +171,7 @@ class ImmutableEvent implements Event
     }
 
     /**
-     * @return ImmutableEvent
+     * @return ImmutableOffer
      */
     public function withoutTheme()
     {
@@ -190,7 +190,7 @@ class ImmutableEvent implements Event
 
     /**
      * @param Facilities $facilities
-     * @return ImmutableEvent
+     * @return ImmutableOffer
      */
     public function withFacilities(Facilities $facilities)
     {
@@ -200,7 +200,7 @@ class ImmutableEvent implements Event
     }
 
     /**
-     * @return ImmutableEvent
+     * @return ImmutableOffer
      */
     public function withoutFacilities()
     {
