@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/2dotstwice/value-objects.git",
-                "reference": "94c2799eb4ff84c0a7cc52185b86655946522100"
+                "reference": "a7807bf7c80941bbfa78c75771feb448f46a469f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/2dotstwice/value-objects/zipball/94c2799eb4ff84c0a7cc52185b86655946522100",
-                "reference": "94c2799eb4ff84c0a7cc52185b86655946522100",
+                "url": "https://api.github.com/repos/2dotstwice/value-objects/zipball/a7807bf7c80941bbfa78c75771feb448f46a469f",
+                "reference": "a7807bf7c80941bbfa78c75771feb448f46a469f",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 }
             ],
             "description": "Classes, traits, interfaces, ... to work with value objects.",
-            "time": "2018-02-14 16:19:51"
+            "time": "2018-02-15 13:18:22"
         },
         {
             "name": "ircmaxell/password-compat",
