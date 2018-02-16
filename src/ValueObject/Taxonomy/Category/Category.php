@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy\Term;
+namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category;
 
 class Category
 {
@@ -10,22 +10,25 @@ class Category
     private $id;
 
     /**
-     * @var CategoryLabel
+     * @var CategoryLabel|null
      */
     private $label;
 
     /**
-     * @var CategoryDomain
+     * @var CategoryDomain|null
      */
-    private $domain;
+    protected $domain;
 
     /**
      * @param CategoryID $id
-     * @param CategoryLabel $label
-     * @param CategoryDomain $domain
+     * @param CategoryLabel|null $label
+     * @param CategoryDomain|null $domain
      */
-    public function __construct(CategoryID $id, CategoryLabel $label, CategoryDomain $domain)
-    {
+    public function __construct(
+        CategoryID $id,
+        CategoryLabel $label = null,
+        CategoryDomain $domain = null
+    ) {
         $this->id = $id;
         $this->label = $label;
         $this->domain = $domain;
@@ -40,7 +43,7 @@ class Category
     }
 
     /**
-     * @return CategoryLabel
+     * @return CategoryLabel|null
      */
     public function getLabel()
     {
@@ -48,7 +51,7 @@ class Category
     }
 
     /**
-     * @return CategoryDomain
+     * @return CategoryDomain|null
      */
     public function getDomain()
     {

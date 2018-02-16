@@ -3,10 +3,7 @@
 namespace CultuurNet\UDB3\Model\Offer;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Term\Facilities;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Term\Terms;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Term\Theme;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Term\Type;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
@@ -34,38 +31,26 @@ abstract class ImmutableOffer implements Offer
     private $description;
 
     /**
-     * @var Type
+     * @var Categories
      */
-    private $type;
-
-    /**
-     * @var Theme|null
-     */
-    private $theme;
-
-    /**
-     * @var Facilities
-     */
-    private $facilities;
+    private $categories;
 
     /**
      * @param UUID $id
      * @param Language $mainLanguage
      * @param TranslatedTitle $title
-     * @param Type $type
+     * @param Categories $categories
      */
     public function __construct(
         UUID $id,
         Language $mainLanguage,
         TranslatedTitle $title,
-        Type $type
+        Categories $categories
     ) {
         $this->id = $id;
         $this->mainLanguage = $mainLanguage;
         $this->title = $title;
-        $this->type = $type;
-
-        $this->facilities = new Facilities();
+        $this->categories = $categories;
     }
 
     /**
@@ -133,91 +118,21 @@ abstract class ImmutableOffer implements Offer
     }
 
     /**
-     * @inheritdoc
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param Type $type
-     * @return ImmutableOffer
-     */
-    public function withType(Type $type)
-    {
-        $c = clone $this;
-        $c->type = $type;
-        return $c;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getTheme()
-    {
-        return $this->theme;
-    }
-
-    /**
-     * @param Theme $theme
-     * @return ImmutableOffer
-     */
-    public function withTheme(Theme $theme)
-    {
-        $c = clone $this;
-        $c->theme = $theme;
-        return $c;
-    }
-
-    /**
-     * @return ImmutableOffer
-     */
-    public function withoutTheme()
-    {
-        $c = clone $this;
-        $c->theme = null;
-        return $c;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getFacilities()
-    {
-        return $this->facilities;
-    }
-
-    /**
-     * @param Facilities $facilities
-     * @return ImmutableOffer
-     */
-    public function withFacilities(Facilities $facilities)
-    {
-        $c = clone $this;
-        $c->facilities = $facilities;
-        return $c;
-    }
-
-    /**
-     * @return ImmutableOffer
-     */
-    public function withoutFacilities()
-    {
-        $c = clone $this;
-        $c->facilities = new Facilities();
-        return $c;
-    }
-
-    /**
-     * @inheritdoc
+     * @return Categories
      */
     public function getTerms()
     {
-        if (isset($this->theme)) {
-            return new Terms($this->getType(), $this->getTheme(), ...$this->getFacilities());
-        } else {
-            return new Terms($this->getType(), ...$this->getFacilities());
-        }
+        return $this->categories;
+    }
+
+    /**
+     * @param Categories $categories
+     * @return ImmutableOffer
+     */
+    public function withTerms(Categories $categories)
+    {
+        $c = clone $this;
+        $c->categories = $categories;
+        return $c;
     }
 }

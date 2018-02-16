@@ -1,8 +1,9 @@
 <?php
 
-namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy\Term;
+namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category;
 
 use TwoDotsTwice\ValueObject\Collection\Behaviour\FiltersDuplicates;
+use TwoDotsTwice\ValueObject\Collection\Behaviour\IsNotEmpty;
 use TwoDotsTwice\ValueObject\Collection\Collection;
 
 /**
@@ -10,10 +11,11 @@ use TwoDotsTwice\ValueObject\Collection\Collection;
  * @method Category getLast()
  * @method Category getByIndex($index)
  * @method Category[] toArray()
- * @method Terms with(Category $category)
+ * @method Categories with(Category $category)
  */
-class Terms extends Collection
+class Categories extends Collection
 {
+    use IsNotEmpty;
     use FiltersDuplicates;
 
     /**
@@ -21,6 +23,7 @@ class Terms extends Collection
      */
     public function __construct(Category ...$categories)
     {
+        $this->guardNotEmpty($categories);
         $filtered = $this->filterDuplicateValues($categories);
         parent::__construct(...$filtered);
     }

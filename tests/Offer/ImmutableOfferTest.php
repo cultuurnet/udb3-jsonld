@@ -3,13 +3,11 @@
 namespace CultuurNet\UDB3\Model\Offer;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Term\CategoryID;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Term\CategoryLabel;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Term\Facilities;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Term\Facility;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Term\Terms;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Term\Theme;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Term\Type;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
@@ -29,13 +27,9 @@ class ImmutableOfferTest extends TestCase
         $this->assertEquals($this->getId(), $offer->getId());
         $this->assertEquals($this->getMainLanguage(), $offer->getMainLanguage());
         $this->assertEquals($this->getTitle(), $offer->getTitle());
-        $this->assertEquals($this->getType(), $offer->getType());
+        $this->assertEquals($this->getTerms(), $offer->getTerms());
 
-        $this->assertNull($offer->getTheme());
         $this->assertNull($offer->getDescription());
-
-        $this->assertEquals(new Facilities(), $offer->getFacilities());
-        $this->assertEquals(new Terms($this->getType()), $offer->getTerms());
     }
 
     /**
@@ -116,186 +110,27 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_an_updated_type()
+    public function it_should_return_a_copy_with_updated_terms()
     {
-        $originalType = $this->getType();
-        $updatedType = new Type(new CategoryID('0.26.1.0.0'), new CategoryLabel('exhibition'));
-
-        $offer = $this->getOffer();
-        $updatedOffer = $offer->withType($updatedType);
-
-        $this->assertNotEquals($updatedOffer, $offer);
-        $this->assertEquals($originalType, $offer->getType());
-        $this->assertEquals($updatedType, $updatedOffer->getType());
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_a_copy_with_a_theme()
-    {
-        $theme = new Theme(new CategoryID('0.50.4.1.0'), new CategoryLabel('blues'));
-
-        $offer = $this->getOffer();
-        $updatedOffer = $offer->withTheme($theme);
-
-        $this->assertNotEquals($updatedOffer, $offer);
-        $this->assertNull($offer->getTheme());
-        $this->assertEquals($theme, $updatedOffer->getTheme());
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_a_copy_with_an_updated_theme()
-    {
-        $theme = new Theme(new CategoryID('0.50.4.1.0'), new CategoryLabel('blues'));
-        $updatedTheme = new Theme(new CategoryID('0.50.4.2.0'), new CategoryLabel('jazz'));
-
-        $offer = $this->getOffer()->withTheme($theme);
-        $updatedOffer = $offer->withTheme($updatedTheme);
-
-        $this->assertNotEquals($updatedOffer, $offer);
-        $this->assertEquals($theme, $offer->getTheme());
-        $this->assertEquals($updatedTheme, $updatedOffer->getTheme());
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_a_copy_without_a_theme()
-    {
-        $theme = new Theme(new CategoryID('0.50.4.1.0'), new CategoryLabel('blues'));
-
-        $offer = $this->getOffer()->withTheme($theme);
-        $updatedOffer = $offer->withoutTheme();
-
-        $this->assertNotEquals($updatedOffer, $offer);
-        $this->assertEquals($theme, $offer->getTheme());
-        $this->assertNull($updatedOffer->getTheme());
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_a_copy_with_facilities()
-    {
-        $facilities = new Facilities(
-            new Facility(
-                new CategoryID('0.100.1.0.0'),
-                new CategoryLabel('wheelchair accessibility')
-            )
-        );
-
-        $offer = $this->getOffer();
-        $updatedOffer = $offer->withFacilities($facilities);
-
-        $this->assertNotEquals($offer, $updatedOffer);
-        $this->assertEquals(new Facilities(), $offer->getFacilities());
-        $this->assertEquals($facilities, $updatedOffer->getFacilities());
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_a_copy_with_updated_facilities()
-    {
-        $facilities = new Facilities(
-            new Facility(
-                new CategoryID('0.100.1.0.0'),
-                new CategoryLabel('wheelchair accessibility')
-            )
-        );
-
-        $updatedFacilities = new Facilities(
-            new Facility(
-                new CategoryID('0.100.1.0.0'),
-                new CategoryLabel('wheelchair accessibility')
+        $updatedTerms = new Categories(
+            new Category(
+                new CategoryID('0.50.1.0.0'),
+                new CategoryLabel('concert'),
+                new CategoryDomain('eventtype')
             ),
-            new Facility(
-                new CategoryID('0.100.2.0.0'),
-                new CategoryLabel('audio guide')
+            new Category(
+                new CategoryID('0.50.2.0.0'),
+                new CategoryLabel('blues'),
+                new CategoryDomain('theme')
             )
         );
 
-        $offer = $this->getOffer()->withFacilities($facilities);
-        $updatedOffer = $offer->withFacilities($updatedFacilities);
-
-        $this->assertNotEquals($offer, $updatedOffer);
-        $this->assertEquals($facilities, $offer->getFacilities());
-        $this->assertEquals($updatedFacilities, $updatedOffer->getFacilities());
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_a_copy_without_facilities()
-    {
-        $facilities = new Facilities(
-            new Facility(
-                new CategoryID('0.100.1.0.0'),
-                new CategoryLabel('wheelchair accessibility')
-            )
-        );
-
-        $offer = $this->getOffer()->withFacilities($facilities);
-        $updatedOffer = $offer->withoutFacilities();
-
-        $this->assertNotEquals($offer, $updatedOffer);
-        $this->assertEquals($facilities, $offer->getFacilities());
-        $this->assertEquals(new Facilities(), $updatedOffer->getFacilities());
-    }
-
-    /**
-     * @test
-     * @dataProvider termsDataProvider
-     *
-     * @param Offer $offer
-     * @param Terms $expectedTerms
-     */
-    public function it_should_return_all_terms(Offer $offer, Terms $expectedTerms)
-    {
-        $this->assertEquals($expectedTerms, $offer->getTerms());
-    }
-
-    /**
-     * @return array
-     */
-    public function termsDataProvider()
-    {
         $offer = $this->getOffer();
-        $type = $this->getType();
-        $theme = new Theme(new CategoryID('0.50.4.1.0'), new CategoryLabel('blues'));
+        $updatedOffer = $offer->withTerms($updatedTerms);
 
-        $facilities = new Facilities(
-            new Facility(
-                new CategoryID('0.100.1.0.0'),
-                new CategoryLabel('wheelchair accessibility')
-            ),
-            new Facility(
-                new CategoryID('0.100.2.0.0'),
-                new CategoryLabel('audio guide')
-            )
-        );
-
-        return [
-            'offer_with_type' => [
-                'offer' => $offer,
-                'expectedTerms' => new Terms($type),
-            ],
-            'offer_with_type_and_theme' => [
-                'offer' => $offer->withTheme($theme),
-                'expectedTerms' => new Terms($type, $theme),
-            ],
-            'offer_with_type_and_facilities' => [
-                'offer' => $offer->withFacilities($facilities),
-                'expectedTerms' => new Terms($type, ...$facilities->toArray()),
-            ],
-            'offer_with_type_and_theme_and_facilities' => [
-                'offer' => $offer->withTheme($theme)->withFacilities($facilities),
-                'expectedTerms' => new Terms($type, $theme, ...$facilities->toArray()),
-            ],
-        ];
+        $this->assertNotEquals($offer, $updatedOffer);
+        $this->assertEquals($this->getTerms(), $offer->getTerms());
+        $this->assertEquals($updatedTerms, $updatedOffer->getTerms());
     }
 
     /**
@@ -326,13 +161,16 @@ class ImmutableOfferTest extends TestCase
     }
 
     /**
-     * @return Type
+     * @return Categories
      */
-    private function getType()
+    private function getTerms()
     {
-        return new Type(
-            new CategoryID('0.50.1.0.0'),
-            new CategoryLabel('concert')
+        return new Categories(
+            new Category(
+                new CategoryID('0.50.1.0.0'),
+                new CategoryLabel('concert'),
+                new CategoryDomain('eventtype')
+            )
         );
     }
 
@@ -345,7 +183,7 @@ class ImmutableOfferTest extends TestCase
             $this->getId(),
             $this->getMainLanguage(),
             $this->getTitle(),
-            $this->getType()
+            $this->getTerms()
         );
     }
 }

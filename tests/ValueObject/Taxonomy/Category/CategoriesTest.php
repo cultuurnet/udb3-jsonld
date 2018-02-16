@@ -1,11 +1,22 @@
 <?php
 
-namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy\Term;
+namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category;
 
 use PHPUnit\Framework\TestCase;
 
-class TermsTest extends TestCase
+class CategoriesTest extends TestCase
 {
+    /**
+     * @test
+     */
+    public function it_should_never_be_empty()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Array should not be empty.');
+
+        new Categories();
+    }
+
     /**
      * @test
      */
@@ -42,7 +53,7 @@ class TermsTest extends TestCase
             ),
         ];
 
-        $collection = new Terms(...$terms);
+        $collection = new Categories(...$terms);
         $actual = $collection->toArray();
 
         $this->assertEquals($expected, $actual);

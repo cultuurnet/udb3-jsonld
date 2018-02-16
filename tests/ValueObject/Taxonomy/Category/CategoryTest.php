@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy\Term;
+namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category;
 
 use PHPUnit\Framework\TestCase;
 
