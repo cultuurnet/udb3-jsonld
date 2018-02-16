@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Model\ValueObject\Text;
+namespace CultuurNet\UDB3\Model\ValueObject\Translation;
 
 use TwoDotsTwice\ValueObject\Collection\Behaviour\FiltersDuplicates;
 use TwoDotsTwice\ValueObject\Collection\Collection;

@@ -1,8 +1,8 @@
 <?php
 
-namespace CultuurNet\UDB3\Model\ValueObject\Text;
+namespace CultuurNet\UDB3\Model\ValueObject\Translation;
 
-abstract class TranslatedText
+abstract class TranslatedValueObject
 {
     /**
      * @var Language
@@ -16,21 +16,21 @@ abstract class TranslatedText
 
     /**
      * @param Language $originalLanguage
-     * @param mixed $originalText
+     * @param mixed $originalValueObject
      */
-    public function __construct(Language $originalLanguage, $originalText)
+    public function __construct(Language $originalLanguage, $originalValueObject)
     {
-        $this->guardTextClassName($originalText);
+        $this->guardValueObjectClassName($originalValueObject);
 
         $this->originalLanguage = $originalLanguage;
-        $this->translations[$originalLanguage->getCode()] = $originalText;
+        $this->translations[$originalLanguage->getCode()] = $originalValueObject;
     }
 
     /**
      * @todo Use generics instead, if/when ever available in PHP.
      * @return string
      */
-    abstract protected function getTextClassName();
+    abstract protected function getValueObjectClassName();
 
     /**
      * @param Language $language
@@ -39,7 +39,7 @@ abstract class TranslatedText
      */
     public function withTranslation(Language $language, $translation)
     {
-        $this->guardTextClassName($translation);
+        $this->guardValueObjectClassName($translation);
 
         $c = clone $this;
         $c->translations[$language->getCode()] = $translation;
@@ -115,13 +115,13 @@ abstract class TranslatedText
     }
 
     /**
-     * @param mixed $text
+     * @param mixed $valueObject
      */
-    private function guardTextClassName($text)
+    private function guardValueObjectClassName($valueObject)
     {
-        $className = $this->getTextClassName();
-        if (!($text instanceof $className)) {
-            $actualClassName = is_scalar($text) ? gettype($text) : get_class($text);
+        $className = $this->getValueObjectClassName();
+        if (!($valueObject instanceof $className)) {
+            $actualClassName = is_scalar($valueObject) ? gettype($valueObject) : get_class($valueObject);
             throw new \InvalidArgumentException("The given object is a {$actualClassName}, expected {$className}.");
         }
     }

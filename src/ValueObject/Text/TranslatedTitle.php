@@ -2,12 +2,15 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Text;
 
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Translation\TranslatedValueObject;
+
 /**
  * @method Title getTranslation(Language $language)
  */
-class TranslatedTitle extends TranslatedText
+class TranslatedTitle extends TranslatedValueObject
 {
-    protected function getTextClassName()
+    protected function getValueObjectClassName()
     {
         return Title::class;
     }

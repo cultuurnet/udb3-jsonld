@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Text;
 
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
 
 class LanguageTest extends TestCase

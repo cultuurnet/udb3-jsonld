@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Term\Terms;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Term\Theme;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Term\Type;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
-use CultuurNet\UDB3\Model\ValueObject\Text\Language;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;

@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Model\ValueObject\Text;
+namespace CultuurNet\UDB3\Model\ValueObject\Translation;
 
 use TwoDotsTwice\ValueObject\String\Behaviour\IsString;
 use TwoDotsTwice\ValueObject\String\Behaviour\MatchesRegexPattern;
