@@ -2,6 +2,8 @@
 
 namespace CultuurNet\UDB3\Model\Offer;
 
+use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -131,6 +133,52 @@ class ImmutableOfferTest extends TestCase
         $this->assertNotEquals($offer, $updatedOffer);
         $this->assertEquals($this->getTerms(), $offer->getTerms());
         $this->assertEquals($updatedTerms, $updatedOffer->getTerms());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_with_an_age_range()
+    {
+        $ageRange = new AgeRange(new Age(8), new Age(12));
+
+        $offer = $this->getOffer();
+        $updatedOffer = $offer->withAgeRange($ageRange);
+
+        $this->assertNotEquals($updatedOffer, $offer);
+        $this->assertNull($offer->getAgeRange());
+        $this->assertEquals($ageRange, $updatedOffer->getAgeRange());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_with_an_updated_age_range()
+    {
+        $initialAgeRange = new AgeRange(new Age(8), new Age(14));
+        $updatedAgeRange = new AgeRange(new Age(8), new Age(12));
+
+        $initialOffer = $this->getOffer()->withAgeRange($initialAgeRange);
+        $updatedOffer = $initialOffer->withAgeRange($updatedAgeRange);
+
+        $this->assertNotEquals($updatedOffer, $initialOffer);
+        $this->assertEquals($initialAgeRange, $initialOffer->getAgeRange());
+        $this->assertEquals($updatedAgeRange, $updatedOffer->getAgeRange());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_without_age_range()
+    {
+        $ageRange = new AgeRange(new Age(8), new Age(12));
+
+        $initialOffer = $this->getOffer()->withAgeRange($ageRange);
+        $updatedOffer = $initialOffer->withoutAgeRange();
+
+        $this->assertNotEquals($updatedOffer, $initialOffer);
+        $this->assertEquals($ageRange, $initialOffer->getAgeRange());
+        $this->assertNull($updatedOffer->getAgeRange());
     }
 
     /**

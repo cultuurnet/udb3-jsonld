@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\Offer;
 
+use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -34,6 +35,11 @@ abstract class ImmutableOffer implements Offer
      * @var Categories
      */
     private $categories;
+
+    /**
+     * @var AgeRange|null
+     */
+    private $ageRange;
 
     /**
      * @param UUID $id
@@ -133,6 +139,35 @@ abstract class ImmutableOffer implements Offer
     {
         $c = clone $this;
         $c->categories = $categories;
+        return $c;
+    }
+
+    /**
+     * @return AgeRange|null
+     */
+    public function getAgeRange()
+    {
+        return $this->ageRange;
+    }
+
+    /**
+     * @param AgeRange $ageRange
+     * @return ImmutableOffer
+     */
+    public function withAgeRange(AgeRange $ageRange)
+    {
+        $c = clone $this;
+        $c->ageRange = $ageRange;
+        return $c;
+    }
+
+    /**
+     * @return ImmutableOffer
+     */
+    public function withoutAgeRange()
+    {
+        $c = clone $this;
+        $c->ageRange = null;
         return $c;
     }
 }
