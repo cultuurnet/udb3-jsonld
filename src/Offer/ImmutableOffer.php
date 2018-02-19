@@ -3,6 +3,11 @@
 namespace CultuurNet\UDB3\Model\Offer;
 
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\EmailAddresses;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
+use CultuurNet\UDB3\Model\ValueObject\Contact\Urls;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -42,6 +47,16 @@ abstract class ImmutableOffer implements Offer
     private $ageRange;
 
     /**
+     * @var BookingInfo
+     */
+    private $bookingInfo;
+
+    /**
+     * @var ContactPoint
+     */
+    private $contactPoint;
+
+    /**
      * @param UUID $id
      * @param Language $mainLanguage
      * @param TranslatedTitle $title
@@ -57,6 +72,9 @@ abstract class ImmutableOffer implements Offer
         $this->mainLanguage = $mainLanguage;
         $this->title = $title;
         $this->categories = $categories;
+
+        $this->bookingInfo = new BookingInfo();
+        $this->contactPoint = new ContactPoint();
     }
 
     /**
@@ -169,5 +187,21 @@ abstract class ImmutableOffer implements Offer
         $c = clone $this;
         $c->ageRange = null;
         return $c;
+    }
+
+    /**
+     * @return BookingInfo
+     */
+    public function getBookingInfo()
+    {
+        return $this->bookingInfo;
+    }
+
+    /**
+     * @return ContactPoint
+     */
+    public function getContactPoint()
+    {
+        return $this->contactPoint;
     }
 }
