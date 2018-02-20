@@ -43,32 +43,4 @@ abstract class DateTimeImmutableRange
     {
         return $this->to;
     }
-
-    /**
-     * @param \DateTimeImmutable $from
-     * @return static
-     */
-    public static function from(\DateTimeImmutable $from)
-    {
-        return new static($from, null);
-    }
-
-    /**
-     * @param \DateTimeImmutable $to
-     * @return static
-     */
-    public static function to(\DateTimeImmutable $to)
-    {
-        return new static(null, $to);
-    }
-
-    /**
-     * @param \DateTimeImmutable $from
-     * @param \DateTimeImmutable $to
-     * @return static
-     */
-    public static function fromTo(\DateTimeImmutable $from, \DateTimeImmutable $to)
-    {
-        return new static($from, $to);
-    }
 }
