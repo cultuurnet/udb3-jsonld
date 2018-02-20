@@ -5,11 +5,11 @@ namespace CultuurNet\UDB3\Model\ValueObject\Audience;
 use TwoDotsTwice\ValueObject\String\Enum;
 
 /**
- * @method static Audience everyone()
- * @method static Audience members()
- * @method static Audience education()
+ * @method static AudienceType everyone()
+ * @method static AudienceType members()
+ * @method static AudienceType education()
  */
-class Audience extends Enum
+class AudienceType extends Enum
 {
     /**
      * @return array

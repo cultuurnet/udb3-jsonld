@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\Event;
 
-use CultuurNet\UDB3\Model\ValueObject\Audience\Audience;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -22,8 +22,8 @@ class ImmutableEventTest extends TestCase
     public function it_should_return_everyone_as_the_default_audience()
     {
         $event = $this->getEvent();
-        $expected = Audience::everyone();
-        $this->assertTrue($event->getAudience()->sameAs($expected));
+        $expected = AudienceType::everyone();
+        $this->assertTrue($event->getAudienceType()->sameAs($expected));
     }
 
     /**
@@ -31,15 +31,15 @@ class ImmutableEventTest extends TestCase
      */
     public function it_should_return_a_copy_with_an_updated_audience()
     {
-        $audience = Audience::everyone();
-        $updatedAudience = Audience::members();
+        $audience = AudienceType::everyone();
+        $updatedAudience = AudienceType::members();
 
         $event = $this->getEvent();
-        $updatedEvent = $event->withAudience($updatedAudience);
+        $updatedEvent = $event->withAudienceType($updatedAudience);
 
         $this->assertNotEquals($event, $updatedEvent);
-        $this->assertTrue($event->getAudience()->sameAs($audience));
-        $this->assertTrue($updatedEvent->getAudience()->sameAs($updatedAudience));
+        $this->assertTrue($event->getAudienceType()->sameAs($audience));
+        $this->assertTrue($updatedEvent->getAudienceType()->sameAs($updatedAudience));
     }
 
     /**

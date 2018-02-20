@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Model\Event;
 
 use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
-use CultuurNet\UDB3\Model\ValueObject\Audience\Audience;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 class ImmutableEvent extends ImmutableOffer implements Event
 {
     /**
-     * @var Audience
+     * @var AudienceType
      */
     private $audience;
 
@@ -29,22 +29,22 @@ class ImmutableEvent extends ImmutableOffer implements Event
         Categories $categories
     ) {
         parent::__construct($id, $mainLanguage, $title, $categories);
-        $this->audience = Audience::everyone();
+        $this->audience = AudienceType::everyone();
     }
 
     /**
      * @inheritdoc
      */
-    public function getAudience()
+    public function getAudienceType()
     {
         return $this->audience;
     }
 
     /**
-     * @param Audience $audience
+     * @param AudienceType $audience
      * @return ImmutableEvent
      */
-    public function withAudience(Audience $audience)
+    public function withAudienceType(AudienceType $audience)
     {
         $c = clone $this;
         $c->audience = $audience;
