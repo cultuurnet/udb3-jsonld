@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\Url;
 use CultuurNet\UDB3\Model\ValueObject\Contact\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Contact\WebsiteLink;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -243,6 +244,31 @@ class ImmutableOfferTest extends TestCase
         $this->assertNotEquals($offer, $updatedOffer);
         $this->assertEquals($contactPoint, $offer->getContactPoint());
         $this->assertEquals($updatedContactPoint, $updatedOffer->getContactPoint());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_draft_workflow_status_by_default()
+    {
+        $workflowStatus = $this->getOffer()->getWorkflowStatus();
+        $this->assertTrue($workflowStatus->sameAs(WorkflowStatus::draft()));
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_with_an_updated_workflow_status()
+    {
+        $offer = $this->getOffer();
+        $workflowStatus = $offer->getWorkflowStatus();
+
+        $updatedWorkflowStatus = WorkflowStatus::approved();
+        $updatedOffer = $offer->withWorkflowStatus($updatedWorkflowStatus);
+
+        $this->assertNotEquals($offer, $updatedOffer);
+        $this->assertEquals($workflowStatus, $offer->getWorkflowStatus());
+        $this->assertEquals($updatedWorkflowStatus, $updatedOffer->getWorkflowStatus());
     }
 
     /**

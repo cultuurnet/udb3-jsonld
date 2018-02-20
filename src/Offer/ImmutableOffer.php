@@ -6,6 +6,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
@@ -54,6 +55,11 @@ abstract class ImmutableOffer implements Offer
     private $contactPoint;
 
     /**
+     * @var WorkflowStatus
+     */
+    private $workflowStatus;
+
+    /**
      * @param UUID $id
      * @param Language $mainLanguage
      * @param TranslatedTitle $title
@@ -72,6 +78,7 @@ abstract class ImmutableOffer implements Offer
 
         $this->bookingInfo = new BookingInfo();
         $this->contactPoint = new ContactPoint();
+        $this->workflowStatus = WorkflowStatus::draft();
     }
 
     /**
@@ -221,6 +228,25 @@ abstract class ImmutableOffer implements Offer
     {
         $c = clone $this;
         $c->contactPoint = $contactPoint;
+        return $c;
+    }
+
+    /**
+     * @return WorkflowStatus
+     */
+    public function getWorkflowStatus()
+    {
+        return $this->workflowStatus;
+    }
+
+    /**
+     * @param WorkflowStatus $workflowStatus
+     * @return ImmutableOffer
+     */
+    public function withWorkflowStatus(WorkflowStatus $workflowStatus)
+    {
+        $c = clone $this;
+        $c->workflowStatus = $workflowStatus;
         return $c;
     }
 }

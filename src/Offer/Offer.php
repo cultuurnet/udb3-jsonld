@@ -6,6 +6,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
@@ -52,4 +53,9 @@ interface Offer
      * @return ContactPoint
      */
     public function getContactPoint();
+
+    /**
+     * @return WorkflowStatus
+     */
+    public function getWorkflowStatus();
 }
