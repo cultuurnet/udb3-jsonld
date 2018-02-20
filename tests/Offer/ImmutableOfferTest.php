@@ -4,6 +4,13 @@ namespace CultuurNet\UDB3\Model\Offer;
 
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
+use CultuurNet\UDB3\Model\ValueObject\Contact\Url;
+use CultuurNet\UDB3\Model\ValueObject\Contact\WebsiteLabel;
+use CultuurNet\UDB3\Model\ValueObject\Contact\WebsiteLink;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -179,6 +186,63 @@ class ImmutableOfferTest extends TestCase
         $this->assertNotEquals($updatedOffer, $initialOffer);
         $this->assertEquals($ageRange, $initialOffer->getAgeRange());
         $this->assertNull($updatedOffer->getAgeRange());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_empty_booking_info_by_default()
+    {
+        $this->assertTrue($this->getOffer()->getBookingInfo()->isEmpty());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_with_an_updated_booking_info()
+    {
+        $offer = $this->getOffer();
+        $bookingInfo = $offer->getBookingInfo();
+
+        $updatedBookingInfo = new BookingInfo(
+            new WebsiteLink(
+                new Url('https://google.com'),
+                new WebsiteLabel('Google')
+            )
+        );
+        $updatedOffer = $offer->withBookingInfo($updatedBookingInfo);
+
+        $this->assertNotEquals($offer, $updatedOffer);
+        $this->assertEquals($bookingInfo, $offer->getBookingInfo());
+        $this->assertEquals($updatedBookingInfo, $updatedOffer->getBookingInfo());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_an_empty_contact_point_by_default()
+    {
+        $this->assertTrue($this->getOffer()->getContactPoint()->isEmpty());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_with_an_updated_contact_point()
+    {
+        $offer = $this->getOffer();
+        $contactPoint = $offer->getContactPoint();
+
+        $updatedContactPoint = new ContactPoint(
+            new TelephoneNumbers(
+                new TelephoneNumber('044/444444')
+            )
+        );
+        $updatedOffer = $offer->withContactPoint($updatedContactPoint);
+
+        $this->assertNotEquals($offer, $updatedOffer);
+        $this->assertEquals($contactPoint, $offer->getContactPoint());
+        $this->assertEquals($updatedContactPoint, $updatedOffer->getContactPoint());
     }
 
     /**

@@ -198,10 +198,32 @@ abstract class ImmutableOffer implements Offer
     }
 
     /**
+     * @param BookingInfo $bookingInfo
+     * @return ImmutableOffer
+     */
+    public function withBookingInfo(BookingInfo $bookingInfo)
+    {
+        $c = clone $this;
+        $c->bookingInfo = $bookingInfo;
+        return $c;
+    }
+
+    /**
      * @return ContactPoint
      */
     public function getContactPoint()
     {
         return $this->contactPoint;
+    }
+
+    /**
+     * @param ContactPoint $contactPoint
+     * @return ImmutableOffer
+     */
+    public function withContactPoint(ContactPoint $contactPoint)
+    {
+        $c = clone $this;
+        $c->contactPoint = $contactPoint;
+        return $c;
     }
 }
