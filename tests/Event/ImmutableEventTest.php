@@ -3,6 +3,12 @@
 namespace CultuurNet\UDB3\Model\Event;
 
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarBuilder;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleDateRangeCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -16,6 +22,33 @@ use PHPUnit\Framework\TestCase;
 
 class ImmutableEventTest extends TestCase
 {
+    /**
+     * @test
+     */
+    public function it_should_return_the_injected_calendar()
+    {
+        $calendar = $this->getCalendar();
+        $event = $this->getEvent();
+
+        $this->assertEquals($calendar, $event->getCalendar());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_with_an_updated_calendar()
+    {
+        $calendar = $this->getCalendar();
+        $event = $this->getEvent();
+
+        $updatedCalendar = new PermanentCalendar(new OpeningHours());
+        $updatedEvent = $event->withCalendar($updatedCalendar);
+
+        $this->assertNotEquals($calendar, $updatedCalendar);
+        $this->assertEquals($calendar, $event->getCalendar());
+        $this->assertEquals($updatedCalendar, $updatedEvent->getCalendar());
+    }
+
     /**
      * @test
      */
@@ -70,6 +103,17 @@ class ImmutableEventTest extends TestCase
     }
 
     /**
+     * @return Calendar
+     */
+    private function getCalendar()
+    {
+        return new SingleDateRangeCalendar(
+            \DateTimeImmutable::createFromFormat('d/m/Y', '10/01/2018'),
+            \DateTimeImmutable::createFromFormat('d/m/Y', '11/01/2018')
+        );
+    }
+
+    /**
      * @return Categories
      */
     private function getTerms()
@@ -92,6 +136,7 @@ class ImmutableEventTest extends TestCase
             $this->getId(),
             $this->getMainLanguage(),
             $this->getTitle(),
+            $this->getCalendar(),
             $this->getTerms()
         );
     }
