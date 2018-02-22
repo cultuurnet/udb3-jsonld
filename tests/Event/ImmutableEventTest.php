@@ -134,6 +134,7 @@ class ImmutableEventTest extends TestCase
     {
         return new ImmutableEvent(
             $this->getId(),
+            $this->getMainLanguage(),
             $this->getTitle(),
             $this->getCalendar(),
             $this->getTerms()

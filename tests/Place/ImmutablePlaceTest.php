@@ -239,6 +239,7 @@ class ImmutablePlaceTest extends TestCase
     {
         return new ImmutablePlace(
             $this->getId(),
+            $this->getMainLanguage(),
             $this->getTitle(),
             $this->getCalendar(),
             $this->getAddress(),

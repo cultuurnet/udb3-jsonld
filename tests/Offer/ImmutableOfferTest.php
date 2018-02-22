@@ -408,6 +408,7 @@ class ImmutableOfferTest extends TestCase
     {
         return new MockImmutableOffer(
             $this->getId(),
+            $this->getMainLanguage(),
             $this->getTitle(),
             $this->getTerms()
         );
