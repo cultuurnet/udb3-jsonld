@@ -2,11 +2,10 @@
 
 namespace CultuurNet\UDB3\Model\Event;
 
-use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarBuilder;
+use CultuurNet\Geocoding\Coordinate\Coordinates;
+use CultuurNet\Geocoding\Coordinate\Latitude;
+use CultuurNet\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
@@ -15,7 +14,12 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleDateRangeCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -88,6 +92,83 @@ class ImmutablePlaceTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_should_return_the_injected_address()
+    {
+        $address = $this->getAddress();
+        $place = $this->getPlace();
+
+        $this->assertEquals($address, $place->getAddress());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_with_an_updated_address()
+    {
+        $address = $this->getAddress();
+        $updatedAddress = $address->withTranslation(
+            new Language('fr'),
+            new Address(
+                new Street('Quai du Hainaut 41-43'),
+                new PostalCode('1080'),
+                new Locality('Bruxelles'),
+                new CountryCode('BE')
+            )
+        );
+
+        $place = $this->getPlace();
+        $updatedPlace = $place->withAddress($updatedAddress);
+
+        $this->assertNotEquals($place, $updatedPlace);
+        $this->assertEquals($address, $place->getAddress());
+        $this->assertEquals($updatedAddress, $updatedPlace->getAddress());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_no_coordinates_by_default()
+    {
+        $this->assertNull($this->getPlace()->getGeoCoordinates());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_with_updated_coordinates()
+    {
+        $coordinates = new Coordinates(
+            new Latitude(45.123),
+            new Longitude(132.456)
+        );
+
+        $place = $this->getPlace();
+        $updatedPlace = $place->withGeoCoordinates($coordinates);
+
+        $this->assertNull($place->getGeoCoordinates());
+        $this->assertEquals($coordinates, $updatedPlace->getGeoCoordinates());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_without_coordinates()
+    {
+        $coordinates = new Coordinates(
+            new Latitude(45.123),
+            new Longitude(132.456)
+        );
+
+        $place = $this->getPlace()->withGeoCoordinates($coordinates);
+        $updatedPlace = $place->withoutGeoCoordinates();
+
+        $this->assertEquals($coordinates, $place->getGeoCoordinates());
+        $this->assertNull($updatedPlace->getGeoCoordinates());
+    }
+
+    /**
      * @return UUID
      */
     private function getId()
@@ -123,6 +204,21 @@ class ImmutablePlaceTest extends TestCase
     }
 
     /**
+     * @return TranslatedAddress
+     */
+    private function getAddress()
+    {
+        $address = new Address(
+            new Street('Henegouwenkaai 41-43'),
+            new PostalCode('1080'),
+            new Locality('Brussel'),
+            new CountryCode('BE')
+        );
+
+        return new TranslatedAddress(new Language('nl'), $address);
+    }
+
+    /**
      * @return Categories
      */
     private function getTerms()
@@ -146,6 +242,7 @@ class ImmutablePlaceTest extends TestCase
             $this->getMainLanguage(),
             $this->getTitle(),
             $this->getCalendar(),
+            $this->getAddress(),
             $this->getTerms()
         );
     }
