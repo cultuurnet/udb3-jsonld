@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
@@ -38,6 +39,11 @@ abstract class ImmutableOffer implements Offer
      * @var Categories
      */
     private $categories;
+
+    /**
+     * @var Labels
+     */
+    private $labels;
 
     /**
      * @var AgeRange|null
@@ -76,6 +82,7 @@ abstract class ImmutableOffer implements Offer
         $this->title = $title;
         $this->categories = $categories;
 
+        $this->labels = new Labels();
         $this->bookingInfo = new BookingInfo();
         $this->contactPoint = new ContactPoint();
         $this->workflowStatus = WorkflowStatus::draft();
@@ -161,6 +168,25 @@ abstract class ImmutableOffer implements Offer
     {
         $c = clone $this;
         $c->categories = $categories;
+        return $c;
+    }
+
+    /**
+     * @return Labels
+     */
+    public function getLabels()
+    {
+        return $this->labels;
+    }
+
+    /**
+     * @param Labels $labels
+     * @return ImmutableOffer
+     */
+    public function withLabels(Labels $labels)
+    {
+        $c = clone $this;
+        $c->labels = $labels;
         return $c;
     }
 

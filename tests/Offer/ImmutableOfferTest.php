@@ -18,6 +18,9 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
@@ -141,6 +144,39 @@ class ImmutableOfferTest extends TestCase
         $this->assertNotEquals($offer, $updatedOffer);
         $this->assertEquals($this->getTerms(), $offer->getTerms());
         $this->assertEquals($updatedTerms, $updatedOffer->getTerms());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_an_empty_list_of_labels_by_default()
+    {
+        $this->assertEquals(new Labels(), $this->getOffer()->getLabels());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_with_updated_labels()
+    {
+        $labels = new Labels();
+        $updatedLabels = new Labels(
+            new Label(
+                new LabelName('foo'),
+                true
+            ),
+            new Label(
+                new LabelName('bar'),
+                false
+            )
+        );
+
+        $offer = $this->getOffer();
+        $updatedOffer = $offer->withLabels($updatedLabels);
+
+        $this->assertNotEquals($offer, $updatedOffer);
+        $this->assertEquals($labels, $offer->getLabels());
+        $this->assertEquals($updatedLabels, $updatedOffer->getLabels());
     }
 
     /**
