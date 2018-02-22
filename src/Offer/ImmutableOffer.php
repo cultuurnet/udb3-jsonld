@@ -28,12 +28,6 @@ abstract class ImmutableOffer implements Offer
     private $mainLanguage;
 
     /**
-     * @var array
-     *   Language code as keys and integers representing field counts as values.
-     */
-    private $languages;
-
-    /**
      * @var TranslatedTitle
      */
     private $title;
