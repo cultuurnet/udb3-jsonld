@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy;
+namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label;
 
 class Label
 {

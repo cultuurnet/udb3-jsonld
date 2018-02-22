@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy;
+namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label;
 
 use TwoDotsTwice\ValueObject\String\Behaviour\IsNotEmpty;
 use TwoDotsTwice\ValueObject\String\Behaviour\IsString;
