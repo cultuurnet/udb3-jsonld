@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Languages;
 
 abstract class ImmutableOffer implements Offer
 {
@@ -25,6 +26,12 @@ abstract class ImmutableOffer implements Offer
      * @var Language
      */
     private $mainLanguage;
+
+    /**
+     * @var array
+     *   Language code as keys and integers representing field counts as values.
+     */
+    private $languages;
 
     /**
      * @var TranslatedTitle
@@ -73,20 +80,20 @@ abstract class ImmutableOffer implements Offer
 
     /**
      * @param UUID $id
-     * @param Language $mainLanguage
      * @param TranslatedTitle $title
      * @param Categories $categories
      */
     public function __construct(
         UUID $id,
-        Language $mainLanguage,
         TranslatedTitle $title,
         Categories $categories
     ) {
         $this->id = $id;
-        $this->mainLanguage = $mainLanguage;
+        $this->mainLanguage = $title->getOriginalLanguage();
         $this->title = $title;
         $this->categories = $categories;
+
+        $this->refreshLanguages($title);
 
         $this->labels = new Labels();
         $this->bookingInfo = new BookingInfo();

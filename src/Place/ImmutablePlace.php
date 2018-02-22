@@ -31,7 +31,6 @@ class ImmutablePlace extends ImmutableOffer implements Place
 
     /**
      * @param UUID $id
-     * @param Language $mainLanguage
      * @param TranslatedTitle $title
      * @param CalendarWithOpeningHours $calendar
      * @param TranslatedAddress $address
@@ -39,13 +38,12 @@ class ImmutablePlace extends ImmutableOffer implements Place
      */
     public function __construct(
         UUID $id,
-        Language $mainLanguage,
         TranslatedTitle $title,
         CalendarWithOpeningHours $calendar,
         TranslatedAddress $address,
         Categories $categories
     ) {
-        parent::__construct($id, $mainLanguage, $title, $categories);
+        parent::__construct($id, $title, $categories);
         $this->calendar = $calendar;
         $this->address = $address;
     }

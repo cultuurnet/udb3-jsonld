@@ -24,19 +24,17 @@ class ImmutableEvent extends ImmutableOffer implements Event
 
     /**
      * @param UUID $id
-     * @param Language $mainLanguage
      * @param TranslatedTitle $title
      * @param Calendar $calendar
      * @param Categories $categories
      */
     public function __construct(
         UUID $id,
-        Language $mainLanguage,
         TranslatedTitle $title,
         Calendar $calendar,
         Categories $categories
     ) {
-        parent::__construct($id, $mainLanguage, $title, $categories);
+        parent::__construct($id, $title, $categories);
         $this->calendar = $calendar;
         $this->audience = AudienceType::everyone();
     }
