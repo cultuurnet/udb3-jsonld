@@ -7,6 +7,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
+use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -49,6 +50,11 @@ abstract class ImmutableOffer implements Offer
      * @var AgeRange|null
      */
     private $ageRange;
+
+    /**
+     * @var PriceInfo|null
+     */
+    private $priceInfo;
 
     /**
      * @var BookingInfo
@@ -216,6 +222,35 @@ abstract class ImmutableOffer implements Offer
     {
         $c = clone $this;
         $c->ageRange = null;
+        return $c;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPriceInfo()
+    {
+        return $this->priceInfo;
+    }
+
+    /**
+     * @param PriceInfo $priceInfo
+     * @return ImmutableOffer
+     */
+    public function withPriceInfo(PriceInfo $priceInfo)
+    {
+        $c = clone $this;
+        $c->priceInfo = $priceInfo;
+        return $c;
+    }
+
+    /**
+     * @return ImmutableOffer
+     */
+    public function withoutPriceInfo()
+    {
+        $c = clone $this;
+        $c->priceInfo = null;
         return $c;
     }
 

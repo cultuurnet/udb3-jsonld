@@ -13,6 +13,9 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Contact\WebsiteLink;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
+use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -26,6 +29,8 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
+use Money\Currency;
+use Money\Money;
 use PHPUnit\Framework\TestCase;
 
 class ImmutableOfferTest extends TestCase
@@ -223,6 +228,54 @@ class ImmutableOfferTest extends TestCase
         $this->assertNotEquals($updatedOffer, $initialOffer);
         $this->assertEquals($ageRange, $initialOffer->getAgeRange());
         $this->assertNull($updatedOffer->getAgeRange());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_no_price_info_by_default()
+    {
+        $this->assertNull($this->getOffer()->getPriceInfo());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_with_updated_price_info()
+    {
+        $priceInfo = new PriceInfo(
+            Tariff::createBasePrice(
+                new Money(1000, new Currency('EUR'))
+            ),
+            new Tariffs()
+        );
+
+        $offer = $this->getOffer();
+        $updatedOffer = $offer->withPriceInfo($priceInfo);
+
+        $this->assertNotEquals($offer, $updatedOffer);
+        $this->assertNull($offer->getPriceInfo());
+        $this->assertEquals($priceInfo, $updatedOffer->getPriceInfo());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_without_price_info()
+    {
+        $priceInfo = new PriceInfo(
+            Tariff::createBasePrice(
+                new Money(1000, new Currency('EUR'))
+            ),
+            new Tariffs()
+        );
+
+        $offer = $this->getOffer()->withPriceInfo($priceInfo);
+        $updatedOffer = $offer->withoutPriceInfo();
+
+        $this->assertNotEquals($offer, $updatedOffer);
+        $this->assertEquals($priceInfo, $offer->getPriceInfo());
+        $this->assertNull($updatedOffer->getPriceInfo());
     }
 
     /**
