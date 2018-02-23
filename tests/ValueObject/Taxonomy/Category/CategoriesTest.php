@@ -9,17 +9,6 @@ class CategoriesTest extends TestCase
     /**
      * @test
      */
-    public function it_should_never_be_empty()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Array should not be empty.');
-
-        new Categories();
-    }
-
-    /**
-     * @test
-     */
     public function it_should_filter_duplicate_terms()
     {
         $terms = [

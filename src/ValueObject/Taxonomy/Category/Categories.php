@@ -15,7 +15,6 @@ use TwoDotsTwice\ValueObject\Collection\Collection;
  */
 class Categories extends Collection
 {
-    use IsNotEmpty;
     use FiltersDuplicates;
 
     /**
@@ -23,7 +22,6 @@ class Categories extends Collection
      */
     public function __construct(Category ...$categories)
     {
-        $this->guardNotEmpty($categories);
         $filtered = $this->filterDuplicateValues($categories);
         parent::__construct(...$filtered);
     }

@@ -36,6 +36,15 @@ class ImmutableEvent extends ImmutableOffer implements Event
         Calendar $calendar,
         Categories $categories
     ) {
+        // Do not enforce this on Categories class itself because it can cause
+        // problems with other models, eg. Place (because dummy locations have
+        // no categories).
+        // We can not enforce the exact requirement that "eventtype" is required
+        // because categories can be POSTed using only their id.
+        if ($categories->isEmpty()) {
+            throw new \InvalidArgumentException('Categories should not be empty (eventtype required).');
+        }
+
         parent::__construct($id, $mainLanguage, $title, $categories);
         $this->calendar = $calendar;
         $this->audience = AudienceType::everyone();

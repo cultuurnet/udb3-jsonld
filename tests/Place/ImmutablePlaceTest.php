@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Model\Event;
 use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\Geocoding\Coordinate\Latitude;
 use CultuurNet\Geocoding\Coordinate\Longitude;
+use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
@@ -14,6 +15,8 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
@@ -21,11 +24,13 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -33,6 +38,24 @@ use PHPUnit\Framework\TestCase;
 
 class ImmutablePlaceTest extends TestCase
 {
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_the_list_of_categories_is_empty_and_it_is_not_a_dummy_location()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Categories should not be empty (eventtype required).');
+
+        new ImmutablePlace(
+            $this->getId(),
+            $this->getMainLanguage(),
+            $this->getTitle(),
+            $this->getCalendar(),
+            $this->getAddress(),
+            new Categories()
+        );
+    }
+
     /**
      * @test
      */
@@ -166,6 +189,44 @@ class ImmutablePlaceTest extends TestCase
 
         $this->assertEquals($coordinates, $place->getGeoCoordinates());
         $this->assertNull($updatedPlace->getGeoCoordinates());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_be_a_dummy_location_by_default()
+    {
+        $this->assertFalse($this->getPlace()->isDummyLocation());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_be_able_to_create_dummy_locations()
+    {
+        $dummy = ImmutablePlace::createDummyLocation(
+            $this->getMainLanguage(),
+            $this->getTitle(),
+            $this->getAddress()
+        );
+
+        $this->assertInstanceOf(Place::class, $dummy);
+        $this->assertTrue($dummy->isDummyLocation());
+
+        $this->assertEquals(ImmutablePlace::getDummyLocationId(), $dummy->getId());
+        $this->assertEquals($this->getMainLanguage(), $dummy->getMainLanguage());
+        $this->assertEquals($this->getTitle(), $dummy->getTitle());
+        $this->assertNull($dummy->getDescription());
+        $this->assertEquals(new Categories(), $dummy->getTerms());
+        $this->assertEquals(new Labels(), $dummy->getLabels());
+        $this->assertNull($dummy->getAgeRange());
+        $this->assertNull($dummy->getPriceInfo());
+        $this->assertEquals(new BookingInfo(), $dummy->getBookingInfo());
+        $this->assertEquals(new ContactPoint(), $dummy->getContactPoint());
+        $this->assertEquals(WorkflowStatus::draft(), $dummy->getWorkflowStatus());
+        $this->assertEquals(new PermanentCalendar(new OpeningHours()), $dummy->getCalendar());
+        $this->assertEquals($this->getAddress(), $dummy->getAddress());
+        $this->assertNull($dummy->getGeoCoordinates());
     }
 
     /**

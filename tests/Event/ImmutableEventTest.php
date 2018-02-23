@@ -25,6 +25,23 @@ class ImmutableEventTest extends TestCase
     /**
      * @test
      */
+    public function it_should_throw_an_exception_if_the_list_of_categories_is_empty()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Categories should not be empty (eventtype required).');
+
+        new ImmutableEvent(
+            $this->getId(),
+            $this->getMainLanguage(),
+            $this->getTitle(),
+            $this->getCalendar(),
+            new Categories()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_should_return_the_injected_calendar()
     {
         $calendar = $this->getCalendar();

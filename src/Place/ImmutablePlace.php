@@ -6,6 +6,8 @@ use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
@@ -45,6 +47,15 @@ class ImmutablePlace extends ImmutableOffer implements Place
         TranslatedAddress $address,
         Categories $categories
     ) {
+        // Dummy locations generally do not have any categories, so only enforce
+        // the requirement of at least one category for non-nil uuids.
+        // Normal places require at least one "eventtype" (sic) category.
+        // We can not enforce this particular requirement because categories can
+        // be POSTed using only their id.
+        if ($categories->isEmpty() && !$id->sameAs(self::getDummyLocationId())) {
+            throw new \InvalidArgumentException('Categories should not be empty (eventtype required).');
+        }
+
         parent::__construct($id, $mainLanguage, $title, $categories);
         $this->calendar = $calendar;
         $this->address = $address;
@@ -115,5 +126,44 @@ class ImmutablePlace extends ImmutableOffer implements Place
         $c = clone $this;
         $c->coordinates = null;
         return $c;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDummyLocation()
+    {
+        return $this->getId()->sameAs(self::getDummyLocationId());
+    }
+
+    /**
+     * @param Language $mainLanguage
+     * @param TranslatedTitle $title
+     * @param TranslatedAddress $address
+     * @return ImmutablePlace
+     */
+    public static function createDummyLocation(
+        Language $mainLanguage,
+        TranslatedTitle $title,
+        TranslatedAddress $address
+    ) {
+        $place = new static(
+            self::getDummyLocationId(),
+            $mainLanguage,
+            $title,
+            new PermanentCalendar(new OpeningHours()),
+            $address,
+            new Categories()
+        );
+
+        return $place;
+    }
+
+    /**
+     * @return UUID
+     */
+    public static function getDummyLocationId()
+    {
+        return new UUID('00000000-0000-0000-0000-000000000000');
     }
 }
