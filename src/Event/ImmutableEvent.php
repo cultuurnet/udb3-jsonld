@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Model\Event;
 
 use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
+use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -18,6 +19,11 @@ class ImmutableEvent extends ImmutableOffer implements Event
     private $calendar;
 
     /**
+     * @var PlaceReference
+     */
+    private $placeReference;
+
+    /**
      * @var AudienceType
      */
     private $audience;
@@ -27,6 +33,7 @@ class ImmutableEvent extends ImmutableOffer implements Event
      * @param Language $mainLanguage
      * @param TranslatedTitle $title
      * @param Calendar $calendar
+     * @param PlaceReference $placeReference
      * @param Categories $categories
      */
     public function __construct(
@@ -34,6 +41,7 @@ class ImmutableEvent extends ImmutableOffer implements Event
         Language $mainLanguage,
         TranslatedTitle $title,
         Calendar $calendar,
+        PlaceReference $placeReference,
         Categories $categories
     ) {
         // Do not enforce this on Categories class itself because it can cause
@@ -47,6 +55,7 @@ class ImmutableEvent extends ImmutableOffer implements Event
 
         parent::__construct($id, $mainLanguage, $title, $categories);
         $this->calendar = $calendar;
+        $this->placeReference = $placeReference;
         $this->audience = AudienceType::everyone();
     }
 
@@ -66,6 +75,25 @@ class ImmutableEvent extends ImmutableOffer implements Event
     {
         $c = clone $this;
         $c->calendar = $calendar;
+        return $c;
+    }
+
+    /**
+     * @return PlaceReference
+     */
+    public function getPlaceReference()
+    {
+        return $this->placeReference;
+    }
+
+    /**
+     * @param PlaceReference $placeReference
+     * @return ImmutableEvent
+     */
+    public function withPlaceReference(PlaceReference $placeReference)
+    {
+        $c = clone $this;
+        $c->placeReference = $placeReference;
         return $c;
     }
 

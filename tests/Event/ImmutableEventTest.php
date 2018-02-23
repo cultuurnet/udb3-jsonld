@@ -2,13 +2,18 @@
 
 namespace CultuurNet\UDB3\Model\Event;
 
+use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarBuilder;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleDateRangeCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -35,6 +40,7 @@ class ImmutableEventTest extends TestCase
             $this->getMainLanguage(),
             $this->getTitle(),
             $this->getCalendar(),
+            $this->getPlaceReference(),
             new Categories()
         );
     }
@@ -64,6 +70,35 @@ class ImmutableEventTest extends TestCase
         $this->assertNotEquals($calendar, $updatedCalendar);
         $this->assertEquals($calendar, $event->getCalendar());
         $this->assertEquals($updatedCalendar, $updatedEvent->getCalendar());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_the_injected_place_reference()
+    {
+        $placeReference = $this->getPlaceReference();
+        $event = $this->getEvent();
+
+        $this->assertEquals($placeReference, $event->getPlaceReference());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_with_an_updated_place_reference()
+    {
+        $placeReference = $this->getPlaceReference();
+
+        $updatedPlaceId = new UUID('23e965f1-f348-4915-9003-12162aa0e982');
+        $updatedPlaceReference = PlaceReference::createWithPlaceId($updatedPlaceId);
+
+        $event = $this->getEvent();
+        $updatedEvent = $event->withPlaceReference($updatedPlaceReference);
+
+        $this->assertNotEquals($event, $updatedEvent);
+        $this->assertEquals($placeReference, $event->getPlaceReference());
+        $this->assertEquals($updatedPlaceReference, $updatedEvent->getPlaceReference());
     }
 
     /**
@@ -131,6 +166,35 @@ class ImmutableEventTest extends TestCase
     }
 
     /**
+     * @return PlaceReference
+     */
+    private function getPlaceReference()
+    {
+        $title = new TranslatedTitle(
+            $this->getMainLanguage(),
+            new Title('N/A')
+        );
+
+        $address = new TranslatedAddress(
+            $this->getMainLanguage(),
+            new Address(
+                new Street('Henegouwenkaai 41-43'),
+                new PostalCode('1080'),
+                new Locality('Brussel'),
+                new CountryCode('BE')
+            )
+        );
+
+        $dummyLocation = ImmutablePlace::createDummyLocation(
+            $this->getMainLanguage(),
+            $title,
+            $address
+        );
+
+        return PlaceReference::createWithEmbeddedPlace($dummyLocation);
+    }
+
+    /**
      * @return Categories
      */
     private function getTerms()
@@ -154,6 +218,7 @@ class ImmutableEventTest extends TestCase
             $this->getMainLanguage(),
             $this->getTitle(),
             $this->getCalendar(),
+            $this->getPlaceReference(),
             $this->getTerms()
         );
     }
