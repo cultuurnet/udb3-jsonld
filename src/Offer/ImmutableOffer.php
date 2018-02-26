@@ -3,6 +3,8 @@
 namespace CultuurNet\UDB3\Model\Offer;
 
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -35,6 +37,11 @@ abstract class ImmutableOffer implements Offer
      * @var TranslatedDescription|null
      */
     private $description;
+
+    /**
+     * @var Calendar
+     */
+    private $calendar;
 
     /**
      * @var Categories
@@ -75,17 +82,22 @@ abstract class ImmutableOffer implements Offer
      * @param UUID $id
      * @param Language $mainLanguage
      * @param TranslatedTitle $title
+     * @param Calendar $calendar
      * @param Categories $categories
      */
     public function __construct(
         UUID $id,
         Language $mainLanguage,
         TranslatedTitle $title,
+        Calendar $calendar,
         Categories $categories
     ) {
+        $this->guardCalendarType($calendar);
+
         $this->id = $id;
         $this->mainLanguage = $mainLanguage;
         $this->title = $title;
+        $this->calendar = $calendar;
         $this->categories = $categories;
 
         $this->labels = new Labels();
@@ -155,6 +167,27 @@ abstract class ImmutableOffer implements Offer
     {
         $c = clone $this;
         $c->description = null;
+        return $c;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCalendar()
+    {
+        return $this->calendar;
+    }
+
+    /**
+     * @param Calendar $calendar
+     * @return static
+     */
+    public function withCalendar(Calendar $calendar)
+    {
+        $this->guardCalendarType($calendar);
+
+        $c = clone $this;
+        $c->calendar = $calendar;
         return $c;
     }
 
@@ -310,4 +343,10 @@ abstract class ImmutableOffer implements Offer
         $c->workflowStatus = $workflowStatus;
         return $c;
     }
+
+    /**
+     * @param Calendar $calendar
+     * @throws \InvalidArgumentException
+     */
+    abstract protected function guardCalendarType(Calendar $calendar);
 }

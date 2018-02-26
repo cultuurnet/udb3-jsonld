@@ -6,6 +6,7 @@ use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\Geocoding\Coordinate\Latitude;
 use CultuurNet\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
@@ -14,6 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleDateRangeCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
@@ -58,59 +60,26 @@ class ImmutablePlaceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_injected_calendar()
+    public function it_should_throw_an_exception_if_an_unsupported_calendar_is_injected()
     {
-        $calendar = $this->getCalendar();
-        $place = $this->getPlace();
-
-        $this->assertEquals($calendar, $place->getCalendar());
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_a_copy_with_an_updated_calendar()
-    {
-        $calendar = $this->getCalendar();
-        $place = $this->getPlace();
-
-        $days = new Days(
-            Day::monday(),
-            Day::tuesday(),
-            Day::wednesday()
-        );
-
-        $openingHours = new OpeningHours(
-            new OpeningHour(
-                $days,
-                new Time(
-                    new Hour(9),
-                    new Minute(0)
-                ),
-                $closingTime = new Time(
-                    new Hour(12),
-                    new Minute(0)
-                )
-            ),
-            new OpeningHour(
-                $days,
-                new Time(
-                    new Hour(13),
-                    new Minute(0)
-                ),
-                $closingTime = new Time(
-                    new Hour(17),
-                    new Minute(0)
-                )
+        $calendar = new SingleDateRangeCalendar(
+            new DateRange(
+                \DateTimeImmutable::createFromFormat('d/m/Y', '10/01/2018'),
+                \DateTimeImmutable::createFromFormat('d/m/Y', '11/01/2018')
             )
         );
 
-        $updatedCalendar = new PermanentCalendar($openingHours);
-        $updatedEvent = $place->withCalendar($updatedCalendar);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Given calendar should have opening hours.');
 
-        $this->assertNotEquals($calendar, $updatedCalendar);
-        $this->assertEquals($calendar, $place->getCalendar());
-        $this->assertEquals($updatedCalendar, $updatedEvent->getCalendar());
+        new ImmutablePlace(
+            $this->getId(),
+            $this->getMainLanguage(),
+            $this->getTitle(),
+            $calendar,
+            $this->getAddress(),
+            $this->getTerms()
+        );
     }
 
     /**

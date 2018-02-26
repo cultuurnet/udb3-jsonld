@@ -51,33 +51,6 @@ class ImmutableEventTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_injected_calendar()
-    {
-        $calendar = $this->getCalendar();
-        $event = $this->getEvent();
-
-        $this->assertEquals($calendar, $event->getCalendar());
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_a_copy_with_an_updated_calendar()
-    {
-        $calendar = $this->getCalendar();
-        $event = $this->getEvent();
-
-        $updatedCalendar = new PermanentCalendar(new OpeningHours());
-        $updatedEvent = $event->withCalendar($updatedCalendar);
-
-        $this->assertNotEquals($calendar, $updatedCalendar);
-        $this->assertEquals($calendar, $event->getCalendar());
-        $this->assertEquals($updatedCalendar, $updatedEvent->getCalendar());
-    }
-
-    /**
-     * @test
-     */
     public function it_should_return_the_injected_place_reference()
     {
         $placeReference = $this->getPlaceReference();

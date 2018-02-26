@@ -4,6 +4,11 @@ namespace CultuurNet\UDB3\Model\Offer;
 
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleDateRangeCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
@@ -66,6 +71,33 @@ class ImmutableOfferTest extends TestCase
         $this->assertNotEquals($updatedOffer, $offer);
         $this->assertEquals($originalTitle, $offer->getTitle());
         $this->assertEquals($updatedTitle, $updatedOffer->getTitle());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_the_injected_calendar()
+    {
+        $calendar = $this->getCalendar();
+        $offer = $this->getOffer();
+
+        $this->assertEquals($calendar, $offer->getCalendar());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_with_an_updated_calendar()
+    {
+        $calendar = $this->getCalendar();
+        $offer = $this->getOffer();
+
+        $updatedCalendar = new PermanentCalendar(new OpeningHours());
+        $updatedEvent = $offer->withCalendar($updatedCalendar);
+
+        $this->assertNotEquals($calendar, $updatedCalendar);
+        $this->assertEquals($calendar, $offer->getCalendar());
+        $this->assertEquals($updatedCalendar, $updatedEvent->getCalendar());
     }
 
     /**
@@ -388,6 +420,19 @@ class ImmutableOfferTest extends TestCase
     }
 
     /**
+     * @return Calendar
+     */
+    private function getCalendar()
+    {
+        return new SingleDateRangeCalendar(
+            new DateRange(
+                \DateTimeImmutable::createFromFormat('d/m/Y', '10/01/2018'),
+                \DateTimeImmutable::createFromFormat('d/m/Y', '11/01/2018')
+            )
+        );
+    }
+
+    /**
      * @return Categories
      */
     private function getTerms()
@@ -410,6 +455,7 @@ class ImmutableOfferTest extends TestCase
             $this->getId(),
             $this->getMainLanguage(),
             $this->getTitle(),
+            $this->getCalendar(),
             $this->getTerms()
         );
     }

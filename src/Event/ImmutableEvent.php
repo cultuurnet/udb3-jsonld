@@ -15,11 +15,6 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 class ImmutableEvent extends ImmutableOffer implements Event
 {
     /**
-     * @var Calendar
-     */
-    private $calendar;
-
-    /**
      * @var PlaceReference
      */
     private $placeReference;
@@ -59,29 +54,9 @@ class ImmutableEvent extends ImmutableOffer implements Event
             throw new \InvalidArgumentException('Categories should not be empty (eventtype required).');
         }
 
-        parent::__construct($id, $mainLanguage, $title, $categories);
-        $this->calendar = $calendar;
+        parent::__construct($id, $mainLanguage, $title, $calendar, $categories);
         $this->placeReference = $placeReference;
         $this->audience = AudienceType::everyone();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getCalendar()
-    {
-        return $this->calendar;
-    }
-
-    /**
-     * @param Calendar $calendar
-     * @return ImmutableEvent
-     */
-    public function withCalendar(Calendar $calendar)
-    {
-        $c = clone $this;
-        $c->calendar = $calendar;
-        return $c;
     }
 
     /**
@@ -149,5 +124,14 @@ class ImmutableEvent extends ImmutableOffer implements Event
         $c = clone $this;
         $c->audience = $audience;
         return $c;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function guardCalendarType(Calendar $calendar)
+    {
+        // Any calendar is fine for events.
+        return;
     }
 }

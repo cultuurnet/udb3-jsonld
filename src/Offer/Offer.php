@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Model\Offer;
 
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -35,6 +36,11 @@ interface Offer
      * @return TranslatedDescription|null
      */
     public function getDescription();
+
+    /**
+     * @return Calendar
+     */
+    public function getCalendar();
 
     /**
      * @return Categories

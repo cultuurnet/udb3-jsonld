@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Model\Place;
 
 use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
@@ -15,11 +16,6 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
 class ImmutablePlace extends ImmutableOffer implements Place
 {
-    /**
-     * @var CalendarWithOpeningHours
-     */
-    private $calendar;
-
     /**
      * @var TranslatedAddress
      */
@@ -34,7 +30,7 @@ class ImmutablePlace extends ImmutableOffer implements Place
      * @param UUID $id
      * @param Language $mainLanguage
      * @param TranslatedTitle $title
-     * @param CalendarWithOpeningHours $calendar
+     * @param Calendar $calendar
      * @param TranslatedAddress $address
      * @param Categories $categories
      */
@@ -42,7 +38,7 @@ class ImmutablePlace extends ImmutableOffer implements Place
         UUID $id,
         Language $mainLanguage,
         TranslatedTitle $title,
-        CalendarWithOpeningHours $calendar,
+        Calendar $calendar,
         TranslatedAddress $address,
         Categories $categories
     ) {
@@ -55,28 +51,8 @@ class ImmutablePlace extends ImmutableOffer implements Place
             throw new \InvalidArgumentException('Categories should not be empty (eventtype required).');
         }
 
-        parent::__construct($id, $mainLanguage, $title, $categories);
-        $this->calendar = $calendar;
+        parent::__construct($id, $mainLanguage, $title, $calendar, $categories);
         $this->address = $address;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getCalendar()
-    {
-        return $this->calendar;
-    }
-
-    /**
-     * @param CalendarWithOpeningHours $calendar
-     * @return ImmutablePlace
-     */
-    public function withCalendar(CalendarWithOpeningHours $calendar)
-    {
-        $c = clone $this;
-        $c->calendar = $calendar;
-        return $c;
     }
 
     /**
@@ -164,5 +140,15 @@ class ImmutablePlace extends ImmutableOffer implements Place
     public static function getDummyLocationId()
     {
         return new UUID('00000000-0000-0000-0000-000000000000');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function guardCalendarType(Calendar $calendar)
+    {
+        if (!($calendar instanceof CalendarWithOpeningHours)) {
+            throw new \InvalidArgumentException('Given calendar should have opening hours.');
+        }
     }
 }
