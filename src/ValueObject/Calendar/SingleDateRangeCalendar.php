@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
-class SingleDateRangeCalendar implements CalendarWithDateRanges
+class SingleDateRangeCalendar implements CalendarWithDateRange
 {
     /**
      * @var DateRange
@@ -44,7 +44,7 @@ class SingleDateRangeCalendar implements CalendarWithDateRanges
     /**
      * @return DateRanges
      */
-    public function getDateRanges()
+    public function getSubEvents()
     {
         return new DateRanges($this->dateRange);
     }

@@ -43,21 +43,6 @@ class PeriodicCalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_an_empty_date_ranges_list()
-    {
-        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
-        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-        $openingHours = new OpeningHours();
-        $calendar = new PeriodicCalendar(new DateRange($startDate, $endDate), $openingHours);
-
-        $expected = new DateRanges();
-
-        $this->assertEquals($expected, $calendar->getDateRanges());
-    }
-
-    /**
-     * @test
-     */
     public function it_should_return_the_injected_opening_hours()
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');

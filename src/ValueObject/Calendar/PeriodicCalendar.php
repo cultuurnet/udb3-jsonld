@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 
-class PeriodicCalendar implements CalendarWithDateRanges, CalendarWithOpeningHours
+class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeningHours
 {
     /**
      * @var DateRange
@@ -50,14 +50,6 @@ class PeriodicCalendar implements CalendarWithDateRanges, CalendarWithOpeningHou
     public function getEndDate()
     {
         return $this->dateRange->getTo();
-    }
-
-    /**
-     * @return DateRanges
-     */
-    public function getDateRanges()
-    {
-        return new DateRanges();
     }
 
     /**

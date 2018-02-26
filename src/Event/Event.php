@@ -7,13 +7,13 @@ use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRanges;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 
 interface Event extends Offer
 {
     /**
-     * @return Calendar|CalendarWithDateRanges|CalendarWithOpeningHours
+     * @return Calendar|CalendarWithDateRange|CalendarWithOpeningHours
      */
     public function getCalendar();
 

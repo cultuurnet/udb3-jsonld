@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
-interface CalendarWithDateRanges extends Calendar
+interface CalendarWithDateRange extends Calendar
 {
     /**
      * @return \DateTimeImmutable
@@ -13,9 +13,4 @@ interface CalendarWithDateRanges extends Calendar
      * @return \DateTimeImmutable
      */
     public function getEndDate();
-
-    /**
-     * @return DateRanges
-     */
-    public function getDateRanges();
 }

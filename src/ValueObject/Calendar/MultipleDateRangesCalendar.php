@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
-class MultipleDateRangesCalendar implements CalendarWithDateRanges
+class MultipleDateRangesCalendar implements CalendarWithDateRange, CalendarWithSubEvents
 {
     /**
      * @var DateRanges
@@ -48,7 +48,7 @@ class MultipleDateRangesCalendar implements CalendarWithDateRanges
     /**
      * @return DateRanges
      */
-    public function getDateRanges()
+    public function getSubEvents()
     {
         return $this->dateRanges;
     }

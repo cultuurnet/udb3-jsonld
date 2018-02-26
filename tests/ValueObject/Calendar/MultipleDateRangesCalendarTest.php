@@ -51,7 +51,7 @@ class MultipleDateRangesCalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_multiple_date_ranges()
+    public function it_should_return_multiple_sub_events()
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
@@ -69,7 +69,7 @@ class MultipleDateRangesCalendarTest extends TestCase
 
         $calendar = new MultipleDateRangesCalendar($dateRanges);
 
-        $this->assertEquals($dateRanges, $calendar->getDateRanges());
+        $this->assertEquals($dateRanges, $calendar->getSubEvents());
     }
 
     /**
