@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Model\ValueObject\Contact;
+namespace CultuurNet\UDB3\Model\ValueObject\Web;
 
 class WebsiteLink
 {

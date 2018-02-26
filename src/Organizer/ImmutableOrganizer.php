@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Model\Organizer;
 
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
-use CultuurNet\UDB3\Model\ValueObject\Contact\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -28,7 +28,7 @@ class ImmutableOrganizer implements Organizer
     private $name;
 
     /**
-     * @var Url
+     * @var \CultuurNet\UDB3\Model\ValueObject\Web\Url
      */
     private $url;
 
@@ -51,7 +51,7 @@ class ImmutableOrganizer implements Organizer
      * @param UUID $id
      * @param Language $mainLanguage
      * @param TranslatedTitle $name
-     * @param Url $url
+     * @param \CultuurNet\UDB3\Model\ValueObject\Web\Url $url
      */
     public function __construct(
         UUID $id,

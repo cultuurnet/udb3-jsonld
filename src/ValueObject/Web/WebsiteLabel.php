@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Model\ValueObject\Contact;
+namespace CultuurNet\UDB3\Model\ValueObject\Web;
 
 use TwoDotsTwice\ValueObject\String\Behaviour\IsNotEmpty;
 use TwoDotsTwice\ValueObject\String\Behaviour\IsString;
