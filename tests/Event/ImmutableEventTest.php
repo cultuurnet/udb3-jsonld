@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\Event;
 
+use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;

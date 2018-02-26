@@ -1,11 +1,10 @@
 <?php
 
-namespace CultuurNet\UDB3\Model\Event;
+namespace CultuurNet\UDB3\Model\Place;
 
 use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\Geocoding\Coordinate\Latitude;
 use CultuurNet\Geocoding\Coordinate\Longitude;
-use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;

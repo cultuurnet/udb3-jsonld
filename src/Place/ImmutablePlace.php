@@ -1,10 +1,9 @@
 <?php
 
-namespace CultuurNet\UDB3\Model\Event;
+namespace CultuurNet\UDB3\Model\Place;
 
 use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
-use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;

@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Model\Place;
 
-use CultuurNet\UDB3\Model\Event\ImmutablePlace;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
