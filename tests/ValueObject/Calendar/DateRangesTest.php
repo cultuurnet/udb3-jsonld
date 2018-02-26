@@ -9,6 +9,17 @@ class DateRangesTest extends TestCase
     /**
      * @test
      */
+    public function it_should_never_be_empty()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Array should not be empty.');
+
+        new DateRanges();
+    }
+
+    /**
+     * @test
+     */
     public function it_should_sort_the_given_date_ranges_and_return_a_start_and_end_date()
     {
         $given = [

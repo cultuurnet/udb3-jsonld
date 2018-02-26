@@ -3,16 +3,19 @@
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use TwoDotsTwice\ValueObject\Collection\Collection;
+use TwoDotsTwice\ValueObject\Collection\Behaviour\IsNotEmpty;
 
 class DateRanges extends Collection
 {
+    use IsNotEmpty;
+
     /**
-     * @var \DateTimeImmutable|null
+     * @var \DateTimeImmutable
      */
     private $startDate;
 
     /**
-     * @var \DateTimeImmutable|null
+     * @var \DateTimeImmutable
      */
     private $endDate;
 
@@ -21,6 +24,8 @@ class DateRanges extends Collection
      */
     public function __construct(DateRange ...$dateRanges)
     {
+        $this->guardNotEmpty($dateRanges);
+
         usort(
             $dateRanges,
             function (DateRange $a, DateRange $b) {
@@ -37,7 +42,7 @@ class DateRanges extends Collection
     }
 
     /**
-     * @return \DateTimeImmutable|null
+     * @return \DateTimeImmutable
      */
     public function getStartDate()
     {
@@ -45,7 +50,7 @@ class DateRanges extends Collection
     }
 
     /**
-     * @return \DateTimeImmutable|null
+     * @return \DateTimeImmutable
      */
     public function getEndDate()
     {
