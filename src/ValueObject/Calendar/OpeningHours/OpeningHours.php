@@ -13,4 +13,12 @@ class OpeningHours extends Collection
     {
         parent::__construct(...$openingHours);
     }
+
+    /**
+     * @return bool
+     */
+    public function isAlwaysOpen()
+    {
+        return $this->isEmpty();
+    }
 }
