@@ -5,31 +5,16 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 class SingleDateRangeCalendar implements CalendarWithDateRanges
 {
     /**
-     * @var \DateTimeImmutable
+     * @var DateRange
      */
-    private $startDate;
+    private $dateRange;
 
     /**
-     * @var \DateTimeImmutable
+     * @param DateRange $dateRange
      */
-    private $endDate;
-
-    /**
-     * @var DateRanges
-     */
-    private $dateRanges;
-
-    /**
-     * @param \DateTimeImmutable $startDate
-     * @param \DateTimeImmutable $endDate
-     */
-    public function __construct(\DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
+    public function __construct(DateRange $dateRange)
     {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-        $this->dateRanges = new DateRanges(
-            new DateRange($startDate, $endDate)
-        );
+        $this->dateRange = $dateRange;
     }
 
     /**
@@ -45,7 +30,7 @@ class SingleDateRangeCalendar implements CalendarWithDateRanges
      */
     public function getStartDate()
     {
-        return $this->startDate;
+        return $this->dateRange->getFrom();
     }
 
     /**
@@ -53,7 +38,7 @@ class SingleDateRangeCalendar implements CalendarWithDateRanges
      */
     public function getEndDate()
     {
-        return $this->endDate;
+        return $this->dateRange->getTo();
     }
 
     /**
@@ -61,6 +46,6 @@ class SingleDateRangeCalendar implements CalendarWithDateRanges
      */
     public function getDateRanges()
     {
-        return $this->dateRanges;
+        return new DateRanges($this->dateRange);
     }
 }

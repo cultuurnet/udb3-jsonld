@@ -21,7 +21,7 @@ class PeriodicCalendarTest extends TestCase
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
         $openingHours = new OpeningHours();
-        $calendar = new PeriodicCalendar($startDate, $endDate, $openingHours);
+        $calendar = new PeriodicCalendar(new DateRange($startDate, $endDate), $openingHours);
 
         $this->assertEquals(CalendarType::periodic(), $calendar->getType());
     }
@@ -34,7 +34,7 @@ class PeriodicCalendarTest extends TestCase
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
         $openingHours = new OpeningHours();
-        $calendar = new PeriodicCalendar($startDate, $endDate, $openingHours);
+        $calendar = new PeriodicCalendar(new DateRange($startDate, $endDate), $openingHours);
 
         $this->assertEquals($startDate, $calendar->getStartDate());
         $this->assertEquals($endDate, $calendar->getEndDate());
@@ -48,7 +48,7 @@ class PeriodicCalendarTest extends TestCase
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
         $openingHours = new OpeningHours();
-        $calendar = new PeriodicCalendar($startDate, $endDate, $openingHours);
+        $calendar = new PeriodicCalendar(new DateRange($startDate, $endDate), $openingHours);
 
         $expected = new DateRanges();
 
@@ -94,7 +94,7 @@ class PeriodicCalendarTest extends TestCase
             )
         );
 
-        $calendar = new PeriodicCalendar($startDate, $endDate, $openingHours);
+        $calendar = new PeriodicCalendar(new DateRange($startDate, $endDate), $openingHours);
 
         $this->assertEquals($openingHours, $calendar->getOpeningHours());
     }

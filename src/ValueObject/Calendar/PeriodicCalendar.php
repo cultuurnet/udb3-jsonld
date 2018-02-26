@@ -7,14 +7,9 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 class PeriodicCalendar implements CalendarWithDateRanges, CalendarWithOpeningHours
 {
     /**
-     * @var \DateTimeImmutable
+     * @var DateRange
      */
-    private $startDate;
-
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $endDate;
+    private $dateRange;
 
     /**
      * @var OpeningHours
@@ -22,17 +17,14 @@ class PeriodicCalendar implements CalendarWithDateRanges, CalendarWithOpeningHou
     private $openingHours;
 
     /**
-     * @param \DateTimeImmutable $startDate
-     * @param \DateTimeImmutable $endDate
+     * @param DateRange $dateRange
      * @param OpeningHours $openingHours
      */
     public function __construct(
-        \DateTimeImmutable $startDate,
-        \DateTimeImmutable $endDate,
+        DateRange $dateRange,
         OpeningHours $openingHours
     ) {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
+        $this->dateRange = $dateRange;
         $this->openingHours = $openingHours;
     }
 
@@ -49,7 +41,7 @@ class PeriodicCalendar implements CalendarWithDateRanges, CalendarWithOpeningHou
      */
     public function getStartDate()
     {
-        return $this->startDate;
+        return $this->dateRange->getFrom();
     }
 
     /**
@@ -57,7 +49,7 @@ class PeriodicCalendar implements CalendarWithDateRanges, CalendarWithOpeningHou
      */
     public function getEndDate()
     {
-        return $this->endDate;
+        return $this->dateRange->getTo();
     }
 
     /**

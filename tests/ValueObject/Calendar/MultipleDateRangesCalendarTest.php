@@ -20,7 +20,7 @@ class MultipleDateRangesCalendarTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Multiple date ranges calendar requires at least 2 date ranges.');
 
-        new MultipleDateRangesCalendar($startDate, $endDate, $dateRanges);
+        new MultipleDateRangesCalendar($dateRanges);
     }
 
     /**
@@ -42,7 +42,7 @@ class MultipleDateRangesCalendarTest extends TestCase
             )
         );
 
-        $calendar = new MultipleDateRangesCalendar($startDate, $endDate, $dateRanges);
+        $calendar = new MultipleDateRangesCalendar($dateRanges);
 
         $this->assertEquals($startDate, $calendar->getStartDate());
         $this->assertEquals($endDate, $calendar->getEndDate());
@@ -67,7 +67,7 @@ class MultipleDateRangesCalendarTest extends TestCase
             )
         );
 
-        $calendar = new MultipleDateRangesCalendar($startDate, $endDate, $dateRanges);
+        $calendar = new MultipleDateRangesCalendar($dateRanges);
 
         $this->assertEquals($dateRanges, $calendar->getDateRanges());
     }
@@ -91,7 +91,7 @@ class MultipleDateRangesCalendarTest extends TestCase
             )
         );
 
-        $calendar = new MultipleDateRangesCalendar($startDate, $endDate, $dateRanges);
+        $calendar = new MultipleDateRangesCalendar($dateRanges);
 
         $this->assertEquals(CalendarType::multiple(), $calendar->getType());
     }

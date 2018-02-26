@@ -5,36 +5,19 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 class MultipleDateRangesCalendar implements CalendarWithDateRanges
 {
     /**
-     * @var \DateTimeImmutable
-     */
-    private $startDate;
-
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $endDate;
-
-    /**
      * @var DateRanges
      */
     private $dateRanges;
 
     /**
-     * @param \DateTimeImmutable $startDate
-     * @param \DateTimeImmutable $endDate
      * @param DateRanges $dateRanges
      */
-    public function __construct(
-        \DateTimeImmutable $startDate,
-        \DateTimeImmutable $endDate,
-        DateRanges $dateRanges
-    ) {
+    public function __construct(DateRanges $dateRanges)
+    {
         if ($dateRanges->getLength() < 2) {
             throw new \InvalidArgumentException('Multiple date ranges calendar requires at least 2 date ranges.');
         }
 
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
         $this->dateRanges = $dateRanges;
     }
 
@@ -51,7 +34,7 @@ class MultipleDateRangesCalendar implements CalendarWithDateRanges
      */
     public function getStartDate()
     {
-        return $this->startDate;
+        return $this->dateRanges->getStartDate();
     }
 
     /**
@@ -59,7 +42,7 @@ class MultipleDateRangesCalendar implements CalendarWithDateRanges
      */
     public function getEndDate()
     {
-        return $this->endDate;
+        return $this->dateRanges->getEndDate();
     }
 
     /**

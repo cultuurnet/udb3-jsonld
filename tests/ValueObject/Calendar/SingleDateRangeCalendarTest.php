@@ -13,7 +13,7 @@ class SingleDateRangeCalendarTest extends TestCase
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-        $calendar = new SingleDateRangeCalendar($startDate, $endDate);
+        $calendar = new SingleDateRangeCalendar(new DateRange($startDate, $endDate));
 
         $this->assertEquals(CalendarType::single(), $calendar->getType());
     }
@@ -25,7 +25,7 @@ class SingleDateRangeCalendarTest extends TestCase
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-        $calendar = new SingleDateRangeCalendar($startDate, $endDate);
+        $calendar = new SingleDateRangeCalendar(new DateRange($startDate, $endDate));
 
         $this->assertEquals($startDate, $calendar->getStartDate());
         $this->assertEquals($endDate, $calendar->getEndDate());
@@ -38,7 +38,7 @@ class SingleDateRangeCalendarTest extends TestCase
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-        $calendar = new SingleDateRangeCalendar($startDate, $endDate);
+        $calendar = new SingleDateRangeCalendar(new DateRange($startDate, $endDate));
 
         $expected = new DateRanges(
             new DateRange($startDate, $endDate)

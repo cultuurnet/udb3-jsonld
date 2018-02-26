@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Model\Event;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleDateRangeCalendar;
@@ -160,8 +161,10 @@ class ImmutableEventTest extends TestCase
     private function getCalendar()
     {
         return new SingleDateRangeCalendar(
-            \DateTimeImmutable::createFromFormat('d/m/Y', '10/01/2018'),
-            \DateTimeImmutable::createFromFormat('d/m/Y', '11/01/2018')
+            new DateRange(
+                \DateTimeImmutable::createFromFormat('d/m/Y', '10/01/2018'),
+                \DateTimeImmutable::createFromFormat('d/m/Y', '11/01/2018')
+            )
         );
     }
 
