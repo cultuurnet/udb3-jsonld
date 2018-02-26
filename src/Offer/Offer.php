@@ -76,4 +76,14 @@ interface Offer
      * @return WorkflowStatus
      */
     public function getWorkflowStatus();
+
+    /**
+     * @return \DateTimeImmutable|null
+     */
+    public function getAvailableFrom();
+
+    /**
+     * @return \DateTimeImmutable
+     */
+    public function getAvailableTo();
 }

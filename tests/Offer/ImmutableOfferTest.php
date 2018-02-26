@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Model\Offer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
@@ -17,6 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\Url;
 use CultuurNet\UDB3\Model\ValueObject\Contact\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Contact\WebsiteLink;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
@@ -390,6 +392,85 @@ class ImmutableOfferTest extends TestCase
         $this->assertNotEquals($offer, $updatedOffer);
         $this->assertEquals($workflowStatus, $offer->getWorkflowStatus());
         $this->assertEquals($updatedWorkflowStatus, $updatedOffer->getWorkflowStatus());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_no_available_from_by_default()
+    {
+        $this->assertNull($this->getOffer()->getAvailableFrom());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_with_an_updated_available_from()
+    {
+        $availableFrom = \DateTimeImmutable::createFromFormat(
+            \DateTime::ATOM,
+            '2018-01-01T00:00:00+00:00'
+        );
+
+        $offer = $this->getOffer();
+        $updatedOffer = $offer->withAvailableFrom($availableFrom);
+
+        $this->assertNotEquals($offer, $updatedOffer);
+        $this->assertNull($offer->getAvailableFrom());
+        $this->assertEquals($availableFrom, $updatedOffer->getAvailableFrom());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_without_available_from()
+    {
+        $availableFrom = \DateTimeImmutable::createFromFormat(
+            \DateTime::ATOM,
+            '2018-01-01T00:00:00+00:00'
+        );
+
+        $offer = $this->getOffer()->withAvailableFrom($availableFrom);
+        $updatedOffer = $offer->withoutAvailableFrom();
+
+        $this->assertNotEquals($offer, $updatedOffer);
+        $this->assertEquals($availableFrom, $offer->getAvailableFrom());
+        $this->assertNull($updatedOffer->getAvailableFrom());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_the_calendar_end_date_as_available_to()
+    {
+        /* @var CalendarWithDateRange $calendar */
+        $offer = $this->getOffer();
+        $calendar = $offer->getCalendar();
+
+        $expected = $calendar->getEndDate();
+        $actual = $offer->getAvailableTo();
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_available_forever_as_available_to()
+    {
+        $calendar = new PermanentCalendar(new OpeningHours());
+        $offer = new MockImmutableOffer(
+            $this->getId(),
+            $this->getMainLanguage(),
+            $this->getTitle(),
+            $calendar,
+            $this->getTerms()
+        );
+
+        $expected = AvailableTo::forever();
+        $actual = $offer->getAvailableTo();
+
+        $this->assertEquals($expected, $actual);
     }
 
     /**

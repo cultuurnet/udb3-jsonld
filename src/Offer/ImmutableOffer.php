@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
@@ -77,6 +78,11 @@ abstract class ImmutableOffer implements Offer
      * @var WorkflowStatus
      */
     private $workflowStatus;
+
+    /**
+     * @var \DateTimeImmutable|null
+     */
+    private $availableFrom;
 
     /**
      * @param UUID $id
@@ -342,6 +348,43 @@ abstract class ImmutableOffer implements Offer
         $c = clone $this;
         $c->workflowStatus = $workflowStatus;
         return $c;
+    }
+
+    /**
+     * @return \DateTimeImmutable|null
+     */
+    public function getAvailableFrom()
+    {
+        return $this->availableFrom;
+    }
+
+    /**
+     * @param \DateTimeImmutable $availableFrom
+     * @return ImmutableOffer
+     */
+    public function withAvailableFrom(\DateTimeImmutable $availableFrom)
+    {
+        $c = clone $this;
+        $c->availableFrom = $availableFrom;
+        return $c;
+    }
+
+    /**
+     * @return ImmutableOffer
+     */
+    public function withoutAvailableFrom()
+    {
+        $c = clone $this;
+        $c->availableFrom = null;
+        return $c;
+    }
+
+    /**
+     * @return \DateTimeImmutable
+     */
+    public function getAvailableTo()
+    {
+        return AvailableTo::createFromCalendar($this->calendar);
     }
 
     /**
