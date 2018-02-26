@@ -13,6 +13,9 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -120,6 +123,32 @@ class ImmutableOrganizerTest extends TestCase
         $this->assertNotEquals($organizer, $updatedOrganizer);
         $this->assertEquals($address, $organizer->getAddress());
         $this->assertNull($updatedOrganizer->getAddress());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_an_empty_list_of_labels_by_default()
+    {
+        $this->assertEquals(new Labels(), $this->getOrganizer()->getLabels());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_with_updated_labels()
+    {
+        $labels = new Labels(
+            new Label(new LabelName('foo'), true),
+            new Label(new LabelName('bar'), false)
+        );
+
+        $organizer = $this->getOrganizer();
+        $updatedOrganizer = $organizer->withLabels($labels);
+
+        $this->assertNotEquals($organizer, $updatedOrganizer);
+        $this->assertEquals(new Labels(), $organizer->getLabels());
+        $this->assertEquals($labels, $updatedOrganizer->getLabels());
     }
 
     /**

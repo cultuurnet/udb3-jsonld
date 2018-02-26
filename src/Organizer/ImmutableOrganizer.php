@@ -6,6 +6,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\Url;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
@@ -37,6 +38,11 @@ class ImmutableOrganizer implements Organizer
     private $address;
 
     /**
+     * @var Labels
+     */
+    private $labels;
+
+    /**
      * @var ContactPoint
      */
     private $contactPoint;
@@ -58,6 +64,7 @@ class ImmutableOrganizer implements Organizer
         $this->name = $name;
         $this->url = $url;
 
+        $this->labels = new Labels();
         $this->contactPoint = new ContactPoint();
     }
 
@@ -142,6 +149,25 @@ class ImmutableOrganizer implements Organizer
     {
         $c = clone $this;
         $c->address = null;
+        return $c;
+    }
+
+    /**
+     * @return Labels
+     */
+    public function getLabels()
+    {
+        return $this->labels;
+    }
+
+    /**
+     * @param Labels $labels
+     * @return ImmutableOrganizer
+     */
+    public function withLabels(Labels $labels)
+    {
+        $c = clone $this;
+        $c->labels = $labels;
         return $c;
     }
 
