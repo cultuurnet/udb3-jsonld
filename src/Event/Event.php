@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Model\Event;
 
 use CultuurNet\UDB3\Model\Offer\Offer;
+use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
@@ -25,4 +26,9 @@ interface Event extends Offer
      * @return PlaceReference
      */
     public function getPlaceReference();
+
+    /**
+     * @return OrganizerReference|null
+     */
+    public function getOrganizerReference();
 }
