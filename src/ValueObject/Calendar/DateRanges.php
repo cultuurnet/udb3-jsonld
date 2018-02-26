@@ -49,6 +49,6 @@ class DateRanges extends Collection
      */
     public function getEndDate()
     {
-       return $this->endDate;
+        return $this->endDate;
     }
 }
