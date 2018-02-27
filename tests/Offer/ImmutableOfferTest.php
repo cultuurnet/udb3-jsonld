@@ -14,6 +14,9 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
@@ -367,6 +370,36 @@ class ImmutableOfferTest extends TestCase
         $this->assertNotEquals($offer, $updatedOffer);
         $this->assertEquals($contactPoint, $offer->getContactPoint());
         $this->assertEquals($updatedContactPoint, $updatedOffer->getContactPoint());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_an_empty_media_object_references_list_by_default()
+    {
+        $this->assertEquals(new MediaObjectReferences(), $this->getOffer()->getMediaObjectReferences());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_with_updated_media_object_references()
+    {
+        $reference = MediaObjectReference::createWithMediaObjectId(
+            new UUID('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4'),
+            new Description('Een afbeelding beschrijving'),
+            new CopyrightHolder('Publiq vzw'),
+            new Language('nl')
+        );
+
+        $references = new MediaObjectReferences($reference);
+
+        $offer = $this->getOffer();
+        $updatedOffer = $offer->withMediaObjectReferences($references);
+
+        $this->assertNotEquals($offer, $updatedOffer);
+        $this->assertEquals(new MediaObjectReferences(), $offer->getMediaObjectReferences());
+        $this->assertEquals($references, $updatedOffer->getMediaObjectReferences());
     }
 
     /**

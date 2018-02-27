@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
@@ -75,6 +76,11 @@ abstract class ImmutableOffer implements Offer
     private $contactPoint;
 
     /**
+     * @var MediaObjectReferences
+     */
+    private $mediaObjectReferences;
+
+    /**
      * @var WorkflowStatus
      */
     private $workflowStatus;
@@ -109,6 +115,7 @@ abstract class ImmutableOffer implements Offer
         $this->labels = new Labels();
         $this->bookingInfo = new BookingInfo();
         $this->contactPoint = new ContactPoint();
+        $this->mediaObjectReferences = new MediaObjectReferences();
         $this->workflowStatus = WorkflowStatus::draft();
     }
 
@@ -328,6 +335,25 @@ abstract class ImmutableOffer implements Offer
     {
         $c = clone $this;
         $c->contactPoint = $contactPoint;
+        return $c;
+    }
+
+    /**
+     * @return MediaObjectReferences
+     */
+    public function getMediaObjectReferences()
+    {
+        return $this->mediaObjectReferences;
+    }
+
+    /**
+     * @param MediaObjectReferences $mediaObjectReferences
+     * @return ImmutableOffer
+     */
+    public function withMediaObjectReferences(MediaObjectReferences $mediaObjectReferences)
+    {
+        $c = clone $this;
+        $c->mediaObjectReferences = $mediaObjectReferences;
         return $c;
     }
 
