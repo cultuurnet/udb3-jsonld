@@ -14,7 +14,7 @@ class AudienceType extends Enum
     /**
      * @return array
      */
-    public function getAllowedValues()
+    public static function getAllowedValues()
     {
         return [
             'everyone',

@@ -15,7 +15,7 @@ class CalendarType extends Enum
     /**
      * @inheritdoc
      */
-    protected function getAllowedValues()
+    public static function getAllowedValues()
     {
         return [
             'single',
