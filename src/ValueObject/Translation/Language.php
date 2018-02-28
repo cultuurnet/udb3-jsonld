@@ -10,12 +10,14 @@ class Language
     use IsString;
     use MatchesRegexPattern;
 
+    const REGEX = '/^[a-z]{2}$/';
+
     /**
      * @param string $code
      */
     public function __construct($code)
     {
-        $this->guardRegexPattern('/^[a-z]{2}$/', $code);
+        $this->guardRegexPattern(self::REGEX, $code);
         $this->setValue($code);
     }
 
