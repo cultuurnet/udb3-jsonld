@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Model\Validation\Offer;
 
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\MultipleDateRangeCalendarValidator;
+use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\OpeningHours\CategoriesValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\PeriodicCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\PermanentCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\SingleDateRangeCalendarValidator;
@@ -20,6 +21,7 @@ abstract class OfferValidator extends Validator
             new Key('@id', $this->getIDValidator(), true),
             new Key('mainLanguage', new LanguageValidator(), true),
             new Key('name', new TranslatedTitleValidator(), true),
+            new Key('terms', new CategoriesValidator(1), true),
         ];
 
         $calendarRules = $this->getCalendarRules();

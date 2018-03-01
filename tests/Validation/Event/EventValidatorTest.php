@@ -29,9 +29,9 @@ class EventValidatorTest extends TestCase
             'Key @id must be present',
             'Key mainLanguage must be present',
             'Key name must be present',
+            'Key terms must be present',
             'Key calendarType must be present',
             'Key location must be present',
-            'Key terms must be present',
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);
