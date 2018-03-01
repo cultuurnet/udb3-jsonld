@@ -11,7 +11,7 @@ use Respect\Validation\Rules\Key;
 use Respect\Validation\Rules\When;
 use Respect\Validation\Validator;
 
-class PermanentDateRangeCalendarValidator extends Validator
+class PermanentCalendarValidator extends Validator
 {
     public function __construct()
     {
