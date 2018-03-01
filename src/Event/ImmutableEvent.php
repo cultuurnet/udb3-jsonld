@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\Model\Event;
 
 use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
-use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
@@ -18,11 +17,6 @@ class ImmutableEvent extends ImmutableOffer implements Event
      * @var PlaceReference
      */
     private $placeReference;
-
-    /**
-     * @var OrganizerReference|null
-     */
-    private $organizerReference;
 
     /**
      * @var AudienceType
@@ -75,35 +69,6 @@ class ImmutableEvent extends ImmutableOffer implements Event
     {
         $c = clone $this;
         $c->placeReference = $placeReference;
-        return $c;
-    }
-
-    /**
-     * @return OrganizerReference|null
-     */
-    public function getOrganizerReference()
-    {
-        return $this->organizerReference;
-    }
-
-    /**
-     * @param OrganizerReference $organizerReference
-     * @return ImmutableEvent
-     */
-    public function withOrganizerReference(OrganizerReference $organizerReference)
-    {
-        $c = clone $this;
-        $c->organizerReference = $organizerReference;
-        return $c;
-    }
-
-    /**
-     * @return ImmutableEvent
-     */
-    public function withoutOrganizerReference()
-    {
-        $c = clone $this;
-        $c->organizerReference = null;
         return $c;
     }
 

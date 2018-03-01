@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\Offer;
 
+use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
@@ -52,6 +53,11 @@ interface Offer
      * @return Labels
      */
     public function getLabels();
+
+    /**
+     * @return OrganizerReference|null
+     */
+    public function getOrganizerReference();
 
     /**
      * @return AgeRange|null

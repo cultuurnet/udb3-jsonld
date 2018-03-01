@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\Offer;
 
+use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
@@ -54,6 +55,11 @@ abstract class ImmutableOffer implements Offer
      * @var Labels
      */
     private $labels;
+
+    /**
+     * @var OrganizerReference|null
+     */
+    private $organizerReference;
 
     /**
      * @var AgeRange|null
@@ -239,6 +245,35 @@ abstract class ImmutableOffer implements Offer
     {
         $c = clone $this;
         $c->labels = $labels;
+        return $c;
+    }
+
+    /**
+     * @return OrganizerReference|null
+     */
+    public function getOrganizerReference()
+    {
+        return $this->organizerReference;
+    }
+
+    /**
+     * @param OrganizerReference $organizerReference
+     * @return static
+     */
+    public function withOrganizerReference(OrganizerReference $organizerReference)
+    {
+        $c = clone $this;
+        $c->organizerReference = $organizerReference;
+        return $c;
+    }
+
+    /**
+     * @return static
+     */
+    public function withoutOrganizerReference()
+    {
+        $c = clone $this;
+        $c->organizerReference = null;
         return $c;
     }
 

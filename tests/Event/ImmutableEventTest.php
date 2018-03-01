@@ -2,14 +2,11 @@
 
 namespace CultuurNet\UDB3\Model\Event;
 
-use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleDateRangeCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
@@ -75,48 +72,6 @@ class ImmutableEventTest extends TestCase
         $this->assertNotEquals($event, $updatedEvent);
         $this->assertEquals($placeReference, $event->getPlaceReference());
         $this->assertEquals($updatedPlaceReference, $updatedEvent->getPlaceReference());
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_no_organizer_reference_by_default()
-    {
-        $this->assertNull($this->getEvent()->getOrganizerReference());
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_a_copy_with_an_updated_organizer_reference()
-    {
-        $reference = OrganizerReference::createWithOrganizerId(
-            new UUID('dd5e196a-4afb-449a-bcce-0120d01263b9')
-        );
-
-        $event = $this->getEvent();
-        $updatedEvent = $event->withOrganizerReference($reference);
-
-        $this->assertNotEquals($event, $updatedEvent);
-        $this->assertNull($event->getOrganizerReference());
-        $this->assertEquals($reference, $updatedEvent->getOrganizerReference());
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_a_copy_without_an_organizer_reference()
-    {
-        $reference = OrganizerReference::createWithOrganizerId(
-            new UUID('dd5e196a-4afb-449a-bcce-0120d01263b9')
-        );
-
-        $event = $this->getEvent()->withOrganizerReference($reference);
-        $updatedEvent = $event->withoutOrganizerReference();
-
-        $this->assertNotEquals($event, $updatedEvent);
-        $this->assertEquals($reference, $event->getOrganizerReference());
-        $this->assertNull($updatedEvent->getOrganizerReference());
     }
 
     /**
