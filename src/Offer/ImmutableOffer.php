@@ -414,6 +414,12 @@ abstract class ImmutableOffer implements Offer
     }
 
     /**
+     * Some offers, eg. place, only allow some specific calendar types.
+     * While they could enforce the calendar type in their constructor,
+     * they can't enforce it via ImmutableOffer::withCalendar() because of the
+     * Liskov substitution principle, so we provide an abstract method that will
+     * be called wherever a calendar is injected.
+     *
      * @param Calendar $calendar
      * @throws \InvalidArgumentException
      */
