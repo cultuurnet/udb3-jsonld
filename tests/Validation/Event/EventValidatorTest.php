@@ -146,7 +146,7 @@ class EventValidatorTest extends TestCase
                 ],
             ],
         ];
-        
+
         $expectedErrors = [
             'name value must not be empty',
         ];
