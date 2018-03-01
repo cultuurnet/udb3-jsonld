@@ -146,9 +146,7 @@ class EventValidatorTest extends TestCase
                 ],
             ],
         ];
-
-        // @todo Is this ok for now? Or should we create an issue for respect\validation to use the
-        // parent name + key here? (Eg. "name.fr must not be empty")
+        
         $expectedErrors = [
             'name value must not be empty',
         ];
