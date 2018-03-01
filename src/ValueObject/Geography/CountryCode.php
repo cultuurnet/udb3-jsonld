@@ -10,12 +10,14 @@ class CountryCode
     use IsString;
     use MatchesRegexPattern;
 
+    const REGEX = '/^[A-Z]{2}$/';
+
     /**
      * @param string $code
      */
     public function __construct($code)
     {
-        $this->guardRegexPattern('/^[A-Z]{2}$/', $code);
+        $this->guardRegexPattern(self::REGEX, $code);
         $this->setValue($code);
     }
 
