@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\Offer;
 
+use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
@@ -219,6 +220,48 @@ class ImmutableOfferTest extends TestCase
         $this->assertNotEquals($offer, $updatedOffer);
         $this->assertEquals($labels, $offer->getLabels());
         $this->assertEquals($updatedLabels, $updatedOffer->getLabels());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_no_organizer_reference_by_default()
+    {
+        $this->assertNull($this->getOffer()->getOrganizerReference());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_with_an_updated_organizer_reference()
+    {
+        $reference = OrganizerReference::createWithOrganizerId(
+            new UUID('dd5e196a-4afb-449a-bcce-0120d01263b9')
+        );
+
+        $offer = $this->getOffer();
+        $updatedOffer = $offer->withOrganizerReference($reference);
+
+        $this->assertNotEquals($offer, $updatedOffer);
+        $this->assertNull($offer->getOrganizerReference());
+        $this->assertEquals($reference, $updatedOffer->getOrganizerReference());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_without_an_organizer_reference()
+    {
+        $reference = OrganizerReference::createWithOrganizerId(
+            new UUID('dd5e196a-4afb-449a-bcce-0120d01263b9')
+        );
+
+        $offer = $this->getOffer()->withOrganizerReference($reference);
+        $updatedOffer = $offer->withoutOrganizerReference();
+
+        $this->assertNotEquals($offer, $updatedOffer);
+        $this->assertEquals($reference, $offer->getOrganizerReference());
+        $this->assertNull($updatedOffer->getOrganizerReference());
     }
 
     /**
