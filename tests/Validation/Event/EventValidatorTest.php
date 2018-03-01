@@ -1203,6 +1203,41 @@ class EventValidatorTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_audienceType_is_set_but_it_has_an_unknown_value()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name'
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ]
+            ],
+            'audience' => [
+                'audienceType' => 'foo',
+            ],
+        ];
+
+        $expectedErrors = [
+            'At least one of these rules must pass for audience.audienceType',
+            'audience.audienceType must be equal to "everyone"',
+            'audience.audienceType must be equal to "members"',
+            'audience.audienceType must be equal to "education"',
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
      * @param mixed $data
      * @param array $expectedMessages
      */

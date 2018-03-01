@@ -4,8 +4,10 @@ namespace CultuurNet\UDB3\Model\Validation\Event;
 
 use CultuurNet\UDB3\Model\Place\PlaceReferenceValidator;
 use CultuurNet\UDB3\Model\Validation\Offer\OfferValidator;
+use CultuurNet\UDB3\Model\Validation\ValueObject\Audience\AudienceTypeValidator;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use Respect\Validation\Rules\Key;
+use Respect\Validation\Rules\KeyNested;
 
 class EventValidator extends OfferValidator
 {
@@ -13,6 +15,7 @@ class EventValidator extends OfferValidator
     {
         $rules = [
             new Key('location', new PlaceReferenceValidator(), true),
+            new KeyNested('audience.audienceType', new AudienceTypeValidator(), false),
         ];
 
         parent::__construct($rules);
