@@ -1641,6 +1641,68 @@ class EventValidatorTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_organizer_id_is_in_an_invalid_format()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'organizer' => [
+                '@id' => 'https://io.uitdatabank.be/e78befcb-d337-4646-a721-407f69f0ce22',
+            ],
+        ];
+
+        // @codingStandardsIgnoreStart
+        $expectedErrors = [
+            'organizer @id must validate against "/\\\/organizer[s]?\\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})[\\\/]?/"'
+        ];
+        // @codingStandardsIgnoreEnd
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_if_organizer_id_is_in_a_valid_format()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'organizer' => [
+                '@id' => 'https://io.uitdatabank.be/organizers/e78befcb-d337-4646-a721-407f69f0ce22',
+            ],
+        ];
+
+        $this->assertTrue($this->validator->validate($event));
+    }
+
+    /**
      * @param mixed $data
      * @param array $expectedMessages
      */
