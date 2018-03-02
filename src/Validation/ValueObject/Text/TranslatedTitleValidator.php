@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\Validation\ValueObject\Text;
 
+use CultuurNet\UDB3\Model\Validation\ValueObject\NotEmptyStringValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Translation\LanguageValidator;
 use Respect\Validation\Rules\ArrayType;
 use Respect\Validation\Rules\Each;
@@ -17,7 +18,7 @@ class TranslatedTitleValidator extends Validator
             new Each(
                 // This is a quick fix to prevent '"" must not be empty" messages.
                 // @see https://github.com/Respect/Validation/issues/924
-                (new TitleValidator())->setName('name value'),
+                (new NotEmptyStringValidator())->setName('name value'),
                 new LanguageValidator()
             ),
             new Length(1, null, true),
