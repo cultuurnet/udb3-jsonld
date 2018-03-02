@@ -1703,6 +1703,99 @@ class EventValidatorTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_typicalAgeRange_is_not_a_string()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'typicalAgeRange' => [
+                'from' => 8,
+                'to' => 12,
+            ]
+        ];
+
+        // @codingStandardsIgnoreStart
+        $expectedErrors = [
+            'typicalAgeRange must be a string',
+        ];
+        // @codingStandardsIgnoreEnd
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_typicalAgeRange_is_not_formatted_correctly()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'typicalAgeRange' => '8 TO 12',
+        ];
+
+        // @codingStandardsIgnoreStart
+        $expectedErrors = [
+            '"8 TO 12" must validate against "/\\\A[\\\d]*-[\\\d]*\\\z/"',
+        ];
+        // @codingStandardsIgnoreEnd
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_if_typicalAgeRange_is_correctly_formatted()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'typicalAgeRange' => '8-12',
+        ];
+
+        $this->assertTrue($this->validator->validate($event));
+    }
+
+    /**
      * @param mixed $data
      * @param array $expectedMessages
      */

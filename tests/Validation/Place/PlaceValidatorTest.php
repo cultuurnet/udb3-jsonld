@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Model\Validation\Place;
 
 use PHPUnit\Framework\TestCase;
+use Respect\Validation\Exceptions\AllOfException;
 use Respect\Validation\Exceptions\NestedValidationException;
 use Respect\Validation\Validator;
 
@@ -1598,6 +1599,123 @@ class PlaceValidatorTest extends TestCase
             'organizer' => [
                 '@id' => 'https://io.uitdatabank.be/organizers/e78befcb-d337-4646-a721-407f69f0ce22',
             ],
+        ];
+
+        $this->assertTrue($this->validator->validate($place));
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_typicalAgeRange_is_not_a_string()
+    {
+        $place = [
+            '@id' => 'http://io.uitdatabank.be/place/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'typicalAgeRange' => [
+                'from' => 8,
+                'to' => 12,
+            ]
+        ];
+
+        // @codingStandardsIgnoreStart
+        $expectedErrors = [
+            'typicalAgeRange must be a string',
+        ];
+        // @codingStandardsIgnoreEnd
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_typicalAgeRange_is_not_formatted_correctly()
+    {
+        $place = [
+            '@id' => 'http://io.uitdatabank.be/place/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'typicalAgeRange' => '8 TO 12',
+        ];
+
+        // @codingStandardsIgnoreStart
+        $expectedErrors = [
+            '"8 TO 12" must validate against "/\\\A[\\\d]*-[\\\d]*\\\z/"',
+        ];
+        // @codingStandardsIgnoreEnd
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_if_typicalAgeRange_is_correctly_formatted()
+    {
+        $place = [
+            '@id' => 'http://io.uitdatabank.be/place/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'typicalAgeRange' => '8-12',
         ];
 
         $this->assertTrue($this->validator->validate($place));

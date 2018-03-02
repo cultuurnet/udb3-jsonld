@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Model\Validation\Offer;
 
 use CultuurNet\UDB3\Model\Organizer\OrganizerReferenceValidator;
+use CultuurNet\UDB3\Model\Validation\ValueObject\Audience\AgeRangeValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\MultipleDateRangeCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\OpeningHours\CategoriesValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\PeriodicCalendarValidator;
@@ -33,6 +34,7 @@ abstract class OfferValidator extends Validator
             new Key('labels', new LabelsValidator(), false),
             new Key('hiddenLabels', new LabelsValidator(), false),
             new Key('organizer', new OrganizerReferenceValidator(), false),
+            new Key('typicalAgeRange', new AgeRangeValidator(), false),
         ];
 
         $allRules = array_merge(
