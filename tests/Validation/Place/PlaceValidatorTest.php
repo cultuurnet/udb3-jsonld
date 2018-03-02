@@ -1722,6 +1722,83 @@ class PlaceValidatorTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_workflowStatus_is_an_unknown_value()
+    {
+        $event = [
+            '@id' => 'http://io.uitdatabank.be/place/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'workflowStatus' => 'foo',
+        ];
+
+        $expectedErrors = [
+            'At least one of these rules must pass for workflowStatus',
+            'workflowStatus must be equal to "readyforvalidation"',
+            'workflowStatus must be equal to "approved"',
+            'workflowStatus must be equal to "rejected"',
+            'workflowStatus must be equal to "draft"',
+            'workflowStatus must be equal to "deleted"',
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_if_workflowStatus_has_a_valid_value()
+    {
+        $event = [
+            '@id' => 'http://io.uitdatabank.be/place/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'workflowStatus' => 'approved',
+        ];
+
+        $this->assertTrue($this->validator->validate($event));
+    }
+
+    /**
      * @param mixed $data
      * @param array $expectedMessages
      */
