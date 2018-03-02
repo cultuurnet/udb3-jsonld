@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\PeriodicCalendarValida
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\PermanentCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\SingleDateRangeCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\ConfigurableEnumValidator;
-use CultuurNet\UDB3\Model\Validation\ValueObject\NotEmptyStringValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Taxonomy\Label\LabelsValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Text\TranslatedStringValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Translation\LanguageValidator;
