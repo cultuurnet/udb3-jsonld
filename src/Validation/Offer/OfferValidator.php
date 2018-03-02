@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Model\Validation\ValueObject\Moderation\WorkflowStatusValida
 use CultuurNet\UDB3\Model\Validation\ValueObject\Taxonomy\Label\LabelsValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Text\TranslatedStringValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Translation\LanguageValidator;
+use Respect\Validation\Rules\Date;
 use Respect\Validation\Rules\Key;
 use Respect\Validation\Validator;
 
@@ -37,6 +38,7 @@ abstract class OfferValidator extends Validator
             new Key('organizer', new OrganizerReferenceValidator(), false),
             new Key('typicalAgeRange', new AgeRangeValidator(), false),
             new Key('workflowStatus', new WorkflowStatusValidator(), false),
+            new Key('availableFrom', new Date(\DATE_ATOM), false),
         ];
 
         $allRules = array_merge(
