@@ -29,6 +29,7 @@ abstract class OfferValidator extends Validator
         $calendarRules = $this->getCalendarRules();
 
         $optionalRules = [
+            new Key('description', new TranslatedStringValidator('description'), false),
             new Key('labels', new LabelsValidator(), false),
             new Key('hiddenLabels', new LabelsValidator(), false),
         ];
