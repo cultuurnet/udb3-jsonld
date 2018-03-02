@@ -21,6 +21,39 @@ class PlaceValidatorTest extends TestCase
     /**
      * @test
      */
+    public function it_should_pass_all_required_properties_are_present_in_a_valid_format()
+    {
+        $place = [
+            '@id' => 'http://io.uitdatabank.be/place/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+        ];
+
+        $this->assertTrue($this->validator->validate($place));
+    }
+
+    /**
+     * @test
+     */
     public function it_should_throw_an_exception_if_a_required_property_is_missing()
     {
         $place = [];

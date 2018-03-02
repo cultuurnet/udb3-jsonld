@@ -21,6 +21,31 @@ class EventValidatorTest extends TestCase
     /**
      * @test
      */
+    public function it_should_pass_all_required_properties_are_present_in_a_valid_format()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name'
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ]
+            ],
+        ];
+
+        $this->assertTrue($this->validator->validate($event));
+    }
+
+    /**
+     * @test
+     */
     public function it_should_throw_an_exception_if_a_required_property_is_missing()
     {
         $event = [];
