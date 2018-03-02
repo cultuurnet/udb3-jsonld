@@ -1263,6 +1263,34 @@ class EventValidatorTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_should_pass_if_audienceType_is_set_to_a_known_value()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name'
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ]
+            ],
+            'audience' => [
+                'audienceType' => 'everyone',
+            ],
+        ];
+
+        $this->assertTrue($this->validator->validate($event));
+    }
+
+    /**
      * @param mixed $data
      * @param array $expectedMessages
      */
