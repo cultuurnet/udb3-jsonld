@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\PeriodicCalendarValida
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\PermanentCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\SingleDateRangeCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\ConfigurableEnumValidator;
+use CultuurNet\UDB3\Model\Validation\ValueObject\Taxonomy\Label\LabelsValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Text\TranslatedTitleValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Translation\LanguageValidator;
 use Respect\Validation\Rules\Key;
@@ -17,7 +18,7 @@ abstract class OfferValidator extends Validator
 {
     public function __construct($rules)
     {
-        $offerRules = [
+        $mandatoryRules = [
             new Key('@id', $this->getIDValidator(), true),
             new Key('mainLanguage', new LanguageValidator(), true),
             new Key('name', new TranslatedTitleValidator(), true),
@@ -26,10 +27,16 @@ abstract class OfferValidator extends Validator
 
         $calendarRules = $this->getCalendarRules();
 
+        $optionalRules = [
+            new Key('labels', new LabelsValidator(), false),
+            new Key('hiddenLabels', new LabelsValidator(), false),
+        ];
+
         $allRules = array_merge(
-            $offerRules,
+            $mandatoryRules,
             $calendarRules,
-            $rules
+            $rules,
+            $optionalRules
         );
 
         parent::__construct($allRules);

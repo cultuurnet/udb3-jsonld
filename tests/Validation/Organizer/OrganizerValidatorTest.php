@@ -200,6 +200,140 @@ class OrganizerValidatorTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_labels_is_set_but_not_an_array()
+    {
+        $organizer = [
+            '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Publiq vzw',
+            ],
+            'url' => 'https://www.publiq.be',
+            'labels' => 'foo,bar',
+        ];
+
+        $expectedErrors = [
+            'labels must be of the type array',
+        ];
+
+        $this->assertValidationErrors($organizer, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_labels_is_set_but_contains_something_different_than_a_string()
+    {
+        $organizer = [
+            '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Publiq vzw',
+            ],
+            'url' => 'https://www.publiq.be',
+            'labels' => [
+                ['name' => 'foo', 'visible' => true],
+            ],
+        ];
+
+        $expectedErrors = [
+            'each label must be a string',
+        ];
+
+        $this->assertValidationErrors($organizer, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_if_labels_is_an_array_of_strings()
+    {
+        $organizer = [
+            '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Publiq vzw',
+            ],
+            'url' => 'https://www.publiq.be',
+            'labels' => [
+                'foo',
+                'bar',
+            ],
+        ];
+
+        $this->assertTrue($this->validator->validate($organizer));
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_hiddenLabels_is_set_but_not_an_array()
+    {
+        $organizer = [
+            '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Publiq vzw',
+            ],
+            'url' => 'https://www.publiq.be',
+            'hiddenLabels' => 'foo,bar',
+        ];
+
+        $expectedErrors = [
+            'hiddenLabels must be of the type array',
+        ];
+
+        $this->assertValidationErrors($organizer, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_hiddenLabels_is_set_but_contains_something_different_than_a_string()
+    {
+        $organizer = [
+            '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Publiq vzw',
+            ],
+            'url' => 'https://www.publiq.be',
+            'hiddenLabels' => [
+                ['name' => 'foo', 'visible' => true],
+            ],
+        ];
+
+        $expectedErrors = [
+            'each label must be a string',
+        ];
+
+        $this->assertValidationErrors($organizer, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_if_hiddenLabels_is_an_array_of_strings()
+    {
+        $organizer = [
+            '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Publiq vzw',
+            ],
+            'url' => 'https://www.publiq.be',
+            'hiddenLabels' => [
+                'foo',
+                'bar',
+            ],
+        ];
+
+        $this->assertTrue($this->validator->validate($organizer));
+    }
+
+    /**
      * @param mixed $data
      * @param array $expectedMessages
      */
