@@ -288,9 +288,7 @@ class PlaceValidatorTest extends TestCase
         ];
 
         $expectedErrors = [
-            'These rules must pass for name',
             'name must be of the type array',
-            'Each item in name must be valid',
         ];
 
         $this->assertValidationErrors($place, $expectedErrors);

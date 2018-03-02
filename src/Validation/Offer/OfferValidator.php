@@ -8,8 +8,9 @@ use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\PeriodicCalendarValida
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\PermanentCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\SingleDateRangeCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\ConfigurableEnumValidator;
+use CultuurNet\UDB3\Model\Validation\ValueObject\NotEmptyStringValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Taxonomy\Label\LabelsValidator;
-use CultuurNet\UDB3\Model\Validation\ValueObject\Text\TranslatedTitleValidator;
+use CultuurNet\UDB3\Model\Validation\ValueObject\Text\TranslatedStringValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Translation\LanguageValidator;
 use Respect\Validation\Rules\Key;
 use Respect\Validation\Validator;
@@ -21,7 +22,7 @@ abstract class OfferValidator extends Validator
         $mandatoryRules = [
             new Key('@id', $this->getIDValidator(), true),
             new Key('mainLanguage', new LanguageValidator(), true),
-            new Key('name', new TranslatedTitleValidator(), true),
+            new Key('name', new TranslatedStringValidator('name'), true),
             new Key('terms', new CategoriesValidator(1), true),
         ];
 
