@@ -23,7 +23,7 @@ class OrganizerValidatorTest extends TestCase
      */
     public function it_should_throw_an_exception_if_a_required_property_is_missing()
     {
-        $event = [];
+        $organizer = [];
 
         $expectedErrors = [
             'Key @id must be present',
@@ -32,7 +32,7 @@ class OrganizerValidatorTest extends TestCase
             'Key url must be present',
         ];
 
-        $this->assertValidationErrors($event, $expectedErrors);
+        $this->assertValidationErrors($organizer, $expectedErrors);
     }
 
     /**
@@ -40,7 +40,7 @@ class OrganizerValidatorTest extends TestCase
      */
     public function it_should_throw_an_exception_if_id_is_in_an_invalid_format()
     {
-        $event = [
+        $organizer = [
             '@id' => 'http://io.uitdatabank.be/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
@@ -55,7 +55,7 @@ class OrganizerValidatorTest extends TestCase
         ];
         // @codingStandardsIgnoreEnd
 
-        $this->assertValidationErrors($event, $expectedErrors);
+        $this->assertValidationErrors($organizer, $expectedErrors);
     }
 
     /**
@@ -63,7 +63,7 @@ class OrganizerValidatorTest extends TestCase
      */
     public function it_should_throw_an_exception_if_mainLanguage_is_in_an_invalid_format()
     {
-        $event = [
+        $organizer = [
             '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'foo',
             'name' => [
@@ -76,7 +76,7 @@ class OrganizerValidatorTest extends TestCase
             'mainLanguage must validate against "/^[a-z]{2}$/"',
         ];
 
-        $this->assertValidationErrors($event, $expectedErrors);
+        $this->assertValidationErrors($organizer, $expectedErrors);
     }
 
     /**
@@ -84,7 +84,7 @@ class OrganizerValidatorTest extends TestCase
      */
     public function it_should_throw_an_exception_if_name_has_no_entries()
     {
-        $event = [
+        $organizer = [
             '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [],
@@ -95,7 +95,7 @@ class OrganizerValidatorTest extends TestCase
             'name must have a length greater than 1',
         ];
 
-        $this->assertValidationErrors($event, $expectedErrors);
+        $this->assertValidationErrors($organizer, $expectedErrors);
     }
 
     /**
@@ -103,7 +103,7 @@ class OrganizerValidatorTest extends TestCase
      */
     public function it_should_throw_an_exception_if_a_name_translation_is_empty()
     {
-        $event = [
+        $organizer = [
             '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
@@ -116,7 +116,7 @@ class OrganizerValidatorTest extends TestCase
             'name value must not be empty',
         ];
 
-        $this->assertValidationErrors($event, $expectedErrors);
+        $this->assertValidationErrors($organizer, $expectedErrors);
     }
 
     /**
@@ -124,7 +124,7 @@ class OrganizerValidatorTest extends TestCase
      */
     public function it_should_throw_an_exception_if_a_name_translation_has_an_invalid_language()
     {
-        $event = [
+        $organizer = [
             '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
@@ -137,7 +137,7 @@ class OrganizerValidatorTest extends TestCase
             '"foo" must validate against "/^[a-z]{2}$/"',
         ];
 
-        $this->assertValidationErrors($event, $expectedErrors);
+        $this->assertValidationErrors($organizer, $expectedErrors);
     }
 
     /**
@@ -145,7 +145,7 @@ class OrganizerValidatorTest extends TestCase
      */
     public function it_should_throw_an_exception_if_name_is_a_string()
     {
-        $event = [
+        $organizer = [
             '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => 'Publiq vzw',
@@ -158,7 +158,7 @@ class OrganizerValidatorTest extends TestCase
             'Each item in name must be valid',
         ];
 
-        $this->assertValidationErrors($event, $expectedErrors);
+        $this->assertValidationErrors($organizer, $expectedErrors);
     }
 
     /**
@@ -166,7 +166,7 @@ class OrganizerValidatorTest extends TestCase
      */
     public function it_should_throw_an_exception_if_url_is_in_an_invalid_format()
     {
-        $event = [
+        $organizer = [
             '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
@@ -179,7 +179,7 @@ class OrganizerValidatorTest extends TestCase
             'url must be an URL',
         ];
 
-        $this->assertValidationErrors($event, $expectedErrors);
+        $this->assertValidationErrors($organizer, $expectedErrors);
     }
 
     /**
