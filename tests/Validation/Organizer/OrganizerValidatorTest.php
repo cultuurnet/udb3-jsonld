@@ -332,6 +332,110 @@ class OrganizerValidatorTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_address_has_no_entries()
+    {
+        $organizer = [
+            '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Publiq vzw',
+            ],
+            'url' => 'https://www.publiq.be',
+            'address' => [],
+        ];
+
+        $expectedErrors = [
+            'address must have a length greater than 1',
+        ];
+
+        $this->assertValidationErrors($organizer, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_an_address_translation_is_missing_fields()
+    {
+        $organizer = [
+            '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Publiq vzw',
+            ],
+            'url' => 'https://www.publiq.be',
+            'address' => [
+                'nl' => [],
+            ],
+        ];
+
+        $expectedErrors = [
+            'All of the required rules must pass for address value',
+            'Key streetAddress must be present',
+            'Key postalCode must be present',
+            'Key addressLocality must be present',
+            'Key addressCountry must be present',
+        ];
+
+        $this->assertValidationErrors($organizer, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_a_address_translation_has_an_invalid_language()
+    {
+        $organizer = [
+            '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Publiq vzw',
+            ],
+            'url' => 'https://www.publiq.be',
+            'address' => [
+                'foo' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            '"foo" must validate against "/^[a-z]{2}$/"',
+        ];
+
+        $this->assertValidationErrors($organizer, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_if_address_is_in_a_valid_format()
+    {
+        $organizer = [
+            '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Publiq vzw',
+            ],
+            'url' => 'https://www.publiq.be',
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+        ];
+
+        $this->assertTrue($this->validator->validate($organizer));
+    }
+
+    /**
      * @param mixed $data
      * @param array $expectedMessages
      */
