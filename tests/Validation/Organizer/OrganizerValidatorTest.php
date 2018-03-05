@@ -436,6 +436,208 @@ class OrganizerValidatorTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_contactPoint_has_an_invalid_phone()
+    {
+        $organizer = [
+            '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Publiq vzw',
+            ],
+            'url' => 'https://www.publiq.be',
+            'contactPoint' => [
+                'phone' => [
+                    '02 551 18 70',
+                    '',
+                ],
+                'email' => [
+                    'info@publiq.be',
+                    'foo@publiq.be',
+                ],
+                'url' => [
+                    'https://www.publiq.be',
+                    'https://www.uitdatabank.be',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            'each phone must not be empty',
+        ];
+
+        $this->assertValidationErrors($organizer, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_contactPoint_has_an_invalid_email()
+    {
+        $organizer = [
+            '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Publiq vzw',
+            ],
+            'url' => 'https://www.publiq.be',
+            'contactPoint' => [
+                'phone' => [
+                    '02 551 18 70',
+                ],
+                'email' => [
+                    'info@publiq.be',
+                    'publiq.be',
+                ],
+                'url' => [
+                    'https://www.publiq.be',
+                    'https://www.uitdatabank.be',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            'each email must be valid email',
+        ];
+
+        $this->assertValidationErrors($organizer, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_contactPoint_has_an_invalid_url()
+    {
+        $organizer = [
+            '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Publiq vzw',
+            ],
+            'url' => 'https://www.publiq.be',
+            'contactPoint' => [
+                'phone' => [
+                    '02 551 18 70',
+                ],
+                'email' => [
+                    'info@publiq.be',
+                ],
+                'url' => [
+                    'https://www.publiq.be',
+                    'www.uitdatabank.be',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            'each url must be an URL',
+        ];
+
+        $this->assertValidationErrors($organizer, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_if_contactPoint_has_valid_phone_numbers()
+    {
+        $organizer = [
+            '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Publiq vzw',
+            ],
+            'url' => 'https://www.publiq.be',
+            'contactPoint' => [
+                'phone' => [
+                    '02 551 18 70',
+                    '02/551 18 70',
+                ],
+            ],
+        ];
+
+        $this->assertTrue($this->validator->validate($organizer));
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_if_contactPoint_has_valid_email_addresses()
+    {
+        $organizer = [
+            '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Publiq vzw',
+            ],
+            'url' => 'https://www.publiq.be',
+            'contactPoint' => [
+                'email' => [
+                    'info@publiq.be',
+                    'foo@publiq.be',
+                ],
+            ],
+        ];
+
+        $this->assertTrue($this->validator->validate($organizer));
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_if_contactPoint_has_valid_urls()
+    {
+        $organizer = [
+            '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Publiq vzw',
+            ],
+            'url' => 'https://www.publiq.be',
+            'contactPoint' => [
+                'url' => [
+                    'https://www.publiq.be',
+                    'https://www.uitdatabank.be',
+                ],
+            ],
+        ];
+
+        $this->assertTrue($this->validator->validate($organizer));
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_if_contactPoint_has_multiple_valid_properties()
+    {
+        $organizer = [
+            '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Publiq vzw',
+            ],
+            'url' => 'https://www.publiq.be',
+            'contactPoint' => [
+                'phone' => [
+                    '02 551 18 70',
+                    '02/551 18 70',
+                ],
+                'email' => [
+                    'info@publiq.be',
+                    'foo@publiq.be',
+                ],
+                'url' => [
+                    'https://www.publiq.be',
+                    'https://www.uitdatabank.be',
+                ],
+            ],
+        ];
+
+        $this->assertTrue($this->validator->validate($organizer));
+    }
+
+    /**
      * @param mixed $data
      * @param array $expectedMessages
      */

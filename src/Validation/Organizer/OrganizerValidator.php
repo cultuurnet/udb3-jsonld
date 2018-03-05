@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\Validation\Organizer;
 
+use CultuurNet\UDB3\Model\Validation\ValueObject\Contact\ContactPointValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Taxonomy\Label\LabelsValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Text\TranslatedAddressValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Text\TranslatedStringValidator;
@@ -22,6 +23,7 @@ class OrganizerValidator extends Validator
             new Key('address', new TranslatedAddressValidator(), false),
             new Key('labels', new LabelsValidator(), false),
             new Key('hiddenLabels', new LabelsValidator(), false),
+            new Key('contactPoint', new ContactPointValidator(), false),
         ];
 
         parent::__construct($rules);

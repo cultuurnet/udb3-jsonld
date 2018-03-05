@@ -1913,6 +1913,264 @@ class EventValidatorTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_contactPoint_has_an_invalid_phone()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'contactPoint' => [
+                'phone' => [
+                    '02 551 18 70',
+                    '',
+                ],
+                'email' => [
+                    'info@publiq.be',
+                    'foo@publiq.be',
+                ],
+                'url' => [
+                    'https://www.publiq.be',
+                    'https://www.uitdatabank.be',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            'each phone must not be empty',
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_contactPoint_has_an_invalid_email()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'contactPoint' => [
+                'phone' => [
+                    '02 551 18 70',
+                ],
+                'email' => [
+                    'info@publiq.be',
+                    'publiq.be',
+                ],
+                'url' => [
+                    'https://www.publiq.be',
+                    'https://www.uitdatabank.be',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            'each email must be valid email',
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_contactPoint_has_an_invalid_url()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'contactPoint' => [
+                'phone' => [
+                    '02 551 18 70',
+                ],
+                'email' => [
+                    'info@publiq.be',
+                ],
+                'url' => [
+                    'https://www.publiq.be',
+                    'www.uitdatabank.be',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            'each url must be an URL',
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_if_contactPoint_has_valid_phone_numbers()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'contactPoint' => [
+                'phone' => [
+                    '02 551 18 70',
+                    '02/551 18 70',
+                ],
+            ],
+        ];
+
+        $this->assertTrue($this->validator->validate($event));
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_if_contactPoint_has_valid_email_addresses()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'contactPoint' => [
+                'email' => [
+                    'info@publiq.be',
+                    'foo@publiq.be',
+                ],
+            ],
+        ];
+
+        $this->assertTrue($this->validator->validate($event));
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_if_contactPoint_has_valid_urls()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'contactPoint' => [
+                'url' => [
+                    'https://www.publiq.be',
+                    'https://www.uitdatabank.be',
+                ],
+            ],
+        ];
+
+        $this->assertTrue($this->validator->validate($event));
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_if_contactPoint_has_multiple_valid_properties()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'contactPoint' => [
+                'phone' => [
+                    '02 551 18 70',
+                    '02/551 18 70',
+                ],
+                'email' => [
+                    'info@publiq.be',
+                    'foo@publiq.be',
+                ],
+                'url' => [
+                    'https://www.publiq.be',
+                    'https://www.uitdatabank.be',
+                ],
+            ],
+        ];
+
+        $this->assertTrue($this->validator->validate($event));
+    }
+
+    /**
      * @param mixed $data
      * @param array $expectedMessages
      */
