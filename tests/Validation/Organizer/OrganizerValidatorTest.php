@@ -29,7 +29,6 @@ class OrganizerValidatorTest extends TestCase
             'name' => [
                 'nl' => 'Publiq vzw',
             ],
-            'url' => 'https://www.publiq.be',
         ];
 
         $this->assertTrue($this->validator->validate($organizer));
@@ -46,7 +45,6 @@ class OrganizerValidatorTest extends TestCase
             'Key @id must be present',
             'Key mainLanguage must be present',
             'Key name must be present',
-            'Key url must be present',
         ];
 
         $this->assertValidationErrors($organizer, $expectedErrors);
@@ -195,6 +193,23 @@ class OrganizerValidatorTest extends TestCase
         ];
 
         $this->assertValidationErrors($organizer, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_if_url_is_a_valid_url()
+    {
+        $organizer = [
+            '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Publiq vzw',
+            ],
+            'url' => 'https://www.publiq.be',
+        ];
+
+        $this->assertTrue($this->validator->validate($organizer));
     }
 
     /**
