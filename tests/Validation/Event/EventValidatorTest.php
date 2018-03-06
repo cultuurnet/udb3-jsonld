@@ -2171,6 +2171,277 @@ class EventValidatorTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_priceInfo_has_no_base_price()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'priceInfo' => [
+                [
+                    'category' => 'tariff',
+                    'name' => [
+                        'nl' => 'Senioren',
+                    ],
+                    'price' => 5.50,
+                    'priceCurrency' => 'EUR',
+                ],
+                [
+                    'category' => 'tariff',
+                    'name' => [
+                        'nl' => 'Studenten',
+                    ],
+                    'price' => 7.50,
+                    'priceCurrency' => 'EUR',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            'priceInfo must contain exactly 1 base price',
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_priceInfo_has_more_than_one_base_price()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'priceInfo' => [
+                [
+                    'category' => 'base',
+                    'name' => [
+                        'nl' => 'Basistarief',
+                    ],
+                    'price' => 10,
+                    'priceCurrency' => 'EUR',
+                ],
+                [
+                    'category' => 'base',
+                    'name' => [
+                        'nl' => 'Senioren',
+                    ],
+                    'price' => 5.50,
+                    'priceCurrency' => 'EUR',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            'priceInfo must contain exactly 1 base price',
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_priceInfo_has_an_invalid_tariff()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'priceInfo' => [
+                [
+                    'category' => 'base',
+                    'name' => [
+                        'nl' => 'Basistarief',
+                    ],
+                    'price' => 10,
+                    'priceCurrency' => 'EUR',
+                ],
+                [
+                    'category' => 'tariff',
+                    'name' => 'Senioren',
+                    'price' => '100',
+                    'priceCurrency' => 'USD',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            'These rules must pass for each priceInfo entry',
+            'tariff name must be of the type array',
+            'At least one of these rules must pass for price',
+            'price must be of the type integer',
+            'price must be of the type float',
+            'priceCurrency must be equals "EUR"',
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_if_priceInfo_has_exactly_one_valid_base_price()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'priceInfo' => [
+                [
+                    'category' => 'base',
+                    'name' => [
+                        'nl' => 'Basistarief',
+                    ],
+                    'price' => 10.0,
+                    'priceCurrency' => 'EUR',
+                ],
+            ],
+        ];
+
+        $this->validator->assert($event);
+
+        $this->assertTrue($this->validator->validate($event));
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_if_priceInfo_has_exactly_one_base_price_with_price_as_an_integer()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'priceInfo' => [
+                [
+                    'category' => 'base',
+                    'name' => [
+                        'nl' => 'Basistarief',
+                    ],
+                    'price' => 10,
+                    'priceCurrency' => 'EUR',
+                ],
+            ],
+        ];
+
+        $this->validator->assert($event);
+
+        $this->assertTrue($this->validator->validate($event));
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_if_priceInfo_has_exactly_one_base_price_and_one_or_more_valid_tariffs()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'priceInfo' => [
+                [
+                    'category' => 'base',
+                    'name' => [
+                        'nl' => 'Basistarief',
+                    ],
+                    'price' => 10,
+                    'priceCurrency' => 'EUR',
+                ],
+                [
+                    'category' => 'tariff',
+                    'name' => [
+                        'nl' => 'Senioren',
+                    ],
+                    'price' => 5.50,
+                    'priceCurrency' => 'EUR',
+                ],
+                [
+                    'category' => 'tariff',
+                    'name' => [
+                        'nl' => 'Studenten',
+                    ],
+                    'price' => 7.50,
+                    'priceCurrency' => 'EUR',
+                ],
+            ],
+        ];
+
+        $this->validator->assert($event);
+
+        $this->assertTrue($this->validator->validate($event));
+    }
+
+    /**
      * @param mixed $data
      * @param array $expectedMessages
      */
