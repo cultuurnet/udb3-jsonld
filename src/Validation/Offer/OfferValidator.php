@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\PeriodicCalendarValida
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\PermanentCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\SingleDateRangeCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\ConfigurableEnumValidator;
+use CultuurNet\UDB3\Model\Validation\ValueObject\Contact\BookingInfoValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Contact\ContactPointValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Moderation\WorkflowStatusValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Price\PriceInfoValidator;
@@ -40,6 +41,7 @@ abstract class OfferValidator extends Validator
             new Key('organizer', new OrganizerReferenceValidator(), false),
             new Key('typicalAgeRange', new AgeRangeValidator(), false),
             new Key('contactPoint', new ContactPointValidator(), false),
+            new Key('bookingInfo', new BookingInfoValidator(), false),
             new Key('priceInfo', new PriceInfoValidator(), false),
             new Key('workflowStatus', new WorkflowStatusValidator(), false),
             new Key('availableFrom', new Date(\DATE_ATOM), false),
