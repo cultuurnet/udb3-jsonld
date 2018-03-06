@@ -28,7 +28,7 @@ class ImmutableOrganizer implements Organizer
     private $name;
 
     /**
-     * @var \CultuurNet\UDB3\Model\ValueObject\Web\Url
+     * @var Url
      */
     private $url;
 
@@ -51,7 +51,7 @@ class ImmutableOrganizer implements Organizer
      * @param UUID $id
      * @param Language $mainLanguage
      * @param TranslatedTitle $name
-     * @param \CultuurNet\UDB3\Model\ValueObject\Web\Url $url
+     * @param Url $url
      */
     public function __construct(
         UUID $id,
