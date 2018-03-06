@@ -28,7 +28,7 @@ interface Organizer
     public function getName();
 
     /**
-     * @return Url
+     * @return Url|null
      */
     public function getUrl();
 
