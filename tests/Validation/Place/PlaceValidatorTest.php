@@ -2959,6 +2959,191 @@ class PlaceValidatorTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_mediaObject_is_missing_a_required_property()
+    {
+        $place = [
+            '@id' => 'http://io.uitdatabank.be/place/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'mediaObject' => [
+                [],
+            ],
+        ];
+
+        $expectedErrors = [
+            'These rules must pass for each mediaObject',
+            'Key @id must be present',
+            'Key description must be present',
+            'Key copyrightHolder must be present',
+            'Key inLanguage must be present',
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_mediaObject_has_an_invalid_contentUrl_or_thumbnailUrl()
+    {
+        $place = [
+            '@id' => 'http://io.uitdatabank.be/place/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'mediaObject' => [
+                [
+                    '@id' => 'http://io.uitdatabank.be/media/5cdacc0b-a96b-4613-81e0-1748c179432f',
+                    'description' => 'Example description',
+                    'copyrightHolder' => 'Example copyright holder',
+                    'inLanguage' => 'nl',
+                    'contentUrl' => 'info@publiq.be',
+                    'thumbnailUrl' => 'info@publiq.be',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            'These rules must pass for each mediaObject',
+            'contentUrl must be an URL',
+            'thumbnailUrl must be an URL',
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_mediaObject_has_an_invalid_type()
+    {
+        $place = [
+            '@id' => 'http://io.uitdatabank.be/place/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'mediaObject' => [
+                [
+                    '@id' => 'http://io.uitdatabank.be/media/5cdacc0b-a96b-4613-81e0-1748c179432f',
+                    '@type' => 'schema:foo',
+                    'description' => 'Example description',
+                    'copyrightHolder' => 'Example copyright holder',
+                    'inLanguage' => 'nl',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            'At least one of these rules must pass for @type',
+            '@type must be equal to "schema:ImageObject"',
+            '@type must be equal to "schema:mediaObject"',
+        ];
+
+        $this->assertValidationErrors($place, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_if_mediaObject_has_valid_properties()
+    {
+        $place = [
+            '@id' => 'http://io.uitdatabank.be/place/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Test place',
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'mediaObject' => [
+                [
+                    '@id' => 'http://io.uitdatabank.be/media/5cdacc0b-a96b-4613-81e0-1748c179432f',
+                    '@type' => 'schema:ImageObject',
+                    'contentUrl' => 'http://io.uitdatabank.be/uploads/5cdacc0b-a96b-4613-81e0-1748c179432f.png',
+                    'thumbnailUrl' => 'http://io.uitdatabank.be/uploads/5cdacc0b-a96b-4613-81e0-1748c179432f.png',
+                    'description' => 'Example description',
+                    'copyrightHolder' => 'Example copyright holder',
+                    'inLanguage' => 'nl',
+                ],
+            ],
+        ];
+
+        $this->assertTrue($this->validator->validate($place));
+    }
+
+    /**
      * @param mixed $data
      * @param array $expectedMessages
      */
