@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category;
 
 use TwoDotsTwice\ValueObject\Collection\Behaviour\FiltersDuplicates;
-use TwoDotsTwice\ValueObject\Collection\Behaviour\IsNotEmpty;
 use TwoDotsTwice\ValueObject\Collection\Collection;
 
 /**
