@@ -28,7 +28,7 @@ class ImmutableOrganizer implements Organizer
     private $name;
 
     /**
-     * @var Url
+     * @var Url|null
      */
     private $url;
 
@@ -51,13 +51,16 @@ class ImmutableOrganizer implements Organizer
      * @param UUID $id
      * @param Language $mainLanguage
      * @param TranslatedTitle $name
-     * @param Url $url
+     * @param Url|null $url
+     *  When creating a new organizer a url is required.
+     *  But for older organizers the url was not required.
+     *  So there is a mix of organizers with and without url.
      */
     public function __construct(
         UUID $id,
         Language $mainLanguage,
         TranslatedTitle $name,
-        Url $url
+        Url $url = null
     ) {
         $this->id = $id;
         $this->mainLanguage = $mainLanguage;

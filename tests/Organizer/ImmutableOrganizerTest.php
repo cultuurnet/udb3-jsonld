@@ -26,14 +26,31 @@ class ImmutableOrganizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_the_required_properties()
+    public function it_should_return_the_constructor_properties()
     {
         $organizer = $this->getOrganizer();
 
         $this->assertEquals($this->getId(), $organizer->getId());
         $this->assertEquals($this->getMainLanguage(), $organizer->getMainLanguage());
         $this->assertEquals($this->getTitle(), $organizer->getName());
-        $this->assertEquals($this->getUrl(), $organizer->getUrl());
+        $this->assertEquals($this->getTitle(), $organizer->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_optional_url_property()
+    {
+        $organizer = new ImmutableOrganizer(
+            $this->getId(),
+            $this->getMainLanguage(),
+            $this->getTitle()
+        );
+
+        $this->assertEquals($this->getId(), $organizer->getId());
+        $this->assertEquals($this->getMainLanguage(), $organizer->getMainLanguage());
+        $this->assertEquals($this->getTitle(), $organizer->getName());
+        $this->assertNull($organizer->getUrl());
     }
 
     /**
