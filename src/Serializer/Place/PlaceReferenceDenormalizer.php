@@ -39,6 +39,7 @@ class PlaceReferenceDenormalizer implements DenormalizerInterface
         }
 
         // @todo Check for embedded place and include it.
+        // @todo Support dummy locations.
         $placeIdUrl = new Url($data['location']['@id']);
         $placeId = $this->placeIDParser->fromUrl($placeIdUrl);
         return PlaceReference::createWithPlaceId($placeId);
