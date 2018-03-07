@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Model\Place;
+namespace CultuurNet\UDB3\Model\ValueObject\MediaObject;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
@@ -22,8 +22,8 @@ class MediaObjectIDParser implements UUIDParser
         $matches = [];
         preg_match(self::REGEX, $url, $matches);
 
-        if (count($matches) > 0) {
-            return new UUID($matches[0]);
+        if (count($matches) > 1) {
+            return new UUID($matches[1]);
         } else {
             throw new \InvalidArgumentException('No MediaObject ID found in given Url.');
         }

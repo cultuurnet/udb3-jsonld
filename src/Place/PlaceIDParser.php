@@ -22,8 +22,8 @@ class PlaceIDParser implements UUIDParser
         $matches = [];
         preg_match(self::REGEX, $url, $matches);
 
-        if (count($matches) > 0) {
-            return new UUID($matches[0]);
+        if (count($matches) > 1) {
+            return new UUID($matches[1]);
         } else {
             throw new \InvalidArgumentException('No PlaceID found in given Url.');
         }
