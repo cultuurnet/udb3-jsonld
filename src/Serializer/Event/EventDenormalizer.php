@@ -130,7 +130,7 @@ class EventDenormalizer implements DenormalizerInterface
         );
         $openingHours = new OpeningHours(...$openingHours);
 
-        switch($data['calendarType']) {
+        switch ($data['calendarType']) {
             case 'single':
                 $startDate = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $data['startDate']);
                 $endDate = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $data['endDate']);
