@@ -531,8 +531,7 @@ class EventDenormalizerTest extends TestCase
                 new Language('nl'),
                 new Title('Titel voorbeeld')
             ),
-            new PermanentCalendar(new OpeningHours()
-            ),
+            new PermanentCalendar(new OpeningHours()),
             PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
                 new Category(
