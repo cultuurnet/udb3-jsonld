@@ -378,7 +378,7 @@ class EventValidatorTest extends TestCase
             'calendarType' => 'single',
             'startDate' => '2018-02-28T13:44:09+01:00',
             'endDate' => '2018-03-05T13:44:09+01:00',
-            'subEvents' => [
+            'subEvent' => [
                 [
                     '@type' => 'Event',
                     'startDate' => '2018-02-28T13:44:09+01:00',
@@ -433,7 +433,7 @@ class EventValidatorTest extends TestCase
             'These rules must pass for calendarType multiple',
             'Key startDate must be present',
             'Key endDate must be present',
-            'Key subEvents must be present',
+            'Key subEvent must be present',
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);
@@ -453,7 +453,7 @@ class EventValidatorTest extends TestCase
             'calendarType' => 'multiple',
             'startDate' => '2018-02-28T13:44:09+01:00',
             'endDate' => '2018-03-01T13:44:09+01:00',
-            'subEvents' => [
+            'subEvent' => [
                 [
                     '@type' => 'Event',
                     'startDate' => '2018-02-28T13:44:09+01:00',
@@ -474,7 +474,7 @@ class EventValidatorTest extends TestCase
         ];
 
         $expectedErrors = [
-            'Each item in subEvents must be valid',
+            'Each item in subEvent must be valid',
             'Key endDate must be present',
             'Key startDate must be present',
         ];
@@ -496,7 +496,7 @@ class EventValidatorTest extends TestCase
             'calendarType' => 'multiple',
             'startDate' => '2018-02-28T13:44:09+01:00',
             'endDate' => '2018-03-01T13:44:09+01:00',
-            'subEvents' => [
+            'subEvent' => [
                 [
                     '@type' => 'Event',
                     'startDate' => '2018-02-28T13:44:09+01:00',
@@ -514,7 +514,7 @@ class EventValidatorTest extends TestCase
         ];
 
         $expectedErrors = [
-            'subEvents must have at least 2 subEvent(s)',
+            'subEvent must have at least 2 subEvent(s)',
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);
@@ -534,7 +534,7 @@ class EventValidatorTest extends TestCase
             'calendarType' => 'multiple',
             'startDate' => '2018-02-28T13:44:09+01:00',
             'endDate' => '2018-03-05T13:44:09+01:00',
-            'subEvents' => [
+            'subEvent' => [
                 [
                     '@type' => 'Event',
                     'startDate' => '2018-02-28T13:44:09+01:00',
@@ -557,7 +557,7 @@ class EventValidatorTest extends TestCase
         ];
 
         $expectedErrors = [
-            'Each item in subEvents must be valid',
+            'Each item in subEvent must be valid',
             'endDate must be a valid date. Sample format: "2005-12-30T01:02:03+00:00"',
             'startDate must be a valid date. Sample format: "2005-12-30T01:02:03+00:00"'
         ];
@@ -579,7 +579,7 @@ class EventValidatorTest extends TestCase
             'calendarType' => 'multiple',
             'startDate' => '2018-03-05T13:44:09+01:00',
             'endDate' => '2018-02-28T13:44:09+01:00',
-            'subEvents' => [
+            'subEvent' => [
                 [
                     '@type' => 'Event',
                     'startDate' => '2018-02-28T13:44:09+01:00',

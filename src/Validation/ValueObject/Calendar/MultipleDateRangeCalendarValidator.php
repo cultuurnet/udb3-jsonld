@@ -29,7 +29,7 @@ class MultipleDateRangeCalendarValidator extends Validator
                         new KeyValue('endDate', 'min', 'startDate'),
                         new AlwaysValid()
                     ),
-                    new Key('subEvents', new SubEventsValidator(2), true)
+                    new Key('subEvent', new SubEventsValidator(2), true)
                 ))->setName('calendarType multiple'),
                 new AlwaysValid()
             ),

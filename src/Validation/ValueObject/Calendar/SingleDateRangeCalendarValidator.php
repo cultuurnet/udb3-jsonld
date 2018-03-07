@@ -31,7 +31,7 @@ class SingleDateRangeCalendarValidator extends Validator
                         new AlwaysValid()
                     ),
                     new Key(
-                        'subEvents',
+                        'subEvent',
                         (new Length(0, 1))
                             ->setName('calendarType single')
                             ->setTemplate('{{name}} should have exactly one subEvent'),
