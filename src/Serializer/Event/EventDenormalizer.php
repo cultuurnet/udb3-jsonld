@@ -2,11 +2,17 @@
 
 namespace CultuurNet\UDB3\Model\Serializer\Event;
 
+use CultuurNet\UDB3\Model\Event\Event;
 use CultuurNet\UDB3\Model\Event\EventIDParser;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
+use CultuurNet\UDB3\Model\Serializer\Place\PlaceReferenceDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoriesDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Text\TranslatedTitleDenormalizer;
 use CultuurNet\UDB3\Model\Validation\Event\EventValidator;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRanges;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleDateRangesCalendar;
@@ -20,6 +26,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleDateRangeCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -29,6 +36,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use Respect\Validation\Validator;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -45,14 +53,32 @@ class EventDenormalizer implements DenormalizerInterface
     private $eventIDParser;
 
     /**
-     * @var PlaceIDParser
+     * @var DenormalizerInterface
      */
-    private $placeIDParser;
+    private $titleDenormalizer;
+
+    /**
+     * @var DenormalizerInterface
+     */
+    private $placeReferenceDenormalizer;
+
+    /**
+     * @var DenormalizerInterface
+     */
+    private $calendarDenormalizer;
+
+    /**
+     * @var DenormalizerInterface
+     */
+    private $categoriesDenormalizer;
 
     public function __construct(
-        EventValidator $eventValidator = null,
-        EventIDParser $eventIDParser = null,
-        PlaceIDParser $placeIDParser = null
+        Validator $eventValidator = null,
+        UUIDParser $eventIDParser = null,
+        DenormalizerInterface $titleDenormalizer = null,
+        DenormalizerInterface $placeReferenceDenormalizer = null,
+        DenormalizerInterface $calendarDenormalizer = null,
+        DenormalizerInterface $categoriesDenormalizer = null
     ) {
         if (!$eventValidator) {
             $eventValidator = new EventValidator();
@@ -62,13 +88,28 @@ class EventDenormalizer implements DenormalizerInterface
             $eventIDParser = new EventIDParser();
         }
 
-        if (!$placeIDParser) {
-            $placeIDParser = new PlaceIDParser();
+        if (!$titleDenormalizer) {
+            $titleDenormalizer = new TranslatedTitleDenormalizer();
+        }
+
+        if (!$placeReferenceDenormalizer) {
+            $placeReferenceDenormalizer = new PlaceReferenceDenormalizer();
+        }
+
+        if (!$calendarDenormalizer) {
+            $calendarDenormalizer = new CalendarDenormalizer();
+        }
+
+        if (!$categoriesDenormalizer) {
+            $categoriesDenormalizer = new CategoriesDenormalizer();
         }
 
         $this->eventValidator = $eventValidator;
         $this->eventIDParser = $eventIDParser;
-        $this->placeIDParser = $placeIDParser;
+        $this->titleDenormalizer = $titleDenormalizer;
+        $this->placeReferenceDenormalizer = $placeReferenceDenormalizer;
+        $this->calendarDenormalizer = $calendarDenormalizer;
+        $this->categoriesDenormalizer = $categoriesDenormalizer;
     }
 
     /**
@@ -92,101 +133,17 @@ class EventDenormalizer implements DenormalizerInterface
         $mainLanguageKey = $data['mainLanguage'];
         $mainLanguage = new Language($mainLanguageKey);
 
-        $title = new TranslatedTitle($mainLanguage, new Title($data['name'][$mainLanguageKey]));
-        foreach ($data['name'] as $languageCode => $titleTranslation) {
-            if ($languageCode == $mainLanguageKey) {
-                continue;
-            }
-
-            $title = $title->withTranslation(
-                new Language($languageCode),
-                new Title($titleTranslation)
-            );
-        }
-
-        $openingHours = array_map(
-            function ($openingHourData) {
-                $days = array_map(
-                    function ($day) {
-                        return new Day($day);
-                    },
-                    $openingHourData['dayOfWeek']
-                );
-                $days = new Days(...$days);
-
-                $opensDateTime = \DateTimeImmutable::createFromFormat('H:i', $openingHourData['opens']);
-                $opensHour = new Hour((int) $opensDateTime->format('H'));
-                $opensMinute = new Minute((int) $opensDateTime->format('i'));
-                $opens = new Time($opensHour, $opensMinute);
-
-                $closesDateTime = \DateTimeImmutable::createFromFormat('H:i', $openingHourData['closes']);
-                $closesHour = new Hour((int) $closesDateTime->format('H'));
-                $closesMinute = new Minute((int) $closesDateTime->format('i'));
-                $closes = new Time($closesHour, $closesMinute);
-
-                return new OpeningHour($days, $opens, $closes);
-            },
-            isset($data['openingHours']) ? $data['openingHours'] : []
+        /* @var TranslatedTitle $title */
+        $title = $this->titleDenormalizer->denormalize(
+            $data['name'],
+            TranslatedTitle::class,
+            null,
+            ['originalLanguage' => $mainLanguageKey]
         );
-        $openingHours = new OpeningHours(...$openingHours);
 
-        switch ($data['calendarType']) {
-            case 'single':
-                $startDate = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $data['startDate']);
-                $endDate = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $data['endDate']);
-                $dateRange = new DateRange(
-                    $startDate,
-                    $endDate
-                );
-                $calendar = new SingleDateRangeCalendar($dateRange);
-                break;
-
-            case 'multiple':
-                $ranges = array_map(
-                    function ($subEvent) {
-                        $startDate = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $subEvent['startDate']);
-                        $endDate = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $subEvent['endDate']);
-                        return new DateRange(
-                            $startDate,
-                            $endDate
-                        );
-                    },
-                    $data['subEvent']
-                );
-                $ranges = new DateRanges(...$ranges);
-                $calendar = new MultipleDateRangesCalendar($ranges);
-                break;
-
-            case 'periodic':
-                $startDate = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $data['startDate']);
-                $endDate = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $data['endDate']);
-                $dateRange = new DateRange(
-                    $startDate,
-                    $endDate
-                );
-                $calendar = new PeriodicCalendar($dateRange, $openingHours);
-                break;
-
-            case 'permanent':
-            default:
-                $calendar = new PermanentCalendar($openingHours);
-                break;
-        }
-
-        $placeIdUrl = new Url($data['location']['@id']);
-        $placeId = $this->placeIDParser->fromUrl($placeIdUrl);
-        $placeReference = PlaceReference::createWithPlaceId($placeId);
-
-        $categories = array_map(
-            function ($category) {
-                $id = new CategoryID($category['id']);
-                $label = isset($category['label']) ? new CategoryLabel($category['label']) : null;
-                $domain = isset($category['domain']) ? new CategoryDomain($category['domain']) : null;
-                return new Category($id, $label, $domain);
-            },
-            $data['terms']
-        );
-        $categories = new Categories(...$categories);
+        $calendar = $this->calendarDenormalizer->denormalize($data, Calendar::class);
+        $placeReference = $this->placeReferenceDenormalizer->denormalize($data, PlaceReference::class);
+        $categories = $this->categoriesDenormalizer->denormalize($data['terms'], Categories::class);
 
         return new ImmutableEvent(
             $id,
@@ -203,6 +160,6 @@ class EventDenormalizer implements DenormalizerInterface
      */
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return $type === ImmutableEvent::class;
+        return $type === ImmutableEvent::class || $type === Event::class;
     }
 }
