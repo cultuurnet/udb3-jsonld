@@ -2,30 +2,16 @@
 
 namespace CultuurNet\UDB3\Model\Organizer;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
-use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Identity\RegexUUIDParser;
 
-class OrganizerIDParser implements UUIDParser
+class OrganizerIDParser extends RegexUUIDParser
 {
     // @codingStandardsIgnoreStart
     const REGEX = '/\\/organizer[s]?\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})[\\/]?/';
     // @codingStandardsIgnoreEnd
 
-    /**
-     * @inheritdoc
-     */
-    public function fromUrl(Url $url)
+    public function __construct()
     {
-        $url = $url->toString();
-
-        $matches = [];
-        preg_match(self::REGEX, $url, $matches);
-
-        if (count($matches) > 1) {
-            return new UUID($matches[1]);
-        } else {
-            throw new \InvalidArgumentException('No OrganizerID found in given Url.');
-        }
+        parent::__construct(self::REGEX, 'OrganizerID');
     }
 }
