@@ -24,12 +24,12 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 class EventDenormalizer implements DenormalizerInterface
 {
     /**
-     * @var EventValidator
+     * @var Validator
      */
     private $eventValidator;
 
     /**
-     * @var EventIDParser
+     * @var UUIDParser
      */
     private $eventIDParser;
 
