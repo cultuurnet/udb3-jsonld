@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\Validation\ValueObject\MediaObject;
 
-use CultuurNet\UDB3\Model\Place\MediaObjectIDParser;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectIDParser;
 use Respect\Validation\Rules\Regex;
 use Respect\Validation\Rules\Url;
 use Respect\Validation\Validator;
