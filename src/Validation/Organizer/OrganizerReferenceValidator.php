@@ -1,8 +1,7 @@
 <?php
 
-namespace CultuurNet\UDB3\Model\Organizer;
+namespace CultuurNet\UDB3\Model\Validation\Organizer;
 
-use CultuurNet\UDB3\Model\Validation\Organizer\OrganizerIDValidator;
 use Respect\Validation\Rules\Key;
 use Respect\Validation\Validator;
 

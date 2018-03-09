@@ -1,8 +1,7 @@
 <?php
 
-namespace CultuurNet\UDB3\Model\Validation\ValueObject\Text;
+namespace CultuurNet\UDB3\Model\Validation\ValueObject\Geography;
 
-use CultuurNet\UDB3\Model\Validation\ValueObject\Geography\AddressValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Translation\LanguageValidator;
 use Respect\Validation\Rules\ArrayType;
 use Respect\Validation\Rules\Each;

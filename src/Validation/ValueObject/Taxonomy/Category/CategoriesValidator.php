@@ -1,8 +1,7 @@
 <?php
 
-namespace CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\OpeningHours;
+namespace CultuurNet\UDB3\Model\Validation\ValueObject\Taxonomy\Category;
 
-use CultuurNet\UDB3\Model\Validation\ValueObject\Taxonomy\Category\CategoryValidator;
 use Respect\Validation\Rules\ArrayType;
 use Respect\Validation\Rules\Each;
 use Respect\Validation\Rules\Length;
