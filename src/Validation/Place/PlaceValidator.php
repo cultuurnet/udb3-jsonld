@@ -10,10 +10,14 @@ use CultuurNet\UDB3\Model\Validation\ValueObject\Geography\AddressValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Text\TranslatedAddressValidator;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use Respect\Validation\Rules\Key;
+use Respect\Validation\Validator;
 
 class PlaceValidator extends OfferValidator
 {
-    public function __construct()
+    /**
+     * @param Validator[] $extraRules
+     */
+    public function __construct(array $extraRules = [])
     {
         // We don't validate the coordinates because they're optional and are
         // always based on the address. So when validating incoming json-ld on
@@ -25,6 +29,8 @@ class PlaceValidator extends OfferValidator
         $rules = [
             new Key('address', new TranslatedAddressValidator(), true),
         ];
+
+        $rules = array_merge($rules, $extraRules);
 
         parent::__construct($rules);
     }

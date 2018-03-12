@@ -13,7 +13,10 @@ use Respect\Validation\Validator;
 
 class OrganizerValidator extends Validator
 {
-    public function __construct()
+    /**
+     * @param Validator[] $extraRules
+     */
+    public function __construct(array $extraRules = [])
     {
         // Note that url is NOT required, because there exist old organizers that were
         // created in the past without a url.
@@ -29,6 +32,8 @@ class OrganizerValidator extends Validator
             new Key('hiddenLabels', new LabelsValidator(), false),
             new Key('contactPoint', new ContactPointValidator(), false),
         ];
+
+        $rules = array_merge($rules, $extraRules);
 
         parent::__construct($rules);
     }
