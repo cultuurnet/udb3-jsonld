@@ -3,9 +3,7 @@
 namespace CultuurNet\UDB3\Model\Validation\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\OpeningHours\OpeningHoursValidator;
-use Respect\Validation\Rules\AllOf;
 use Respect\Validation\Rules\AlwaysValid;
-use Respect\Validation\Rules\Date;
 use Respect\Validation\Rules\Equals;
 use Respect\Validation\Rules\Key;
 use Respect\Validation\Rules\When;

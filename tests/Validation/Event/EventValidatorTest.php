@@ -1359,6 +1359,46 @@ class EventValidatorTest extends TestCase
     /**
      * @test
      */
+    public function it_should_throw_an_exception_if_a_label_is_to_short()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name'
+            ],
+            'calendarType' => 'permanent',
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ]
+            ],
+            'audience' => [
+                'audienceType' => 'everyone',
+            ],
+            'labels' => [
+                [
+                    'f',
+                    'foo'
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            'All of the required rules must pass for each label',
+            'each label must be a string',
+            'each label must have a length between 2 and 255',
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_pass_if_labels_is_an_array_of_strings()
     {
         $event = [
