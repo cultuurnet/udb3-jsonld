@@ -1398,7 +1398,9 @@ class EventValidatorTest extends TestCase
      */
     public function it_should_throw_an_exception_if_a_label_is_too_long()
     {
+        // @codingStandardsIgnoreStart
         $longLabel = 'barbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbarbar';
+        // @codingStandardsIgnoreEnd
 
         $event = [
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
