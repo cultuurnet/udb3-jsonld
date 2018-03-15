@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Model\Validation\Event;
 
-use CultuurNet\UDB3\Model\Place\PlaceReferenceValidator;
 use CultuurNet\UDB3\Model\Validation\Offer\OfferValidator;
+use CultuurNet\UDB3\Model\Validation\Place\PlaceReferenceValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Audience\AudienceTypeValidator;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use Respect\Validation\Rules\Key;

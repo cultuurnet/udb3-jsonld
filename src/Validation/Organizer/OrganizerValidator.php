@@ -3,8 +3,8 @@
 namespace CultuurNet\UDB3\Model\Validation\Organizer;
 
 use CultuurNet\UDB3\Model\Validation\ValueObject\Contact\ContactPointValidator;
+use CultuurNet\UDB3\Model\Validation\ValueObject\Geography\TranslatedAddressValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Taxonomy\Label\LabelsValidator;
-use CultuurNet\UDB3\Model\Validation\ValueObject\Text\TranslatedAddressValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Text\TranslatedStringValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Translation\LanguageValidator;
 use Respect\Validation\Rules\Key;
