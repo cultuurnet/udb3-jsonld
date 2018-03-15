@@ -133,7 +133,7 @@ class PlaceDenormalizer implements DenormalizerInterface
         $calendar = $this->calendarDenormalizer->denormalize($data, Calendar::class);
         $categories = $this->categoriesDenormalizer->denormalize($data['terms'], Categories::class);
 
-        return new ImmutablePlace(
+        $place = new ImmutablePlace(
             $id,
             $mainLanguage,
             $title,
@@ -141,6 +141,13 @@ class PlaceDenormalizer implements DenormalizerInterface
             $address,
             $categories
         );
+
+        if (isset($data['availableFrom'])) {
+            $availableFrom = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $data['availableFrom']);
+            $place = $place->withAvailableFrom($availableFrom);
+        }
+
+        return $place;
     }
 
     /**
