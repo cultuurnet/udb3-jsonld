@@ -451,7 +451,7 @@ class ImmutableOfferTest extends TestCase
     public function it_should_return_a_draft_workflow_status_by_default()
     {
         $workflowStatus = $this->getOffer()->getWorkflowStatus();
-        $this->assertTrue($workflowStatus->sameAs(WorkflowStatus::draft()));
+        $this->assertTrue($workflowStatus->sameAs(WorkflowStatus::DRAFT()));
     }
 
     /**
@@ -462,7 +462,7 @@ class ImmutableOfferTest extends TestCase
         $offer = $this->getOffer();
         $workflowStatus = $offer->getWorkflowStatus();
 
-        $updatedWorkflowStatus = WorkflowStatus::approved();
+        $updatedWorkflowStatus = WorkflowStatus::APPROVED();
         $updatedOffer = $offer->withWorkflowStatus($updatedWorkflowStatus);
 
         $this->assertNotEquals($offer, $updatedOffer);

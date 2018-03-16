@@ -5,11 +5,11 @@ namespace CultuurNet\UDB3\Model\ValueObject\Moderation;
 use TwoDotsTwice\ValueObject\String\Enum;
 
 /**
- * @method static WorkflowStatus readyforvalidation()
- * @method static WorkflowStatus approved()
- * @method static WorkflowStatus rejected()
- * @method static WorkflowStatus draft()
- * @method static WorkflowStatus deleted()
+ * @method static WorkflowStatus READY_FOR_VALIDATION()
+ * @method static WorkflowStatus APPROVED()
+ * @method static WorkflowStatus REJECTED()
+ * @method static WorkflowStatus DRAFT()
+ * @method static WorkflowStatus DELETED()
  */
 class WorkflowStatus extends Enum
 {
@@ -19,11 +19,11 @@ class WorkflowStatus extends Enum
     public static function getAllowedValues()
     {
         return [
-            'readyforvalidation',
-            'approved',
-            'rejected',
-            'draft',
-            'deleted',
+            'READY_FOR_VALIDATION',
+            'APPROVED',
+            'REJECTED',
+            'DRAFT',
+            'DELETED',
         ];
     }
 }

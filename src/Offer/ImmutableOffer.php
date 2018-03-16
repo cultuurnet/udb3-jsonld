@@ -121,7 +121,7 @@ abstract class ImmutableOffer implements Offer
         $this->bookingInfo = new BookingInfo();
         $this->contactPoint = new ContactPoint();
         $this->mediaObjectReferences = new MediaObjectReferences();
-        $this->workflowStatus = WorkflowStatus::draft();
+        $this->workflowStatus = WorkflowStatus::DRAFT();
     }
 
     /**
