@@ -191,7 +191,7 @@ class ImmutablePlaceTest extends TestCase
         $this->assertNull($dummy->getPriceInfo());
         $this->assertEquals(new BookingInfo(), $dummy->getBookingInfo());
         $this->assertEquals(new ContactPoint(), $dummy->getContactPoint());
-        $this->assertEquals(WorkflowStatus::draft(), $dummy->getWorkflowStatus());
+        $this->assertEquals(WorkflowStatus::DRAFT(), $dummy->getWorkflowStatus());
         $this->assertEquals(new PermanentCalendar(new OpeningHours()), $dummy->getCalendar());
         $this->assertEquals($this->getAddress(), $dummy->getAddress());
         $this->assertNull($dummy->getGeoCoordinates());

@@ -1753,11 +1753,11 @@ class PlaceValidatorTest extends TestCase
 
         $expectedErrors = [
             'At least one of these rules must pass for workflowStatus',
-            'workflowStatus must be equal to "readyforvalidation"',
-            'workflowStatus must be equal to "approved"',
-            'workflowStatus must be equal to "rejected"',
-            'workflowStatus must be equal to "draft"',
-            'workflowStatus must be equal to "deleted"',
+            'workflowStatus must be equal to "READY_FOR_VALIDATION"',
+            'workflowStatus must be equal to "APPROVED"',
+            'workflowStatus must be equal to "REJECTED"',
+            'workflowStatus must be equal to "DRAFT"',
+            'workflowStatus must be equal to "DELETED"',
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);
@@ -1791,7 +1791,7 @@ class PlaceValidatorTest extends TestCase
                     'addressCountry' => 'BE',
                 ],
             ],
-            'workflowStatus' => 'approved',
+            'workflowStatus' => 'APPROVED',
         ];
 
         $this->assertTrue($this->validator->validate($event));
