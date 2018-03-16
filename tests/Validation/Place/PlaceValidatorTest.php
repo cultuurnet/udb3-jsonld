@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\Model\Validation\Place;
 
 use PHPUnit\Framework\TestCase;
-use Respect\Validation\Exceptions\AllOfException;
 use Respect\Validation\Exceptions\NestedValidationException;
 use Respect\Validation\Validator;
 

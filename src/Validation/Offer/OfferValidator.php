@@ -2,10 +2,9 @@
 
 namespace CultuurNet\UDB3\Model\Validation\Offer;
 
-use CultuurNet\UDB3\Model\Organizer\OrganizerReferenceValidator;
+use CultuurNet\UDB3\Model\Validation\Organizer\OrganizerReferenceValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Audience\AgeRangeValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\MultipleDateRangeCalendarValidator;
-use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\OpeningHours\CategoriesValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\PeriodicCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\PermanentCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\SingleDateRangeCalendarValidator;
@@ -15,6 +14,7 @@ use CultuurNet\UDB3\Model\Validation\ValueObject\Contact\ContactPointValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\MediaObject\MediaObjectsValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Moderation\WorkflowStatusValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Price\PriceInfoValidator;
+use CultuurNet\UDB3\Model\Validation\ValueObject\Taxonomy\Category\CategoriesValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Taxonomy\Label\LabelsValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Text\TranslatedStringValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Translation\LanguageValidator;
