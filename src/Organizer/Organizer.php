@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\Organizer;
 
+use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
@@ -36,6 +37,11 @@ interface Organizer
      * @return TranslatedAddress|null
      */
     public function getAddress();
+
+    /**
+     * @return Coordinates|null
+     */
+    public function getGeoCoordinates();
 
     /**
      * @return Labels
