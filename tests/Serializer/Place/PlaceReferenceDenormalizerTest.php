@@ -41,9 +41,7 @@ class PlaceReferenceDenormalizerTest extends TestCase
     public function it_should_return_a_place_reference_with_a_place_id()
     {
         $data = [
-            'location' => [
-                '@id' => 'https://io.uitdatabank.be/places/ebe48c5f-5d3d-4fc3-a138-0037ab0fbc08',
-            ],
+            '@id' => 'https://io.uitdatabank.be/places/ebe48c5f-5d3d-4fc3-a138-0037ab0fbc08',
         ];
 
         $reference = $this->denormalizer->denormalize($data, PlaceReference::class);
@@ -60,27 +58,25 @@ class PlaceReferenceDenormalizerTest extends TestCase
     public function it_should_return_a_place_reference_with_an_embedded_place()
     {
         $data = [
-            'location' => [
-                '@id' => 'https://io.uitdatabank.be/places/ebe48c5f-5d3d-4fc3-a138-0037ab0fbc08',
-                'mainLanguage' => 'nl',
-                'name' => [
-                    'nl' => 'Voorbeeld naam',
+            '@id' => 'https://io.uitdatabank.be/places/ebe48c5f-5d3d-4fc3-a138-0037ab0fbc08',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Voorbeeld naam',
+            ],
+            'calendarType' => 'permanent',
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE'
                 ],
-                'calendarType' => 'permanent',
-                'address' => [
-                    'nl' => [
-                        'streetAddress' => 'Henegouwenkaai 41-43',
-                        'postalCode' => '1080',
-                        'addressLocality' => 'Brussel',
-                        'addressCountry' => 'BE'
-                    ],
-                ],
-                'terms' => [
-                    [
-                        'id' => '0.14.0.0.0',
-                        'label' => 'Monument',
-                        'domain' => 'eventtype',
-                    ],
+            ],
+            'terms' => [
+                [
+                    'id' => '0.14.0.0.0',
+                    'label' => 'Monument',
+                    'domain' => 'eventtype',
                 ],
             ],
         ];
@@ -124,15 +120,13 @@ class PlaceReferenceDenormalizerTest extends TestCase
     public function it_should_return_a_place_reference_with_a_place_id_and_no_embedded_place_if_the_place_was_invalid()
     {
         $data = [
-            'location' => [
-                '@id' => 'https://io.uitdatabank.be/places/ebe48c5f-5d3d-4fc3-a138-0037ab0fbc08',
-                'name' => 'Test',
-                'address' => [
-                    'streetAddress' => 'Henegouwenkaai 41-43',
-                    'postalCode' => '1080',
-                    'addressLocality' => 'Brussel',
-                    'addressCountry' => 'BE'
-                ],
+            '@id' => 'https://io.uitdatabank.be/places/ebe48c5f-5d3d-4fc3-a138-0037ab0fbc08',
+            'name' => 'Test',
+            'address' => [
+                'streetAddress' => 'Henegouwenkaai 41-43',
+                'postalCode' => '1080',
+                'addressLocality' => 'Brussel',
+                'addressCountry' => 'BE'
             ],
         ];
 

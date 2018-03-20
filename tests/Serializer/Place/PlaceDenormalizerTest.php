@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Model\Serializer\Place;
 
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
+use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
@@ -611,6 +612,9 @@ class PlaceDenormalizerTest extends TestCase
                 'lorem',
                 'ipsum',
             ],
+            'organizer' => [
+                '@id' => 'https://io.uitdatabank.be/organizers/236f736e-5308-4c3a-94f3-da0bd768da7d',
+            ],
             'availableFrom' => '2018-01-01T00:00:00+01:00',
         ];
 
@@ -653,6 +657,9 @@ class PlaceDenormalizerTest extends TestCase
                     new Label(new LabelName('lorem'), false),
                     new Label(new LabelName('ipsum'), false)
                 )
+            )
+            ->withOrganizerReference(
+                OrganizerReference::createWithOrganizerId(new UUID('236f736e-5308-4c3a-94f3-da0bd768da7d'))
             );
 
         $actual = $this->denormalizer->denormalize($placeData, ImmutablePlace::class);

@@ -39,7 +39,8 @@ class EventDenormalizer extends OfferDenormalizer
         DenormalizerInterface $calendarDenormalizer = null,
         DenormalizerInterface $categoriesDenormalizer = null,
         DenormalizerInterface $placeReferenceDenormalizer = null,
-        DenormalizerInterface $labelsDenormalizer = null
+        DenormalizerInterface $labelsDenormalizer = null,
+        DenormalizerInterface $organizerDenormalizer = null
     ) {
         if (!$eventValidator) {
             $eventValidator = new EventValidator();
@@ -62,7 +63,8 @@ class EventDenormalizer extends OfferDenormalizer
             $descriptionDenormalizer,
             $calendarDenormalizer,
             $categoriesDenormalizer,
-            $labelsDenormalizer
+            $labelsDenormalizer,
+            $organizerDenormalizer
         );
     }
 
@@ -77,7 +79,10 @@ class EventDenormalizer extends OfferDenormalizer
         Calendar $calendar,
         Categories $categories
     ) {
-        $placeReference = $this->placeReferenceDenormalizer->denormalize($originalData, PlaceReference::class);
+        $placeReference = $this->placeReferenceDenormalizer->denormalize(
+            $originalData['location'],
+            PlaceReference::class
+        );
 
         return new ImmutableEvent(
             $id,

@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Model\Serializer\Offer;
 
 use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
+use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Serializer\Place\OrganizerReferenceDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoriesDenormalizer;
@@ -53,12 +54,18 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     private $labelsDenormalizer;
 
     /**
+     * @var DenormalizerInterface
+     */
+    private $organizerReferenceDenormalizer;
+
+    /**
      * @param UUIDParser $idParser
      * @param DenormalizerInterface|null $titleDenormalizer
      * @param DenormalizerInterface|null $descriptionDenormalizer
      * @param DenormalizerInterface|null $calendarDenormalizer
      * @param DenormalizerInterface|null $categoriesDenormalizer
      * @param DenormalizerInterface|null $labelsDenormalizer
+     * @param DenormalizerInterface|null $organizerReferenceDenormalizer
      */
     public function __construct(
         UUIDParser $idParser,
@@ -66,7 +73,8 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         DenormalizerInterface $descriptionDenormalizer = null,
         DenormalizerInterface $calendarDenormalizer = null,
         DenormalizerInterface $categoriesDenormalizer = null,
-        DenormalizerInterface $labelsDenormalizer = null
+        DenormalizerInterface $labelsDenormalizer = null,
+        DenormalizerInterface $organizerReferenceDenormalizer = null
     ) {
         if (!$titleDenormalizer) {
             $titleDenormalizer = new TranslatedTitleDenormalizer();
@@ -88,12 +96,17 @@ abstract class OfferDenormalizer implements DenormalizerInterface
             $labelsDenormalizer = new LabelsDenormalizer();
         }
 
+        if (!$organizerReferenceDenormalizer) {
+            $organizerReferenceDenormalizer = new OrganizerReferenceDenormalizer();
+        }
+
         $this->idParser = $idParser;
         $this->titleDenormalizer = $titleDenormalizer;
         $this->descriptionDenormalizer = $descriptionDenormalizer;
         $this->calendarDenormalizer = $calendarDenormalizer;
         $this->categoriesDenormalizer = $categoriesDenormalizer;
         $this->labelsDenormalizer = $labelsDenormalizer;
+        $this->organizerReferenceDenormalizer = $organizerReferenceDenormalizer;
     }
 
     /**
@@ -136,6 +149,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         $offer = $this->createOffer($data, $id, $mainLanguage, $title, $calendar, $categories);
         $offer = $this->denormalizeDescription($data, $offer);
         $offer = $this->denormalizeLabels($data, $offer);
+        $offer = $this->denormalizeOrganizerReference($data, $offer);
         $offer = $this->denormalizeAvailableFrom($data, $offer);
 
         return $offer;
@@ -172,6 +186,25 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     {
         $labels = $this->labelsDenormalizer->denormalize($data, Labels::class);
         return $offer->withLabels($labels);
+    }
+
+    /**
+     * @param array $data
+     * @param ImmutableOffer $offer
+     * @return ImmutableOffer
+     */
+    protected function denormalizeOrganizerReference(array $data, ImmutableOffer $offer)
+    {
+        if (isset($data['organizer'])) {
+            $organizerReference = $this->organizerReferenceDenormalizer->denormalize(
+                $data['organizer'],
+                OrganizerReference::class
+            );
+
+            $offer = $offer->withOrganizerReference($organizerReference);
+        }
+
+        return $offer;
     }
 
     /**
