@@ -47,6 +47,7 @@ class EventDenormalizer extends OfferDenormalizer
         Validator $eventValidator = null,
         UUIDParser $eventIDParser = null,
         DenormalizerInterface $titleDenormalizer = null,
+        DenormalizerInterface $descriptionDenormalizer = null,
         DenormalizerInterface $calendarDenormalizer = null,
         DenormalizerInterface $categoriesDenormalizer = null,
         DenormalizerInterface $placeReferenceDenormalizer = null
@@ -69,6 +70,7 @@ class EventDenormalizer extends OfferDenormalizer
         parent::__construct(
             $eventIDParser,
             $titleDenormalizer,
+            $descriptionDenormalizer,
             $calendarDenormalizer,
             $categoriesDenormalizer
         );

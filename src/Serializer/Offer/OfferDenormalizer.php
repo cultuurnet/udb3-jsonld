@@ -32,6 +32,11 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     /**
      * @var DenormalizerInterface
      */
+    private $descriptionDenormalizer;
+
+    /**
+     * @var DenormalizerInterface
+     */
     private $calendarDenormalizer;
 
     /**
@@ -42,17 +47,23 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     /**
      * @param UUIDParser $idParser
      * @param DenormalizerInterface|null $titleDenormalizer
+     * @param DenormalizerInterface|null $descriptionDenormalizer
      * @param DenormalizerInterface|null $calendarDenormalizer
      * @param DenormalizerInterface|null $categoriesDenormalizer
      */
     public function __construct(
         UUIDParser $idParser,
         DenormalizerInterface $titleDenormalizer = null,
+        DenormalizerInterface $descriptionDenormalizer = null,
         DenormalizerInterface $calendarDenormalizer = null,
         DenormalizerInterface $categoriesDenormalizer = null
     ) {
         if (!$titleDenormalizer) {
             $titleDenormalizer = new TranslatedTitleDenormalizer();
+        }
+
+        if (!$descriptionDenormalizer) {
+            $descriptionDenormalizer = new TranslatedDescriptionDenormalizer();
         }
 
         if (!$calendarDenormalizer) {
@@ -65,6 +76,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
 
         $this->idParser = $idParser;
         $this->titleDenormalizer = $titleDenormalizer;
+        $this->descriptionDenormalizer = $descriptionDenormalizer;
         $this->calendarDenormalizer = $calendarDenormalizer;
         $this->categoriesDenormalizer = $categoriesDenormalizer;
     }
@@ -107,7 +119,30 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         $categories = $this->categoriesDenormalizer->denormalize($data['terms'], Categories::class);
 
         $offer = $this->createOffer($data, $id, $mainLanguage, $title, $calendar, $categories);
+        $offer = $this->denormalizeDescription($data, $offer);
         $offer = $this->denormalizeAvailableFrom($data, $offer);
+
+        return $offer;
+    }
+
+    /**
+     * @param array $data
+     * @param ImmutableOffer $offer
+     * @return ImmutableOffer
+     */
+    protected function denormalizeDescription(array $data, ImmutableOffer $offer)
+    {
+        if (isset($data['description'])) {
+            /* @var TranslatedDescription $description */
+            $description = $this->descriptionDenormalizer->denormalize(
+                $data['description'],
+                TranslatedDescription::class,
+                null,
+                ['originalLanguage' => $data['mainLanguage']]
+            );
+
+            $offer = $offer->withDescription($description);
+        }
 
         return $offer;
     }

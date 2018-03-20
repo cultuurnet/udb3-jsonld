@@ -26,7 +26,9 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
@@ -570,7 +572,7 @@ class PlaceDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_place_data_with_availableFrom()
+    public function it_should_denormalize_place_data_with_optional_properties()
     {
         $placeData = [
             '@id' => 'https://io.uitdatabank.be/place/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -593,6 +595,10 @@ class PlaceDenormalizerTest extends TestCase
                 [
                     'id' => '0.50.1.0.1',
                 ]
+            ],
+            'description' => [
+                'nl' => 'Voorbeeld beschrijving',
+                'en' => 'Example description',
             ],
             'availableFrom' => '2018-01-01T00:00:00+01:00',
         ];
@@ -621,9 +627,13 @@ class PlaceDenormalizerTest extends TestCase
             )
         );
 
-        $expected = $expected->withAvailableFrom(
-            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T00:00:00+01:00')
-        );
+        $expected = $expected
+            ->withDescription(
+                (new TranslatedDescription(new Language('nl'), new Description('Voorbeeld beschrijving')))
+                    ->withTranslation(new Language('en'), new Description('Example description'))
+            )->withAvailableFrom(
+                \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T00:00:00+01:00')
+            );
 
         $actual = $this->denormalizer->denormalize($placeData, ImmutablePlace::class);
 

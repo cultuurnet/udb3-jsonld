@@ -60,6 +60,7 @@ class PlaceDenormalizer extends OfferDenormalizer
         Validator $placeValidator = null,
         UUIDParser $placeIDParser = null,
         DenormalizerInterface $titleDenormalizer = null,
+        DenormalizerInterface $descriptionDenormalizer = null,
         DenormalizerInterface $calendarDenormalizer = null,
         DenormalizerInterface $addressDenormalizer = null,
         DenormalizerInterface $categoriesDenormalizer = null
@@ -82,6 +83,7 @@ class PlaceDenormalizer extends OfferDenormalizer
         parent::__construct(
             $placeIDParser,
             $titleDenormalizer,
+            $descriptionDenormalizer,
             $calendarDenormalizer,
             $categoriesDenormalizer
         );
