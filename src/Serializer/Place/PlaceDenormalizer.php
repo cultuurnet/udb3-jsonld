@@ -2,10 +2,12 @@
 
 namespace CultuurNet\UDB3\Model\Serializer\Place;
 
+use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Serializer\Offer\OfferDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\CoordinatesDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Label\LabelsDenormalizer;
 use CultuurNet\UDB3\Model\Validation\Place\PlaceValidator;
@@ -32,6 +34,11 @@ class PlaceDenormalizer extends OfferDenormalizer
      */
     private $addressDenormalizer;
 
+    /**
+     * @var DenormalizerInterface
+     */
+    private $geoCoordinatesDenormalizer;
+
     public function __construct(
         Validator $placeValidator = null,
         UUIDParser $placeIDParser = null,
@@ -41,7 +48,8 @@ class PlaceDenormalizer extends OfferDenormalizer
         DenormalizerInterface $addressDenormalizer = null,
         DenormalizerInterface $categoriesDenormalizer = null,
         DenormalizerInterface $labelsDenormalizer = null,
-        DenormalizerInterface $organizerReferenceDenormalizer = null
+        DenormalizerInterface $organizerReferenceDenormalizer = null,
+        DenormalizerInterface $geoCoordinatesDenormalizer = null
     ) {
         if (!$placeValidator) {
             $placeValidator = new PlaceValidator();
@@ -55,12 +63,13 @@ class PlaceDenormalizer extends OfferDenormalizer
             $addressDenormalizer = new TranslatedAddressDenormalizer();
         }
 
-        if (!$labelsDenormalizer) {
-            $labelsDenormalizer = new LabelsDenormalizer();
+        if (!$geoCoordinatesDenormalizer) {
+            $geoCoordinatesDenormalizer = new CoordinatesDenormalizer();
         }
 
         $this->placeValidator = $placeValidator;
         $this->addressDenormalizer = $addressDenormalizer;
+        $this->geoCoordinatesDenormalizer = $geoCoordinatesDenormalizer;
 
         parent::__construct(
             $placeIDParser,
@@ -117,7 +126,19 @@ class PlaceDenormalizer extends OfferDenormalizer
 
         $this->placeValidator->assert($data);
 
-        return $this->denormalizeOffer($data);
+        /* @var ImmutablePlace $offer */
+        $offer = $this->denormalizeOffer($data);
+
+        if (isset($data['geo'])) {
+            try {
+                $coordinates = $this->geoCoordinatesDenormalizer->denormalize($data['geo'], Coordinates::class);
+                $offer = $offer->withGeoCoordinates($coordinates);
+            } catch (\Exception $e) {
+                // Do nothing.
+            }
+        }
+
+        return $offer;
     }
 
     /**

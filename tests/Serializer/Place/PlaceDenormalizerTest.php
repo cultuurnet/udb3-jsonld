@@ -2,6 +2,9 @@
 
 namespace CultuurNet\UDB3\Model\Serializer\Place;
 
+use CultuurNet\Geocoding\Coordinate\Coordinates;
+use CultuurNet\Geocoding\Coordinate\Latitude;
+use CultuurNet\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
@@ -615,6 +618,10 @@ class PlaceDenormalizerTest extends TestCase
             'organizer' => [
                 '@id' => 'https://io.uitdatabank.be/organizers/236f736e-5308-4c3a-94f3-da0bd768da7d',
             ],
+            'geo' => [
+                "latitude" => 50.8793916,
+                "longitude" => 4.7019674,
+            ],
             'availableFrom' => '2018-01-01T00:00:00+01:00',
         ];
 
@@ -660,6 +667,12 @@ class PlaceDenormalizerTest extends TestCase
             )
             ->withOrganizerReference(
                 OrganizerReference::createWithOrganizerId(new UUID('236f736e-5308-4c3a-94f3-da0bd768da7d'))
+            )
+            ->withGeoCoordinates(
+                new Coordinates(
+                    new Latitude(50.8793916),
+                    new Longitude(4.7019674)
+                )
             );
 
         $actual = $this->denormalizer->denormalize($placeData, ImmutablePlace::class);
