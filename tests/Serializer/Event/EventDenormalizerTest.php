@@ -6,6 +6,8 @@ use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
+use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRanges;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleDateRangesCalendar;
@@ -595,6 +597,7 @@ class EventDenormalizerTest extends TestCase
             'organizer' => [
                 '@id' => 'https://io.uitdatabank.be/organizers/236f736e-5308-4c3a-94f3-da0bd768da7d',
             ],
+            'typicalAgeRange' => '8-12',
             'availableFrom' => '2018-01-01T00:00:00+01:00',
         ];
 
@@ -632,6 +635,9 @@ class EventDenormalizerTest extends TestCase
             )
             ->withOrganizerReference(
                 OrganizerReference::createWithOrganizerId(new UUID('236f736e-5308-4c3a-94f3-da0bd768da7d'))
+            )
+            ->withAgeRange(
+                new AgeRange(new Age(8), new Age(12))
             );
 
         $actual = $this->denormalizer->denormalize($eventData, ImmutableEvent::class);

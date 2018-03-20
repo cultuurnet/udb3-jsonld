@@ -8,6 +8,8 @@ use CultuurNet\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
+use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
@@ -622,6 +624,7 @@ class PlaceDenormalizerTest extends TestCase
                 "latitude" => 50.8793916,
                 "longitude" => 4.7019674,
             ],
+            'typicalAgeRange' => '8-12',
             'availableFrom' => '2018-01-01T00:00:00+01:00',
         ];
 
@@ -673,6 +676,9 @@ class PlaceDenormalizerTest extends TestCase
                     new Latitude(50.8793916),
                     new Longitude(4.7019674)
                 )
+            )
+            ->withAgeRange(
+                new AgeRange(new Age(8), new Age(12))
             );
 
         $actual = $this->denormalizer->denormalize($placeData, ImmutablePlace::class);
