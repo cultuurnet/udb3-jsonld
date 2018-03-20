@@ -32,29 +32,9 @@ class PlaceDenormalizer extends OfferDenormalizer
     private $placeValidator;
 
     /**
-     * @var UUIDParser
-     */
-    private $placeIDParser;
-
-    /**
-     * @var DenormalizerInterface
-     */
-    private $titleDenormalizer;
-
-    /**
-     * @var DenormalizerInterface
-     */
-    private $calendarDenormalizer;
-
-    /**
      * @var DenormalizerInterface
      */
     private $addressDenormalizer;
-
-    /**
-     * @var DenormalizerInterface
-     */
-    private $categoriesDenormalizer;
 
     public function __construct(
         Validator $placeValidator = null,
