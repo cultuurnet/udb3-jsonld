@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Model\Serializer\Offer;
 
 use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
+use CultuurNet\UDB3\Model\Serializer\Place\OrganizerReferenceDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoriesDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Label\LabelsDenormalizer;

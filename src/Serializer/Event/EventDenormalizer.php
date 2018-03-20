@@ -5,23 +5,16 @@ namespace CultuurNet\UDB3\Model\Serializer\Event;
 use CultuurNet\UDB3\Model\Event\Event;
 use CultuurNet\UDB3\Model\Event\EventIDParser;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
-use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\Serializer\Offer\OfferDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceReferenceDenormalizer;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarDenormalizer;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoriesDenormalizer;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Text\TranslatedDescriptionDenormalizer;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Text\TranslatedTitleDenormalizer;
 use CultuurNet\UDB3\Model\Validation\Event\EventValidator;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
-use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Respect\Validation\Validator;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -32,11 +25,6 @@ class EventDenormalizer extends OfferDenormalizer
      * @var Validator
      */
     private $eventValidator;
-
-    /**
-     * @var UUIDParser
-     */
-    private $eventIDParser;
 
     /**
      * @var DenormalizerInterface

@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\MediaObject;
 
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;

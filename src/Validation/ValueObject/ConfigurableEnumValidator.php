@@ -2,10 +2,6 @@
 
 namespace CultuurNet\UDB3\Model\Validation\ValueObject;
 
-use Respect\Validation\Rules\Equals;
-use Respect\Validation\Rules\OneOf;
-use Respect\Validation\Validator;
-
 class ConfigurableEnumValidator extends EnumValidator
 {
     /**

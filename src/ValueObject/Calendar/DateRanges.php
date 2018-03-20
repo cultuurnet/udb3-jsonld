@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
-use TwoDotsTwice\ValueObject\Collection\Collection;
 use TwoDotsTwice\ValueObject\Collection\Behaviour\IsNotEmpty;
+use TwoDotsTwice\ValueObject\Collection\Collection;
 
 class DateRanges extends Collection
 {
