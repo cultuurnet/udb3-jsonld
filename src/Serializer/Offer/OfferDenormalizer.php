@@ -5,12 +5,14 @@ namespace CultuurNet\UDB3\Model\Serializer\Offer;
 use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoriesDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Label\LabelsDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Text\TranslatedDescriptionDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Text\TranslatedTitleDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -45,18 +47,25 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     private $categoriesDenormalizer;
 
     /**
+     * @var DenormalizerInterface
+     */
+    private $labelsDenormalizer;
+
+    /**
      * @param UUIDParser $idParser
      * @param DenormalizerInterface|null $titleDenormalizer
      * @param DenormalizerInterface|null $descriptionDenormalizer
      * @param DenormalizerInterface|null $calendarDenormalizer
      * @param DenormalizerInterface|null $categoriesDenormalizer
+     * @param DenormalizerInterface|null $labelsDenormalizer
      */
     public function __construct(
         UUIDParser $idParser,
         DenormalizerInterface $titleDenormalizer = null,
         DenormalizerInterface $descriptionDenormalizer = null,
         DenormalizerInterface $calendarDenormalizer = null,
-        DenormalizerInterface $categoriesDenormalizer = null
+        DenormalizerInterface $categoriesDenormalizer = null,
+        DenormalizerInterface $labelsDenormalizer = null
     ) {
         if (!$titleDenormalizer) {
             $titleDenormalizer = new TranslatedTitleDenormalizer();
@@ -74,11 +83,16 @@ abstract class OfferDenormalizer implements DenormalizerInterface
             $categoriesDenormalizer = new CategoriesDenormalizer();
         }
 
+        if (!$labelsDenormalizer) {
+            $labelsDenormalizer = new LabelsDenormalizer();
+        }
+
         $this->idParser = $idParser;
         $this->titleDenormalizer = $titleDenormalizer;
         $this->descriptionDenormalizer = $descriptionDenormalizer;
         $this->calendarDenormalizer = $calendarDenormalizer;
         $this->categoriesDenormalizer = $categoriesDenormalizer;
+        $this->labelsDenormalizer = $labelsDenormalizer;
     }
 
     /**
@@ -120,6 +134,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
 
         $offer = $this->createOffer($data, $id, $mainLanguage, $title, $calendar, $categories);
         $offer = $this->denormalizeDescription($data, $offer);
+        $offer = $this->denormalizeLabels($data, $offer);
         $offer = $this->denormalizeAvailableFrom($data, $offer);
 
         return $offer;
@@ -145,6 +160,17 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         }
 
         return $offer;
+    }
+
+    /**
+     * @param array $data
+     * @param ImmutableOffer $offer
+     * @return ImmutableOffer
+     */
+    protected function denormalizeLabels(array $data, ImmutableOffer $offer)
+    {
+        $labels = $this->labelsDenormalizer->denormalize($data, Labels::class);
+        return $offer->withLabels($labels);
     }
 
     /**

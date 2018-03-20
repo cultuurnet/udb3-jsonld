@@ -50,7 +50,8 @@ class EventDenormalizer extends OfferDenormalizer
         DenormalizerInterface $descriptionDenormalizer = null,
         DenormalizerInterface $calendarDenormalizer = null,
         DenormalizerInterface $categoriesDenormalizer = null,
-        DenormalizerInterface $placeReferenceDenormalizer = null
+        DenormalizerInterface $placeReferenceDenormalizer = null,
+        DenormalizerInterface $labelsDenormalizer = null
     ) {
         if (!$eventValidator) {
             $eventValidator = new EventValidator();
@@ -72,7 +73,8 @@ class EventDenormalizer extends OfferDenormalizer
             $titleDenormalizer,
             $descriptionDenormalizer,
             $calendarDenormalizer,
-            $categoriesDenormalizer
+            $categoriesDenormalizer,
+            $labelsDenormalizer
         );
     }
 

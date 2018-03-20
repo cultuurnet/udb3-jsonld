@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Model\Serializer\Offer\OfferDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoriesDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Label\LabelsDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Text\TranslatedTitleDenormalizer;
 use CultuurNet\UDB3\Model\Validation\Place\PlaceValidator;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
@@ -43,7 +44,8 @@ class PlaceDenormalizer extends OfferDenormalizer
         DenormalizerInterface $descriptionDenormalizer = null,
         DenormalizerInterface $calendarDenormalizer = null,
         DenormalizerInterface $addressDenormalizer = null,
-        DenormalizerInterface $categoriesDenormalizer = null
+        DenormalizerInterface $categoriesDenormalizer = null,
+        DenormalizerInterface $labelsDenormalizer = null
     ) {
         if (!$placeValidator) {
             $placeValidator = new PlaceValidator();
@@ -57,6 +59,10 @@ class PlaceDenormalizer extends OfferDenormalizer
             $addressDenormalizer = new TranslatedAddressDenormalizer();
         }
 
+        if (!$labelsDenormalizer) {
+            $labelsDenormalizer = new LabelsDenormalizer();
+        }
+
         $this->placeValidator = $placeValidator;
         $this->addressDenormalizer = $addressDenormalizer;
 
@@ -65,7 +71,8 @@ class PlaceDenormalizer extends OfferDenormalizer
             $titleDenormalizer,
             $descriptionDenormalizer,
             $calendarDenormalizer,
-            $categoriesDenormalizer
+            $categoriesDenormalizer,
+            $labelsDenormalizer
         );
     }
 

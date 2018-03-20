@@ -11,6 +11,9 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -155,6 +158,14 @@ class OrganizerDenormalizerTest extends TestCase
                     'addressCountry' => 'BE',
                 ],
             ],
+            'labels' => [
+                'foo',
+                'bar',
+            ],
+            'hiddenLabels' => [
+                'lorem',
+                'ipsum',
+            ],
         ];
 
         $expected = new ImmutableOrganizer(
@@ -169,25 +180,34 @@ class OrganizerDenormalizerTest extends TestCase
             new Url('https://www.publiq.be')
         );
 
-        $expected = $expected->withAddress(
-            (new TranslatedAddress(
-                new Language('nl'),
-                new Address(
-                    new Street('Henegouwenkaai 41-43'),
-                    new PostalCode('1080'),
-                    new Locality('Brussel'),
-                    new CountryCode('BE')
-                )
-            ))->withTranslation(
-                new Language('fr'),
-                new Address(
-                    new Street('Quai du Hainaut 41-43'),
-                    new PostalCode('1080'),
-                    new Locality('Bruxelles'),
-                    new CountryCode('BE')
+        $expected = $expected
+            ->withAddress(
+                (new TranslatedAddress(
+                    new Language('nl'),
+                    new Address(
+                        new Street('Henegouwenkaai 41-43'),
+                        new PostalCode('1080'),
+                        new Locality('Brussel'),
+                        new CountryCode('BE')
+                    )
+                ))->withTranslation(
+                    new Language('fr'),
+                    new Address(
+                        new Street('Quai du Hainaut 41-43'),
+                        new PostalCode('1080'),
+                        new Locality('Bruxelles'),
+                        new CountryCode('BE')
+                    )
                 )
             )
-        );
+            ->withLabels(
+                new Labels(
+                    new Label(new LabelName('foo'), true),
+                    new Label(new LabelName('bar'), true),
+                    new Label(new LabelName('lorem'), false),
+                    new Label(new LabelName('ipsum'), false)
+                )
+            );
 
         $actual = $this->denormalizer->denormalize($organizerData, ImmutableOrganizer::class);
 

@@ -26,6 +26,9 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
@@ -600,6 +603,14 @@ class PlaceDenormalizerTest extends TestCase
                 'nl' => 'Voorbeeld beschrijving',
                 'en' => 'Example description',
             ],
+            'labels' => [
+                'foo',
+                'bar',
+            ],
+            'hiddenLabels' => [
+                'lorem',
+                'ipsum',
+            ],
             'availableFrom' => '2018-01-01T00:00:00+01:00',
         ];
 
@@ -631,8 +642,17 @@ class PlaceDenormalizerTest extends TestCase
             ->withDescription(
                 (new TranslatedDescription(new Language('nl'), new Description('Voorbeeld beschrijving')))
                     ->withTranslation(new Language('en'), new Description('Example description'))
-            )->withAvailableFrom(
+            )
+            ->withAvailableFrom(
                 \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T00:00:00+01:00')
+            )
+            ->withLabels(
+                new Labels(
+                    new Label(new LabelName('foo'), true),
+                    new Label(new LabelName('bar'), true),
+                    new Label(new LabelName('lorem'), false),
+                    new Label(new LabelName('ipsum'), false)
+                )
             );
 
         $actual = $this->denormalizer->denormalize($placeData, ImmutablePlace::class);

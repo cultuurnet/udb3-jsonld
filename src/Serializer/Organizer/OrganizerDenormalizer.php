@@ -6,10 +6,12 @@ use CultuurNet\UDB3\Model\Organizer\ImmutableOrganizer;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
 use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Label\LabelsDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Text\TranslatedTitleDenormalizer;
 use CultuurNet\UDB3\Model\Validation\Organizer\OrganizerValidator;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -39,11 +41,17 @@ class OrganizerDenormalizer implements DenormalizerInterface
      */
     private $addressDenormalizer;
 
+    /**
+     * @var DenormalizerInterface
+     */
+    private $labelsDenormalizer;
+
     public function __construct(
         Validator $organizerValidator = null,
         UUIDParser $organizerIDParser = null,
         DenormalizerInterface $titleDenormalizer = null,
-        DenormalizerInterface $addressDenormalizer = null
+        DenormalizerInterface $addressDenormalizer = null,
+        DenormalizerInterface $labelsDenormalizer = null
     ) {
         if (!$organizerValidator) {
             $organizerValidator = new OrganizerValidator();
@@ -61,10 +69,15 @@ class OrganizerDenormalizer implements DenormalizerInterface
             $addressDenormalizer = new TranslatedAddressDenormalizer();
         }
 
+        if (!$labelsDenormalizer) {
+            $labelsDenormalizer = new LabelsDenormalizer();
+        }
+
         $this->organizerValidator = $organizerValidator;
         $this->organizerIDParser = $organizerIDParser;
         $this->titleDenormalizer = $titleDenormalizer;
         $this->addressDenormalizer = $addressDenormalizer;
+        $this->labelsDenormalizer = $labelsDenormalizer;
     }
 
     /**
@@ -109,6 +122,7 @@ class OrganizerDenormalizer implements DenormalizerInterface
         );
 
         $organizer = $this->denormalizeAddress($data, $organizer);
+        $organizer = $this->denormalizeLabels($data, $organizer);
 
         return $organizer;
     }
@@ -127,6 +141,17 @@ class OrganizerDenormalizer implements DenormalizerInterface
         }
 
         return $organizer;
+    }
+
+    /**
+     * @param array $data
+     * @param ImmutableOrganizer $organizer
+     * @return ImmutableOrganizer
+     */
+    protected function denormalizeLabels(array $data, ImmutableOrganizer $organizer)
+    {
+        $labels = $this->labelsDenormalizer->denormalize($data, Labels::class);
+        return $organizer->withLabels($labels);
     }
 
     /**
