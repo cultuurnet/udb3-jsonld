@@ -2,9 +2,11 @@
 
 namespace CultuurNet\UDB3\Model\Serializer\Organizer;
 
+use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Model\Organizer\ImmutableOrganizer;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
 use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\CoordinatesDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Label\LabelsDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Text\TranslatedTitleDenormalizer;
@@ -46,12 +48,18 @@ class OrganizerDenormalizer implements DenormalizerInterface
      */
     private $labelsDenormalizer;
 
+    /**
+     * @var DenormalizerInterface
+     */
+    private $geoCoordinatesDenormalizer;
+
     public function __construct(
         Validator $organizerValidator = null,
         UUIDParser $organizerIDParser = null,
         DenormalizerInterface $titleDenormalizer = null,
         DenormalizerInterface $addressDenormalizer = null,
-        DenormalizerInterface $labelsDenormalizer = null
+        DenormalizerInterface $labelsDenormalizer = null,
+        DenormalizerInterface $geoCoordinatesDenormalizer = null
     ) {
         if (!$organizerValidator) {
             $organizerValidator = new OrganizerValidator();
@@ -73,11 +81,16 @@ class OrganizerDenormalizer implements DenormalizerInterface
             $labelsDenormalizer = new LabelsDenormalizer();
         }
 
+        if (!$geoCoordinatesDenormalizer) {
+            $geoCoordinatesDenormalizer = new CoordinatesDenormalizer();
+        }
+
         $this->organizerValidator = $organizerValidator;
         $this->organizerIDParser = $organizerIDParser;
         $this->titleDenormalizer = $titleDenormalizer;
         $this->addressDenormalizer = $addressDenormalizer;
         $this->labelsDenormalizer = $labelsDenormalizer;
+        $this->geoCoordinatesDenormalizer = $geoCoordinatesDenormalizer;
     }
 
     /**
@@ -123,6 +136,7 @@ class OrganizerDenormalizer implements DenormalizerInterface
 
         $organizer = $this->denormalizeAddress($data, $organizer);
         $organizer = $this->denormalizeLabels($data, $organizer);
+        $organizer = $this->denormalizeGeoCoordinates($data, $organizer);
 
         return $organizer;
     }
@@ -148,10 +162,29 @@ class OrganizerDenormalizer implements DenormalizerInterface
      * @param ImmutableOrganizer $organizer
      * @return ImmutableOrganizer
      */
-    protected function denormalizeLabels(array $data, ImmutableOrganizer $organizer)
+    private function denormalizeLabels(array $data, ImmutableOrganizer $organizer)
     {
         $labels = $this->labelsDenormalizer->denormalize($data, Labels::class);
         return $organizer->withLabels($labels);
+    }
+
+    /**
+     * @param array $data
+     * @param ImmutableOrganizer $organizer
+     * @return ImmutableOrganizer
+     */
+    private function denormalizeGeoCoordinates(array $data, ImmutableOrganizer $organizer)
+    {
+        if (isset($data['geo'])) {
+            try {
+                $coordinates = $this->geoCoordinatesDenormalizer->denormalize($data['geo'], Coordinates::class);
+                $organizer = $organizer->withGeoCoordinates($coordinates);
+            } catch (\Exception $e) {
+                // Do nothing.
+            }
+        }
+
+        return $organizer;
     }
 
     /**

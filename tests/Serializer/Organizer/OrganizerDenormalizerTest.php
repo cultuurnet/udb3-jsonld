@@ -2,6 +2,9 @@
 
 namespace CultuurNet\UDB3\Model\Serializer\Organizer;
 
+use CultuurNet\Geocoding\Coordinate\Coordinates;
+use CultuurNet\Geocoding\Coordinate\Latitude;
+use CultuurNet\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Organizer\ImmutableOrganizer;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
@@ -166,6 +169,10 @@ class OrganizerDenormalizerTest extends TestCase
                 'lorem',
                 'ipsum',
             ],
+            'geo' => [
+                "latitude" => 50.8793916,
+                "longitude" => 4.7019674,
+            ],
         ];
 
         $expected = new ImmutableOrganizer(
@@ -206,6 +213,12 @@ class OrganizerDenormalizerTest extends TestCase
                     new Label(new LabelName('bar'), true),
                     new Label(new LabelName('lorem'), false),
                     new Label(new LabelName('ipsum'), false)
+                )
+            )
+            ->withGeoCoordinates(
+                new Coordinates(
+                    new Latitude(50.8793916),
+                    new Longitude(4.7019674)
                 )
             );
 

@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Model\Serializer\Place;
 
 use CultuurNet\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
@@ -128,17 +129,28 @@ class PlaceDenormalizer extends OfferDenormalizer
 
         /* @var ImmutablePlace $offer */
         $offer = $this->denormalizeOffer($data);
+        $offer = $this->denormalizeGeoCoordinates($data, $offer);
 
+        return $offer;
+    }
+
+    /**
+     * @param array $data
+     * @param ImmutablePlace $place
+     * @return ImmutablePlace
+     */
+    private function denormalizeGeoCoordinates(array $data, ImmutablePlace $place)
+    {
         if (isset($data['geo'])) {
             try {
                 $coordinates = $this->geoCoordinatesDenormalizer->denormalize($data['geo'], Coordinates::class);
-                $offer = $offer->withGeoCoordinates($coordinates);
+                $place = $place->withGeoCoordinates($coordinates);
             } catch (\Exception $e) {
                 // Do nothing.
             }
         }
 
-        return $offer;
+        return $place;
     }
 
     /**
