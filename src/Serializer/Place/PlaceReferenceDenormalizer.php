@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\Serializer\Place;
 
+use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
@@ -17,15 +18,28 @@ class PlaceReferenceDenormalizer implements DenormalizerInterface
     private $placeIDParser;
 
     /**
-     * @param UUIDParser|null $placeIDParser
+     * @var DenormalizerInterface
      */
-    public function __construct(UUIDParser $placeIDParser = null)
-    {
+    private $placeDenormalizer;
+
+    /**
+     * @param UUIDParser|null $placeIDParser
+     * @param DenormalizerInterface|null $placeDenormalizer
+     */
+    public function __construct(
+        UUIDParser $placeIDParser = null,
+        DenormalizerInterface $placeDenormalizer = null
+    ) {
         if (!$placeIDParser) {
             $placeIDParser = new PlaceIDParser();
         }
 
+        if (!$placeDenormalizer) {
+            $placeDenormalizer = new PlaceDenormalizer();
+        }
+
         $this->placeIDParser = $placeIDParser;
+        $this->placeDenormalizer = $placeDenormalizer;
     }
 
     public function denormalize($data, $class, $format = null, array $context = array())
@@ -38,11 +52,23 @@ class PlaceReferenceDenormalizer implements DenormalizerInterface
             throw new UnsupportedException('Location data should be an associative array.');
         }
 
-        // @todo Check for embedded place and include it.
         // @todo Support dummy locations.
         $placeIdUrl = new Url($data['location']['@id']);
         $placeId = $this->placeIDParser->fromUrl($placeIdUrl);
-        return PlaceReference::createWithPlaceId($placeId);
+        $place = null;
+        if (count($data['location']) > 1) {
+            try {
+                $place = $this->placeDenormalizer->denormalize($data['location'], Place::class);
+            } catch (\Exception $e) {
+                $place = null;
+            }
+        }
+
+        if ($place) {
+            return PlaceReference::createWithEmbeddedPlace($place);
+        } else {
+            return PlaceReference::createWithPlaceId($placeId);
+        }
     }
 
     public function supportsDenormalization($data, $type, $format = null)

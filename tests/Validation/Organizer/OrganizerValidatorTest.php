@@ -53,6 +53,47 @@ class OrganizerValidatorTest extends TestCase
     /**
      * @test
      */
+    public function it_should_throw_an_exception_if_url_is_required_and_missing()
+    {
+        $validator = new OrganizerValidator([], true);
+
+        $organizer = [
+            '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Publiq vzw',
+            ],
+        ];
+
+        $expectedErrors = [
+            'Key url must be present',
+        ];
+
+        $this->assertValidationErrors($organizer, $expectedErrors, $validator);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_if_url_is_required_and_present()
+    {
+        $validator = new OrganizerValidator([], true);
+
+        $organizer = [
+            '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Publiq vzw',
+            ],
+            'url' => 'https://www.google.com',
+        ];
+
+        $this->assertTrue($validator->validate($organizer));
+    }
+
+    /**
+     * @test
+     */
     public function it_should_throw_an_exception_if_id_is_in_an_invalid_format()
     {
         $organizer = [
@@ -655,11 +696,14 @@ class OrganizerValidatorTest extends TestCase
     /**
      * @param mixed $data
      * @param array $expectedMessages
+     * @param Validator|null $validator
      */
-    private function assertValidationErrors($data, array $expectedMessages)
+    private function assertValidationErrors($data, array $expectedMessages, Validator $validator = null)
     {
+        $validator = $validator ? $validator : $this->getValidator();
+
         try {
-            $this->getValidator()->assert($data);
+            $validator->assert($data);
             $this->fail('No error messages found.');
         } catch (NestedValidationException $e) {
             $actualMessages = $e->getMessages();

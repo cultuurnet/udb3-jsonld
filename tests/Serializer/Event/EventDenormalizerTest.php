@@ -555,6 +555,56 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
+    public function it_should_denormalize_event_data_with_availableFrom()
+    {
+        $eventData = [
+            '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
+            '@type' => 'Event',
+            '@context' => '/contexts/event',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Titel voorbeeld',
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.be/place/dbe91250-4e4b-495c-b692-3da9563b0d52',
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.1',
+                ]
+            ],
+            'availableFrom' => '2018-01-01T00:00:00+01:00',
+        ];
+
+        $expected = new ImmutableEvent(
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Language('nl'),
+            new TranslatedTitle(
+                new Language('nl'),
+                new Title('Titel voorbeeld')
+            ),
+            new PermanentCalendar(new OpeningHours()),
+            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            new Categories(
+                new Category(
+                    new CategoryID('0.50.1.0.1')
+                )
+            )
+        );
+
+        $expected = $expected->withAvailableFrom(
+            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T00:00:00+01:00')
+        );
+
+        $actual = $this->denormalizer->denormalize($eventData, ImmutableEvent::class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_throw_an_exception_when_trying_to_denormalize_to_an_unsupported_class()
     {
         $this->expectException(UnsupportedException::class);

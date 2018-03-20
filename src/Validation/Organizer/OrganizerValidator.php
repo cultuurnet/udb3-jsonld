@@ -13,22 +13,27 @@ use Respect\Validation\Validator;
 
 class OrganizerValidator extends Validator
 {
-    public function __construct()
+    /**
+     * @param Validator[] $extraRules
+     * @param bool $urlRequired
+     */
+    public function __construct(array $extraRules = [], $urlRequired = false)
     {
-        // Note that url is NOT required, because there exist old organizers that were
-        // created in the past without a url.
-        // However, url is required to create new organizers. Just not when reading
-        // JSON-LD of existing organizers from eg. SAPI3.
+        // Note that url is NOT required when validating Organizer JSON returned
+        // by UiTdatabank, because older organizers were created without url.
+        // However, url is required to create new organizers.
         $rules = [
             new Key('@id', new OrganizerIDValidator(), true),
             new Key('mainLanguage', new LanguageValidator(), true),
             new Key('name', new TranslatedStringValidator('name'), true),
-            new Key('url', new Url(), false),
+            new Key('url', new Url(), $urlRequired),
             new Key('address', new TranslatedAddressValidator(), false),
             new Key('labels', new LabelsValidator(), false),
             new Key('hiddenLabels', new LabelsValidator(), false),
             new Key('contactPoint', new ContactPointValidator(), false),
         ];
+
+        $rules = array_merge($rules, $extraRules);
 
         parent::__construct($rules);
     }

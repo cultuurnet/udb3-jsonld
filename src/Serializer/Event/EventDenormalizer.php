@@ -126,7 +126,7 @@ class EventDenormalizer implements DenormalizerInterface
         $placeReference = $this->placeReferenceDenormalizer->denormalize($data, PlaceReference::class);
         $categories = $this->categoriesDenormalizer->denormalize($data['terms'], Categories::class);
 
-        return new ImmutableEvent(
+        $event = new ImmutableEvent(
             $id,
             $mainLanguage,
             $title,
@@ -134,6 +134,13 @@ class EventDenormalizer implements DenormalizerInterface
             $placeReference,
             $categories
         );
+
+        if (isset($data['availableFrom'])) {
+            $availableFrom = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $data['availableFrom']);
+            $event = $event->withAvailableFrom($availableFrom);
+        }
+
+        return $event;
     }
 
     /**
