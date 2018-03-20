@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\Serializer\Offer\OfferDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceReferenceDenormalizer;
 use CultuurNet\UDB3\Model\Validation\Event\EventValidator;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
@@ -111,7 +112,26 @@ class EventDenormalizer extends OfferDenormalizer
 
         $this->eventValidator->assert($data);
 
-        return $this->denormalizeOffer($data);
+        /* @var ImmutableEvent $offer */
+        $offer = $this->denormalizeOffer($data);
+        $offer = $this->denormalizeAudienceType($data, $offer);
+
+        return $offer;
+    }
+
+    /**
+     * @param array $data
+     * @param ImmutableEvent $event
+     * @return ImmutableEvent
+     */
+    private function denormalizeAudienceType(array $data, ImmutableEvent $event)
+    {
+        if (isset($data['audience']['audienceType'])) {
+            $audienceType = new AudienceType((string) $data['audience']['audienceType']);
+            $event = $event->withAudienceType($audienceType);
+        }
+
+        return $event;
     }
 
     /**
