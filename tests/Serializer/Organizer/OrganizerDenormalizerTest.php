@@ -4,6 +4,12 @@ namespace CultuurNet\UDB3\Model\Serializer\Organizer;
 
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Organizer\ImmutableOrganizer;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
@@ -112,6 +118,75 @@ class OrganizerDenormalizerTest extends TestCase
                 ->withTranslation(new Language('en'), new Title('Example title'))
                 ->withTranslation(new Language('fr'), new Title('Titre de l\'exemple')),
             new Url('https://www.publiq.be')
+        );
+
+        $actual = $this->denormalizer->denormalize($organizerData, ImmutableOrganizer::class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_denormalize_organizer_data_with_optional_properties()
+    {
+        $organizerData = [
+            '@id' => 'https://io.uitdatabank.be/organizer/9f34efc7-a528-4ea8-a53e-a183f21abbab',
+            '@type' => 'Organizer',
+            '@context' => '/contexts/organizer',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Titel voorbeeld',
+                'en' => 'Example title',
+                'fr' => 'Titre de l\'exemple',
+            ],
+            'url' => 'https://www.publiq.be',
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+                'fr' => [
+                    'streetAddress' => 'Quai du Hainaut 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Bruxelles',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+        ];
+
+        $expected = new ImmutableOrganizer(
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Language('nl'),
+            (new TranslatedTitle(
+                new Language('nl'),
+                new Title('Titel voorbeeld')
+            ))
+                ->withTranslation(new Language('en'), new Title('Example title'))
+                ->withTranslation(new Language('fr'), new Title('Titre de l\'exemple')),
+            new Url('https://www.publiq.be')
+        );
+
+        $expected = $expected->withAddress(
+            (new TranslatedAddress(
+                new Language('nl'),
+                new Address(
+                    new Street('Henegouwenkaai 41-43'),
+                    new PostalCode('1080'),
+                    new Locality('Brussel'),
+                    new CountryCode('BE')
+                )
+            ))->withTranslation(
+                new Language('fr'),
+                new Address(
+                    new Street('Quai du Hainaut 41-43'),
+                    new PostalCode('1080'),
+                    new Locality('Bruxelles'),
+                    new CountryCode('BE')
+                )
+            )
         );
 
         $actual = $this->denormalizer->denormalize($organizerData, ImmutableOrganizer::class);

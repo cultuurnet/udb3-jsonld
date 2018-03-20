@@ -5,8 +5,10 @@ namespace CultuurNet\UDB3\Model\Serializer\Organizer;
 use CultuurNet\UDB3\Model\Organizer\ImmutableOrganizer;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
 use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Text\TranslatedTitleDenormalizer;
 use CultuurNet\UDB3\Model\Validation\Organizer\OrganizerValidator;
+use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -32,10 +34,16 @@ class OrganizerDenormalizer implements DenormalizerInterface
      */
     private $titleDenormalizer;
 
+    /**
+     * @var DenormalizerInterface
+     */
+    private $addressDenormalizer;
+
     public function __construct(
         Validator $organizerValidator = null,
         UUIDParser $organizerIDParser = null,
-        DenormalizerInterface $titleDenormalizer = null
+        DenormalizerInterface $titleDenormalizer = null,
+        DenormalizerInterface $addressDenormalizer = null
     ) {
         if (!$organizerValidator) {
             $organizerValidator = new OrganizerValidator();
@@ -49,9 +57,14 @@ class OrganizerDenormalizer implements DenormalizerInterface
             $titleDenormalizer = new TranslatedTitleDenormalizer();
         }
 
+        if (!$addressDenormalizer) {
+            $addressDenormalizer = new TranslatedAddressDenormalizer();
+        }
+
         $this->organizerValidator = $organizerValidator;
         $this->organizerIDParser = $organizerIDParser;
         $this->titleDenormalizer = $titleDenormalizer;
+        $this->addressDenormalizer = $addressDenormalizer;
     }
 
     /**
@@ -88,12 +101,32 @@ class OrganizerDenormalizer implements DenormalizerInterface
             $url = new Url($data['url']);
         }
 
-        return new ImmutableOrganizer(
+        $organizer = new ImmutableOrganizer(
             $id,
             $mainLanguage,
             $title,
             $url
         );
+
+        $organizer = $this->denormalizeAddress($data, $organizer);
+
+        return $organizer;
+    }
+
+    /**
+     * @param array $data
+     * @param ImmutableOrganizer $organizer
+     * @return ImmutableOrganizer
+     */
+    private function denormalizeAddress(array $data, ImmutableOrganizer $organizer)
+    {
+        if (isset($data['address'])) {
+            /* @var TranslatedAddress $address */
+            $address = $this->addressDenormalizer->denormalize($data['address'], TranslatedAddress::class);
+            $organizer = $organizer->withAddress($address);
+        }
+
+        return $organizer;
     }
 
     /**
