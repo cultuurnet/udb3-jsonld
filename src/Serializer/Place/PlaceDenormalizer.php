@@ -3,14 +3,12 @@
 namespace CultuurNet\UDB3\Model\Serializer\Place;
 
 use CultuurNet\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Serializer\Offer\OfferDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\CoordinatesDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressDenormalizer;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Label\LabelsDenormalizer;
 use CultuurNet\UDB3\Model\Validation\Place\PlaceValidator;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
@@ -51,7 +49,8 @@ class PlaceDenormalizer extends OfferDenormalizer
         DenormalizerInterface $labelsDenormalizer = null,
         DenormalizerInterface $organizerReferenceDenormalizer = null,
         DenormalizerInterface $geoCoordinatesDenormalizer = null,
-        DenormalizerInterface $ageRangeDenormalizer = null
+        DenormalizerInterface $ageRangeDenormalizer = null,
+        DenormalizerInterface $priceInfoDenormalizer = null
     ) {
         if (!$placeValidator) {
             $placeValidator = new PlaceValidator();
@@ -81,7 +80,8 @@ class PlaceDenormalizer extends OfferDenormalizer
             $categoriesDenormalizer,
             $labelsDenormalizer,
             $organizerReferenceDenormalizer,
-            $ageRangeDenormalizer
+            $ageRangeDenormalizer,
+            $priceInfoDenormalizer
         );
     }
 

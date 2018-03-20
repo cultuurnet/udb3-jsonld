@@ -42,7 +42,8 @@ class EventDenormalizer extends OfferDenormalizer
         DenormalizerInterface $placeReferenceDenormalizer = null,
         DenormalizerInterface $labelsDenormalizer = null,
         DenormalizerInterface $organizerDenormalizer = null,
-        DenormalizerInterface $ageRangeDenormalizer = null
+        DenormalizerInterface $ageRangeDenormalizer = null,
+        DenormalizerInterface $priceInfoDenormalizer = null
     ) {
         if (!$eventValidator) {
             $eventValidator = new EventValidator();
@@ -67,7 +68,8 @@ class EventDenormalizer extends OfferDenormalizer
             $categoriesDenormalizer,
             $labelsDenormalizer,
             $organizerDenormalizer,
-            $ageRangeDenormalizer
+            $ageRangeDenormalizer,
+            $priceInfoDenormalizer
         );
     }
 

@@ -28,6 +28,11 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
+use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
+use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
+use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
+use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -41,6 +46,8 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use Money\Currency;
+use Money\Money;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 
@@ -626,6 +633,26 @@ class PlaceDenormalizerTest extends TestCase
                 "longitude" => 4.7019674,
             ],
             'typicalAgeRange' => '8-12',
+            'priceInfo' => [
+                [
+                    'category' => 'tariff',
+                    'name' => [
+                        'nl' => 'Senioren',
+                        'en' => 'Seniors',
+                    ],
+                    'price' => 10.5,
+                    'priceCurrency' => 'EUR',
+                ],
+                [
+                    'category' => 'base',
+                    'name' => [
+                        'en' => 'Base tariff',
+                        'nl' => 'Basistarief',
+                    ],
+                    'price' => 15,
+                    'priceCurrency' => 'EUR',
+                ],
+            ],
             'workflowStatus' => 'APPROVED',
             'availableFrom' => '2018-01-01T00:00:00+01:00',
         ];
@@ -681,6 +708,32 @@ class PlaceDenormalizerTest extends TestCase
             )
             ->withAgeRange(
                 new AgeRange(new Age(8), new Age(12))
+            )
+            ->withPriceInfo(
+                new PriceInfo(
+                    new Tariff(
+                        (new TranslatedTariffName(
+                            new Language('nl'),
+                            new TariffName('Basistarief')
+                        ))->withTranslation(new Language('en'), new TariffName('Base tariff')),
+                        new Money(
+                            1500,
+                            new Currency('EUR')
+                        )
+                    ),
+                    new Tariffs(
+                        new Tariff(
+                            (new TranslatedTariffName(
+                                new Language('nl'),
+                                new TariffName('Senioren')
+                            ))->withTranslation(new Language('en'), new TariffName('Seniors')),
+                            new Money(
+                                1050,
+                                new Currency('EUR')
+                            )
+                        )
+                    )
+                )
             )
             ->withWorkflowStatus(
                 WorkflowStatus::APPROVED()
