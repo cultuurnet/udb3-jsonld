@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleDateRangeCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -602,6 +603,7 @@ class EventDenormalizerTest extends TestCase
             'audience' => [
                 'audienceType' => 'education',
             ],
+            'workflowStatus' => 'APPROVED',
             'availableFrom' => '2018-01-01T00:00:00+01:00',
         ];
 
@@ -645,6 +647,9 @@ class EventDenormalizerTest extends TestCase
             )
             ->withAudienceType(
                 AudienceType::education()
+            )
+            ->withWorkflowStatus(
+                WorkflowStatus::APPROVED()
             );
 
         $actual = $this->denormalizer->denormalize($eventData, ImmutableEvent::class);

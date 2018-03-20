@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -625,6 +626,7 @@ class PlaceDenormalizerTest extends TestCase
                 "longitude" => 4.7019674,
             ],
             'typicalAgeRange' => '8-12',
+            'workflowStatus' => 'APPROVED',
             'availableFrom' => '2018-01-01T00:00:00+01:00',
         ];
 
@@ -679,6 +681,9 @@ class PlaceDenormalizerTest extends TestCase
             )
             ->withAgeRange(
                 new AgeRange(new Age(8), new Age(12))
+            )
+            ->withWorkflowStatus(
+                WorkflowStatus::APPROVED()
             );
 
         $actual = $this->denormalizer->denormalize($placeData, ImmutablePlace::class);

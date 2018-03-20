@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
@@ -165,6 +166,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         $offer = $this->denormalizeLabels($data, $offer);
         $offer = $this->denormalizeOrganizerReference($data, $offer);
         $offer = $this->denormalizeAgeRange($data, $offer);
+        $offer = $this->denormalizeWorkflowStatus($data, $offer);
         $offer = $this->denormalizeAvailableFrom($data, $offer);
 
         return $offer;
@@ -232,6 +234,21 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         if (isset($data['typicalAgeRange'])) {
             $ageRange = $this->ageRangeDenormalizer->denormalize($data['typicalAgeRange'], AgeRange::class);
             $offer = $offer->withAgeRange($ageRange);
+        }
+
+        return $offer;
+    }
+
+    /**
+     * @param array $data
+     * @param ImmutableOffer $offer
+     * @return ImmutableOffer
+     */
+    protected function denormalizeWorkflowStatus(array $data, ImmutableOffer $offer)
+    {
+        if (isset($data['workflowStatus'])) {
+            $workflowStatus = new WorkflowStatus($data['workflowStatus']);
+            $offer = $offer->withWorkflowStatus($workflowStatus);
         }
 
         return $offer;
