@@ -55,6 +55,14 @@ class MediaObjectIDParserTest extends TestCase
                 'url' => 'http://io.uitdatabank.be/media/118353f3-dd1a-4c8f-845a-f0c625261332/',
                 'uuid' => '118353f3-dd1a-4c8f-845a-f0c625261332',
             ],
+            'image' => [
+                'url' => 'http://io.uitdatabank.be/image/118353f3-dd1a-4c8f-845a-f0c625261332',
+                'uuid' => '118353f3-dd1a-4c8f-845a-f0c625261332',
+            ],
+            'images' => [
+                'url' => 'http://io.uitdatabank.be/images/118353f3-dd1a-4c8f-845a-f0c625261332',
+                'uuid' => '118353f3-dd1a-4c8f-845a-f0c625261332',
+            ],
         ];
     }
 

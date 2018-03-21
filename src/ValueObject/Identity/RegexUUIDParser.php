@@ -17,13 +17,20 @@ class RegexUUIDParser implements UUIDParser
     private $idName;
 
     /**
-     * @param string $regex
-     * @param string $idName;
+     * @var int
      */
-    public function __construct($regex, $idName = 'ID')
+    private $matchIndex;
+
+    /**
+     * @param string $regex
+     * @param string $idName
+     * @param int $matchIndex
+     */
+    public function __construct($regex, $idName = 'ID', $matchIndex = 1)
     {
         $this->regex = $regex;
         $this->idName = $idName;
+        $this->matchIndex = $matchIndex;
     }
 
     /**
@@ -37,7 +44,7 @@ class RegexUUIDParser implements UUIDParser
         preg_match($this->regex, $url, $matches);
 
         if (count($matches) > 1) {
-            return new UUID($matches[1]);
+            return new UUID($matches[$this->matchIndex]);
         } else {
             throw new \InvalidArgumentException("No {$this->idName} found in given Url.");
         }
