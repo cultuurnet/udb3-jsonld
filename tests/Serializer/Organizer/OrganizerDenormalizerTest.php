@@ -7,6 +7,9 @@ use CultuurNet\Geocoding\Coordinate\Latitude;
 use CultuurNet\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Organizer\ImmutableOrganizer;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
@@ -20,7 +23,10 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 
@@ -169,6 +175,20 @@ class OrganizerDenormalizerTest extends TestCase
                 'lorem',
                 'ipsum',
             ],
+            'contactPoint' => [
+                'phone' => [
+                    '044/556677',
+                    '011/223344',
+                ],
+                'email' => [
+                    'foo@publiq.be',
+                    'bar@publiq.be',
+                ],
+                'url' => [
+                    'https://www.uitdatabank.be',
+                    'https://www.uitpas.be',
+                ],
+            ],
             'geo' => [
                 "latitude" => 50.8793916,
                 "longitude" => 4.7019674,
@@ -213,6 +233,22 @@ class OrganizerDenormalizerTest extends TestCase
                     new Label(new LabelName('bar'), true),
                     new Label(new LabelName('lorem'), false),
                     new Label(new LabelName('ipsum'), false)
+                )
+            )
+            ->withContactPoint(
+                new ContactPoint(
+                    new TelephoneNumbers(
+                        new TelephoneNumber('044/556677'),
+                        new TelephoneNumber('011/223344')
+                    ),
+                    new EmailAddresses(
+                        new EmailAddress('foo@publiq.be'),
+                        new EmailAddress('bar@publiq.be')
+                    ),
+                    new Urls(
+                        new Url('https://www.uitdatabank.be'),
+                        new Url('https://www.uitpas.be')
+                    )
                 )
             )
             ->withGeoCoordinates(

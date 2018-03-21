@@ -6,11 +6,13 @@ use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Model\Organizer\ImmutableOrganizer;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
 use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\CoordinatesDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Label\LabelsDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Text\TranslatedTitleDenormalizer;
 use CultuurNet\UDB3\Model\Validation\Organizer\OrganizerValidator;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -51,6 +53,11 @@ class OrganizerDenormalizer implements DenormalizerInterface
     /**
      * @var DenormalizerInterface
      */
+    private $contactPointDenormalizer;
+
+    /**
+     * @var DenormalizerInterface
+     */
     private $geoCoordinatesDenormalizer;
 
     public function __construct(
@@ -59,6 +66,7 @@ class OrganizerDenormalizer implements DenormalizerInterface
         DenormalizerInterface $titleDenormalizer = null,
         DenormalizerInterface $addressDenormalizer = null,
         DenormalizerInterface $labelsDenormalizer = null,
+        DenormalizerInterface $contactPointDenormalizer = null,
         DenormalizerInterface $geoCoordinatesDenormalizer = null
     ) {
         if (!$organizerValidator) {
@@ -81,6 +89,10 @@ class OrganizerDenormalizer implements DenormalizerInterface
             $labelsDenormalizer = new LabelsDenormalizer();
         }
 
+        if (!$contactPointDenormalizer) {
+            $contactPointDenormalizer = new ContactPointDenormalizer();
+        }
+
         if (!$geoCoordinatesDenormalizer) {
             $geoCoordinatesDenormalizer = new CoordinatesDenormalizer();
         }
@@ -90,6 +102,7 @@ class OrganizerDenormalizer implements DenormalizerInterface
         $this->titleDenormalizer = $titleDenormalizer;
         $this->addressDenormalizer = $addressDenormalizer;
         $this->labelsDenormalizer = $labelsDenormalizer;
+        $this->contactPointDenormalizer = $contactPointDenormalizer;
         $this->geoCoordinatesDenormalizer = $geoCoordinatesDenormalizer;
     }
 
@@ -136,6 +149,7 @@ class OrganizerDenormalizer implements DenormalizerInterface
 
         $organizer = $this->denormalizeAddress($data, $organizer);
         $organizer = $this->denormalizeLabels($data, $organizer);
+        $organizer = $this->denormalizeContactPoint($data, $organizer);
         $organizer = $this->denormalizeGeoCoordinates($data, $organizer);
 
         return $organizer;
@@ -182,6 +196,26 @@ class OrganizerDenormalizer implements DenormalizerInterface
             } catch (\Exception $e) {
                 // Do nothing.
             }
+        }
+
+        return $organizer;
+    }
+
+    /**
+     * @param array $data
+     * @param ImmutableOrganizer $organizer
+     * @return ImmutableOrganizer
+     */
+    protected function denormalizeContactPoint(array $data, ImmutableOrganizer $organizer)
+    {
+        if (isset($data['contactPoint'])) {
+            $contactPoint = $this->contactPointDenormalizer->denormalize(
+                $data['contactPoint'],
+                ContactPoint::class,
+                null,
+                ['originalLanguage' => $data['mainLanguage']]
+            );
+            $organizer = $organizer->withContactPoint($contactPoint);
         }
 
         return $organizer;

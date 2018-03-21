@@ -22,7 +22,9 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
@@ -50,8 +52,10 @@ use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use Money\Currency;
@@ -672,6 +676,20 @@ class PlaceDenormalizerTest extends TestCase
                 'availabilityStarts' => '2018-01-01T00:00:00+01:00',
                 'availabilityEnds' => '2018-10-01T00:00:00+01:00',
             ],
+            'contactPoint' => [
+                'phone' => [
+                    '044/556677',
+                    '011/223344',
+                ],
+                'email' => [
+                    'foo@publiq.be',
+                    'bar@publiq.be',
+                ],
+                'url' => [
+                    'https://www.uitdatabank.be',
+                    'https://www.uitpas.be',
+                ],
+            ],
             'workflowStatus' => 'APPROVED',
             'availableFrom' => '2018-01-01T00:00:00+01:00',
         ];
@@ -768,6 +786,22 @@ class PlaceDenormalizerTest extends TestCase
                     new BookingAvailability(
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T00:00:00+01:00'),
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-10-01T00:00:00+01:00')
+                    )
+                )
+            )
+            ->withContactPoint(
+                new ContactPoint(
+                    new TelephoneNumbers(
+                        new TelephoneNumber('044/556677'),
+                        new TelephoneNumber('011/223344')
+                    ),
+                    new EmailAddresses(
+                        new EmailAddress('foo@publiq.be'),
+                        new EmailAddress('bar@publiq.be')
+                    ),
+                    new Urls(
+                        new Url('https://www.uitdatabank.be'),
+                        new Url('https://www.uitpas.be')
                     )
                 )
             )
