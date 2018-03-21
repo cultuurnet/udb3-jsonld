@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Model\Serializer\Place;
+namespace CultuurNet\UDB3\Model\Serializer\Organizer;
 
 use CultuurNet\UDB3\Model\Organizer\Organizer;
 use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;

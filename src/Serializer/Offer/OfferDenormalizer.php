@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Model\Serializer\Offer;
 
 use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
-use CultuurNet\UDB3\Model\Serializer\Place\OrganizerReferenceDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerReferenceDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Audience\AgeRangeDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoDenormalizer;
@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
