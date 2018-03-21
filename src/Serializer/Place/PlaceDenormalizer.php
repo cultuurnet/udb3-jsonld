@@ -52,7 +52,8 @@ class PlaceDenormalizer extends OfferDenormalizer
         DenormalizerInterface $ageRangeDenormalizer = null,
         DenormalizerInterface $priceInfoDenormalizer = null,
         DenormalizerInterface $bookingInfoDenormalizer = null,
-        DenormalizerInterface $contactPointDenormalizer = null
+        DenormalizerInterface $contactPointDenormalizer = null,
+        DenormalizerInterface $mediaObjectReferencesDenormalizer = null
     ) {
         if (!$placeValidator) {
             $placeValidator = new PlaceValidator();
@@ -85,7 +86,8 @@ class PlaceDenormalizer extends OfferDenormalizer
             $ageRangeDenormalizer,
             $priceInfoDenormalizer,
             $bookingInfoDenormalizer,
-            $contactPointDenormalizer
+            $contactPointDenormalizer,
+            $mediaObjectReferencesDenormalizer
         );
     }
 

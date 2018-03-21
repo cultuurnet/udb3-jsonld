@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Audience\AgeRangeDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\MediaObjectReferencesDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\PriceInfoDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoriesDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Label\LabelsDenormalizer;
@@ -20,6 +21,8 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
@@ -88,6 +91,11 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     private $contactPointDenormalizer;
 
     /**
+     * @var DenormalizerInterface
+     */
+    private $mediaObjectReferencesDenormalizer;
+
+    /**
      * @param UUIDParser $idParser
      * @param DenormalizerInterface|null $titleDenormalizer
      * @param DenormalizerInterface|null $descriptionDenormalizer
@@ -99,6 +107,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
      * @param DenormalizerInterface|null $priceInfoDenormalizer
      * @param DenormalizerInterface|null $bookingInfoDenormalizer
      * @param DenormalizerInterface|null $contactPointDenormalizer
+     * @param DenormalizerInterface|null $mediaObjectReferencesDenormalizer
      */
     public function __construct(
         UUIDParser $idParser,
@@ -111,7 +120,8 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         DenormalizerInterface $ageRangeDenormalizer = null,
         DenormalizerInterface $priceInfoDenormalizer = null,
         DenormalizerInterface $bookingInfoDenormalizer = null,
-        DenormalizerInterface $contactPointDenormalizer = null
+        DenormalizerInterface $contactPointDenormalizer = null,
+        DenormalizerInterface $mediaObjectReferencesDenormalizer = null
     ) {
         if (!$titleDenormalizer) {
             $titleDenormalizer = new TranslatedTitleDenormalizer();
@@ -153,6 +163,10 @@ abstract class OfferDenormalizer implements DenormalizerInterface
             $contactPointDenormalizer = new ContactPointDenormalizer();
         }
 
+        if (!$mediaObjectReferencesDenormalizer) {
+            $mediaObjectReferencesDenormalizer = new MediaObjectReferencesDenormalizer();
+        }
+
         $this->idParser = $idParser;
         $this->titleDenormalizer = $titleDenormalizer;
         $this->descriptionDenormalizer = $descriptionDenormalizer;
@@ -164,6 +178,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         $this->priceInfoDenormalizer = $priceInfoDenormalizer;
         $this->bookingInfoDenormalizer = $bookingInfoDenormalizer;
         $this->contactPointDenormalizer = $contactPointDenormalizer;
+        $this->mediaObjectReferencesDenormalizer = $mediaObjectReferencesDenormalizer;
     }
 
     /**
@@ -211,6 +226,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         $offer = $this->denormalizePriceInfo($data, $offer);
         $offer = $this->denormalizeBookingInfo($data, $offer);
         $offer = $this->denormalizeContactPoint($data, $offer);
+        $offer = $this->denormalizeMediaObjectReferences($data, $offer);
         $offer = $this->denormalizeWorkflowStatus($data, $offer);
         $offer = $this->denormalizeAvailableFrom($data, $offer);
 
@@ -339,6 +355,27 @@ abstract class OfferDenormalizer implements DenormalizerInterface
                 ['originalLanguage' => $data['mainLanguage']]
             );
             $offer = $offer->withContactPoint($contactPoint);
+        }
+
+        return $offer;
+    }
+
+    /**
+     * @param array $data
+     * @param ImmutableOffer $offer
+     * @return ImmutableOffer
+     */
+    protected function denormalizeMediaObjectReferences(array $data, ImmutableOffer $offer)
+    {
+        if (isset($data['mediaObject'])) {
+            /* @var MediaObjectReferences $mediaObjectReferences */
+            $mediaObjectReferences = $this->mediaObjectReferencesDenormalizer->denormalize(
+                $data['mediaObject'],
+                MediaObjectReferences::class,
+                null,
+                ['originalLanguage' => $data['mainLanguage']]
+            );
+            $offer = $offer->withMediaObjectReferences($mediaObjectReferences);
         }
 
         return $offer;

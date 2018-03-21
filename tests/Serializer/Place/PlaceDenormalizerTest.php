@@ -32,6 +32,11 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObject;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectType;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
@@ -690,6 +695,23 @@ class PlaceDenormalizerTest extends TestCase
                     'https://www.uitpas.be',
                 ],
             ],
+            'mediaObject' => [
+                [
+                    '@id' => 'https://io.uitdatabank.be/media/8b3c82d5-6cfe-442e-946c-1f4452636d61',
+                    'description' => 'Example image 1',
+                    'copyrightHolder' => 'Alice',
+                    'inLanguage' => 'nl',
+                ],
+                [
+                    '@id' => 'https://io.uitdatabank.be/media/fc712fef-e7c9-4df6-8655-da943852bd8d',
+                    '@type' => 'schema:ImageObject',
+                    'description' => 'Example image 2',
+                    'copyrightHolder' => 'Bob',
+                    'inLanguage' => 'fr',
+                    'contentUrl' => 'https://io.uitdatabank.be/media/fc712fef-e7c9-4df6-8655-da943852bd8d.png',
+                    'thumbnailUrl' => 'https://io.uitdatabank.be/media/fc712fef-e7c9-4df6-8655-da943852bd8d.png',
+                ],
+            ],
             'workflowStatus' => 'APPROVED',
             'availableFrom' => '2018-01-01T00:00:00+01:00',
         ];
@@ -802,6 +824,27 @@ class PlaceDenormalizerTest extends TestCase
                     new Urls(
                         new Url('https://www.uitdatabank.be'),
                         new Url('https://www.uitpas.be')
+                    )
+                )
+            )
+            ->withMediaObjectReferences(
+                new MediaObjectReferences(
+                    MediaObjectReference::createWithMediaObjectId(
+                        new UUID('8b3c82d5-6cfe-442e-946c-1f4452636d61'),
+                        new Description('Example image 1'),
+                        new CopyrightHolder('Alice'),
+                        new Language('nl')
+                    ),
+                    MediaObjectReference::createWithEmbeddedMediaObject(
+                        new MediaObject(
+                            new UUID('fc712fef-e7c9-4df6-8655-da943852bd8d'),
+                            MediaObjectType::imageObject(),
+                            new Url('https://io.uitdatabank.be/media/fc712fef-e7c9-4df6-8655-da943852bd8d.png'),
+                            new Url('https://io.uitdatabank.be/media/fc712fef-e7c9-4df6-8655-da943852bd8d.png')
+                        ),
+                        new Description('Example image 2'),
+                        new CopyrightHolder('Bob'),
+                        new Language('fr')
                     )
                 )
             )
