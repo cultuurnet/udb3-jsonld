@@ -45,7 +45,6 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
-use Respect\Validation\Exceptions\GroupedValidationException;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 
 class EventDenormalizerTest extends TestCase
