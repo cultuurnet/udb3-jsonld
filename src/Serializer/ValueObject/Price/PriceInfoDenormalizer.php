@@ -4,10 +4,8 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Price;
 
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
-use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
-use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use Money\Currency;
 use Money\Money;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
