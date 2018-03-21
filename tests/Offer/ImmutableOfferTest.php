@@ -37,6 +37,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
@@ -377,7 +378,10 @@ class ImmutableOfferTest extends TestCase
         $updatedBookingInfo = new BookingInfo(
             new WebsiteLink(
                 new Url('https://google.com'),
-                new WebsiteLabel('Google')
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('Google')
+                )
             )
         );
         $updatedOffer = $offer->withBookingInfo($updatedBookingInfo);
