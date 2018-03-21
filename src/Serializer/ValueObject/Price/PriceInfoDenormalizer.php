@@ -16,6 +16,23 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 class PriceInfoDenormalizer implements DenormalizerInterface
 {
     /**
+     * @var DenormalizerInterface
+     */
+    private $tariffNameDenormalizer;
+
+    /**
+     * @param DenormalizerInterface|null $tariffNameDenormalizer
+     */
+    public function __construct(DenormalizerInterface $tariffNameDenormalizer = null)
+    {
+        if (!$tariffNameDenormalizer) {
+            $tariffNameDenormalizer = new TranslatedTariffNameDenormalizer();
+        }
+
+        $this->tariffNameDenormalizer = $tariffNameDenormalizer;
+    }
+
+    /**
      * @inheritdoc
      */
     public function denormalize($data, $class, $format = null, array $context = [])
@@ -68,27 +85,13 @@ class PriceInfoDenormalizer implements DenormalizerInterface
      */
     private function denormalizeTariff(array $tariffData, array $context = [])
     {
-        $languageKeys = array_keys($tariffData['name']);
-
-        if (isset($context['originalLanguage'])) {
-            $mainLanguageKey = $context['originalLanguage'];
-        } else {
-            $mainLanguageKey = $languageKeys[0];
-        }
-
-        $mainLanguage = new Language($mainLanguageKey);
-
-        $tariffName = new TranslatedTariffName($mainLanguage, new TariffName($tariffData['name'][$mainLanguageKey]));
-        foreach ($tariffData['name'] as $languageKey => $name) {
-            if ($languageKey === $mainLanguageKey) {
-                continue;
-            }
-
-            $tariffName = $tariffName->withTranslation(
-                new Language($languageKey),
-                new TariffName($name)
-            );
-        }
+        /* @var TranslatedTariffName $tariffName */
+        $tariffName = $this->tariffNameDenormalizer->denormalize(
+            $tariffData['name'],
+            TranslatedTariffName::class,
+            null,
+            $context
+        );
 
         return new Tariff(
             $tariffName,
