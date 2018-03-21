@@ -7,6 +7,7 @@ use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Serializer\Place\OrganizerReferenceDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Audience\AgeRangeDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\PriceInfoDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoriesDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Label\LabelsDenormalizer;
@@ -14,6 +15,7 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Text\TranslatedDescriptionDenor
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Text\TranslatedTitleDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
@@ -74,6 +76,11 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     private $priceInfoDenormalizer;
 
     /**
+     * @var DenormalizerInterface
+     */
+    private $bookingInfoDenormalizer;
+
+    /**
      * @param UUIDParser $idParser
      * @param DenormalizerInterface|null $titleDenormalizer
      * @param DenormalizerInterface|null $descriptionDenormalizer
@@ -83,6 +90,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
      * @param DenormalizerInterface|null $organizerReferenceDenormalizer
      * @param DenormalizerInterface|null $ageRangeDenormalizer
      * @param DenormalizerInterface|null $priceInfoDenormalizer
+     * @param DenormalizerInterface|null $bookingInfoDenormalizer
      */
     public function __construct(
         UUIDParser $idParser,
@@ -93,7 +101,8 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         DenormalizerInterface $labelsDenormalizer = null,
         DenormalizerInterface $organizerReferenceDenormalizer = null,
         DenormalizerInterface $ageRangeDenormalizer = null,
-        DenormalizerInterface $priceInfoDenormalizer = null
+        DenormalizerInterface $priceInfoDenormalizer = null,
+        DenormalizerInterface $bookingInfoDenormalizer = null
     ) {
         if (!$titleDenormalizer) {
             $titleDenormalizer = new TranslatedTitleDenormalizer();
@@ -127,6 +136,10 @@ abstract class OfferDenormalizer implements DenormalizerInterface
             $priceInfoDenormalizer = new PriceInfoDenormalizer();
         }
 
+        if (!$bookingInfoDenormalizer) {
+            $bookingInfoDenormalizer = new BookingInfoDenormalizer();
+        }
+
         $this->idParser = $idParser;
         $this->titleDenormalizer = $titleDenormalizer;
         $this->descriptionDenormalizer = $descriptionDenormalizer;
@@ -136,6 +149,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         $this->organizerReferenceDenormalizer = $organizerReferenceDenormalizer;
         $this->ageRangeDenormalizer = $ageRangeDenormalizer;
         $this->priceInfoDenormalizer = $priceInfoDenormalizer;
+        $this->bookingInfoDenormalizer = $bookingInfoDenormalizer;
     }
 
     /**
@@ -181,6 +195,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         $offer = $this->denormalizeOrganizerReference($data, $offer);
         $offer = $this->denormalizeAgeRange($data, $offer);
         $offer = $this->denormalizePriceInfo($data, $offer);
+        $offer = $this->denormalizeBookingInfo($data, $offer);
         $offer = $this->denormalizeWorkflowStatus($data, $offer);
         $offer = $this->denormalizeAvailableFrom($data, $offer);
 
@@ -254,6 +269,11 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         return $offer;
     }
 
+    /**
+     * @param array $data
+     * @param ImmutableOffer $offer
+     * @return ImmutableOffer
+     */
     protected function denormalizePriceInfo(array $data, ImmutableOffer $offer)
     {
         if (isset($data['priceInfo'])) {
@@ -264,6 +284,26 @@ abstract class OfferDenormalizer implements DenormalizerInterface
                 ['originalLanguage' => $data['mainLanguage']]
             );
             $offer = $offer->withPriceInfo($priceInfo);
+        }
+
+        return $offer;
+    }
+
+    /**
+     * @param array $data
+     * @param ImmutableOffer $offer
+     * @return ImmutableOffer
+     */
+    protected function denormalizeBookingInfo(array $data, ImmutableOffer $offer)
+    {
+        if (isset($data['bookingInfo'])) {
+            $bookingInfo = $this->bookingInfoDenormalizer->denormalize(
+                $data['bookingInfo'],
+                BookingInfo::class,
+                null,
+                ['originalLanguage' => $data['mainLanguage']]
+            );
+            $offer = $offer->withBookingInfo($bookingInfo);
         }
 
         return $offer;

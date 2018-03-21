@@ -20,6 +20,9 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
@@ -46,6 +49,11 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
+use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
@@ -653,6 +661,17 @@ class PlaceDenormalizerTest extends TestCase
                     'priceCurrency' => 'EUR',
                 ],
             ],
+            'bookingInfo' => [
+                'phone' => '02 551 18 70',
+                'email' => 'info@publiq.be',
+                'url' => 'https://www.publiq.be',
+                'urlLabel' => [
+                    'nl' => 'Publiq',
+                    'fr' => 'Publiq FR',
+                ],
+                'availabilityStarts' => '2018-01-01T00:00:00+01:00',
+                'availabilityEnds' => '2018-10-01T00:00:00+01:00',
+            ],
             'workflowStatus' => 'APPROVED',
             'availableFrom' => '2018-01-01T00:00:00+01:00',
         ];
@@ -732,6 +751,23 @@ class PlaceDenormalizerTest extends TestCase
                                 new Currency('EUR')
                             )
                         )
+                    )
+                )
+            )
+            ->withBookingInfo(
+                new BookingInfo(
+                    new WebsiteLink(
+                        new Url('https://www.publiq.be'),
+                        (new TranslatedWebsiteLabel(
+                            new Language('nl'),
+                            new WebsiteLabel('Publiq')
+                        ))->withTranslation(new Language('fr'), new WebsiteLabel('Publiq FR'))
+                    ),
+                    new TelephoneNumber('02 551 18 70'),
+                    new EmailAddress('info@publiq.be'),
+                    new BookingAvailability(
+                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T00:00:00+01:00'),
+                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-10-01T00:00:00+01:00')
                     )
                 )
             )
