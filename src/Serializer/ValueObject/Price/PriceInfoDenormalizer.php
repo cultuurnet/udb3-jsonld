@@ -80,6 +80,7 @@ class PriceInfoDenormalizer implements DenormalizerInterface
      * @param array $tariffData
      * @param array $context
      * @return Tariff
+     * @throws \Money\UnknownCurrencyException
      */
     private function denormalizeTariff(array $tariffData, array $context = [])
     {
