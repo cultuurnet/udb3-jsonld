@@ -321,6 +321,7 @@ class ImmutableOfferTest extends TestCase
 
     /**
      * @test
+     * @throws \Money\UnknownCurrencyException
      */
     public function it_should_return_a_copy_with_updated_price_info()
     {
@@ -341,6 +342,7 @@ class ImmutableOfferTest extends TestCase
 
     /**
      * @test
+     * @throws \Money\UnknownCurrencyException
      */
     public function it_should_return_a_copy_without_price_info()
     {
