@@ -2,46 +2,31 @@
 
 namespace CultuurNet\UDB3\Model\Serializer\Place;
 
+use CultuurNet\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
-use CultuurNet\UDB3\Model\Place\ImmutablePlace;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\Offer\OfferDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\CoordinatesDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressDenormalizer;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoriesDenormalizer;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Text\TranslatedTitleDenormalizer;
 use CultuurNet\UDB3\Model\Validation\Place\PlaceValidator;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Respect\Validation\Validator;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-class PlaceDenormalizer implements DenormalizerInterface
+class PlaceDenormalizer extends OfferDenormalizer
 {
     /**
      * @var Validator
      */
     private $placeValidator;
-
-    /**
-     * @var UUIDParser
-     */
-    private $placeIDParser;
-
-    /**
-     * @var DenormalizerInterface
-     */
-    private $titleDenormalizer;
-
-    /**
-     * @var DenormalizerInterface
-     */
-    private $calendarDenormalizer;
 
     /**
      * @var DenormalizerInterface
@@ -51,15 +36,24 @@ class PlaceDenormalizer implements DenormalizerInterface
     /**
      * @var DenormalizerInterface
      */
-    private $categoriesDenormalizer;
+    private $geoCoordinatesDenormalizer;
 
     public function __construct(
         Validator $placeValidator = null,
         UUIDParser $placeIDParser = null,
         DenormalizerInterface $titleDenormalizer = null,
+        DenormalizerInterface $descriptionDenormalizer = null,
         DenormalizerInterface $calendarDenormalizer = null,
         DenormalizerInterface $addressDenormalizer = null,
-        DenormalizerInterface $categoriesDenormalizer = null
+        DenormalizerInterface $categoriesDenormalizer = null,
+        DenormalizerInterface $labelsDenormalizer = null,
+        DenormalizerInterface $organizerReferenceDenormalizer = null,
+        DenormalizerInterface $geoCoordinatesDenormalizer = null,
+        DenormalizerInterface $ageRangeDenormalizer = null,
+        DenormalizerInterface $priceInfoDenormalizer = null,
+        DenormalizerInterface $bookingInfoDenormalizer = null,
+        DenormalizerInterface $contactPointDenormalizer = null,
+        DenormalizerInterface $mediaObjectReferencesDenormalizer = null
     ) {
         if (!$placeValidator) {
             $placeValidator = new PlaceValidator();
@@ -69,28 +63,61 @@ class PlaceDenormalizer implements DenormalizerInterface
             $placeIDParser = new PlaceIDParser();
         }
 
-        if (!$titleDenormalizer) {
-            $titleDenormalizer = new TranslatedTitleDenormalizer();
-        }
-
-        if (!$calendarDenormalizer) {
-            $calendarDenormalizer = new CalendarDenormalizer();
-        }
-
         if (!$addressDenormalizer) {
             $addressDenormalizer = new TranslatedAddressDenormalizer();
         }
 
-        if (!$categoriesDenormalizer) {
-            $categoriesDenormalizer = new CategoriesDenormalizer();
+        if (!$geoCoordinatesDenormalizer) {
+            $geoCoordinatesDenormalizer = new CoordinatesDenormalizer();
         }
 
         $this->placeValidator = $placeValidator;
-        $this->placeIDParser = $placeIDParser;
-        $this->titleDenormalizer = $titleDenormalizer;
-        $this->calendarDenormalizer = $calendarDenormalizer;
         $this->addressDenormalizer = $addressDenormalizer;
-        $this->categoriesDenormalizer = $categoriesDenormalizer;
+        $this->geoCoordinatesDenormalizer = $geoCoordinatesDenormalizer;
+
+        parent::__construct(
+            $placeIDParser,
+            $titleDenormalizer,
+            $descriptionDenormalizer,
+            $calendarDenormalizer,
+            $categoriesDenormalizer,
+            $labelsDenormalizer,
+            $organizerReferenceDenormalizer,
+            $ageRangeDenormalizer,
+            $priceInfoDenormalizer,
+            $bookingInfoDenormalizer,
+            $contactPointDenormalizer,
+            $mediaObjectReferencesDenormalizer
+        );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function createOffer(
+        array $originalData,
+        UUID $id,
+        Language $mainLanguage,
+        TranslatedTitle $title,
+        Calendar $calendar,
+        Categories $categories
+    ) {
+        /* @var TranslatedAddress $address */
+        $address = $this->addressDenormalizer->denormalize(
+            $originalData['address'],
+            TranslatedAddress::class,
+            null,
+            ['originalLanguage' => $originalData['mainLanguage']]
+        );
+
+        return new ImmutablePlace(
+            $id,
+            $mainLanguage,
+            $title,
+            $calendar,
+            $address,
+            $categories
+        );
     }
 
     /**
@@ -108,43 +135,27 @@ class PlaceDenormalizer implements DenormalizerInterface
 
         $this->placeValidator->assert($data);
 
-        $idUrl = new Url($data['@id']);
-        $id = $this->placeIDParser->fromUrl($idUrl);
+        /* @var ImmutablePlace $offer */
+        $offer = $this->denormalizeOffer($data);
+        $offer = $this->denormalizeGeoCoordinates($data, $offer);
 
-        $mainLanguageKey = $data['mainLanguage'];
-        $mainLanguage = new Language($mainLanguageKey);
+        return $offer;
+    }
 
-        /* @var TranslatedTitle $title */
-        $title = $this->titleDenormalizer->denormalize(
-            $data['name'],
-            TranslatedTitle::class,
-            null,
-            ['originalLanguage' => $mainLanguageKey]
-        );
-
-        /* @var TranslatedAddress $address */
-        $address = $this->addressDenormalizer->denormalize(
-            $data['address'],
-            TranslatedAddress::class,
-            null,
-            ['originalLanguage' => $mainLanguageKey]
-        );
-
-        $calendar = $this->calendarDenormalizer->denormalize($data, Calendar::class);
-        $categories = $this->categoriesDenormalizer->denormalize($data['terms'], Categories::class);
-
-        $place = new ImmutablePlace(
-            $id,
-            $mainLanguage,
-            $title,
-            $calendar,
-            $address,
-            $categories
-        );
-
-        if (isset($data['availableFrom'])) {
-            $availableFrom = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $data['availableFrom']);
-            $place = $place->withAvailableFrom($availableFrom);
+    /**
+     * @param array $data
+     * @param ImmutablePlace $place
+     * @return ImmutablePlace
+     */
+    private function denormalizeGeoCoordinates(array $data, ImmutablePlace $place)
+    {
+        if (isset($data['geo'])) {
+            try {
+                $coordinates = $this->geoCoordinatesDenormalizer->denormalize($data['geo'], Coordinates::class);
+                $place = $place->withGeoCoordinates($coordinates);
+            } catch (\Exception $e) {
+                // Do nothing.
+            }
         }
 
         return $place;

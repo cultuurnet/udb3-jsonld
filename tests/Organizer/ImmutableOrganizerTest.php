@@ -2,10 +2,12 @@
 
 namespace CultuurNet\UDB3\Model\Organizer;
 
+use CultuurNet\Geocoding\Coordinate\Coordinates;
+use CultuurNet\Geocoding\Coordinate\Latitude;
+use CultuurNet\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
-use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
@@ -19,6 +21,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
 class ImmutableOrganizerTest extends TestCase
@@ -140,6 +143,50 @@ class ImmutableOrganizerTest extends TestCase
         $this->assertNotEquals($organizer, $updatedOrganizer);
         $this->assertEquals($address, $organizer->getAddress());
         $this->assertNull($updatedOrganizer->getAddress());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_no_coordinates_by_default()
+    {
+        $this->assertNull($this->getOrganizer()->getGeoCoordinates());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_with_updated_coordinates()
+    {
+        $coordinates = new Coordinates(
+            new Latitude(50.8793916),
+            new Longitude(4.7019674)
+        );
+
+        $organizer = $this->getOrganizer();
+        $updatedOrganizer = $organizer->withGeoCoordinates($coordinates);
+
+        $this->assertNotEquals($organizer, $updatedOrganizer);
+        $this->assertNull($organizer->getGeoCoordinates());
+        $this->assertEquals($coordinates, $updatedOrganizer->getGeoCoordinates());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_without_coordinates()
+    {
+        $coordinates = new Coordinates(
+            new Latitude(50.8793916),
+            new Longitude(4.7019674)
+        );
+
+        $organizer = $this->getOrganizer()->withGeoCoordinates($coordinates);
+        $updatedOrganizer = $organizer->withoutGeoCoordinates();
+
+        $this->assertNotEquals($organizer, $updatedOrganizer);
+        $this->assertEquals($coordinates, $organizer->getGeoCoordinates());
+        $this->assertNull($updatedOrganizer->getGeoCoordinates());
     }
 
     /**

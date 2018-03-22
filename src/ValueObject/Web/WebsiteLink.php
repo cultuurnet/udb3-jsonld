@@ -10,15 +10,15 @@ class WebsiteLink
     private $url;
 
     /**
-     * @var WebsiteLabel
+     * @var TranslatedWebsiteLabel
      */
     private $label;
 
     /**
      * @param Url $url
-     * @param WebsiteLabel $label
+     * @param TranslatedWebsiteLabel $label
      */
-    public function __construct(Url $url, WebsiteLabel $label)
+    public function __construct(Url $url, TranslatedWebsiteLabel $label)
     {
         $this->url = $url;
         $this->label = $label;
@@ -44,7 +44,7 @@ class WebsiteLink
     }
 
     /**
-     * @return WebsiteLabel
+     * @return TranslatedWebsiteLabel
      */
     public function getLabel()
     {
@@ -52,10 +52,10 @@ class WebsiteLink
     }
 
     /**
-     * @param WebsiteLabel $label
+     * @param TranslatedWebsiteLabel $label
      * @return WebsiteLink
      */
-    public function withLabel(WebsiteLabel $label)
+    public function withLabel(TranslatedWebsiteLabel $label)
     {
         $c = clone $this;
         $c->label = $label;

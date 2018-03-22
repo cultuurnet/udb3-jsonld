@@ -2,13 +2,14 @@
 
 namespace CultuurNet\UDB3\Model\Organizer;
 
+use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
-use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 class ImmutableOrganizer implements Organizer
 {
@@ -36,6 +37,11 @@ class ImmutableOrganizer implements Organizer
      * @var TranslatedAddress|null
      */
     private $address;
+
+    /**
+     * @var Coordinates|null
+     */
+    private $coordinates;
 
     /**
      * @var Labels
@@ -152,6 +158,35 @@ class ImmutableOrganizer implements Organizer
     {
         $c = clone $this;
         $c->address = null;
+        return $c;
+    }
+
+    /**
+     * @return Coordinates|null
+     */
+    public function getGeoCoordinates()
+    {
+        return $this->coordinates;
+    }
+
+    /**
+     * @param Coordinates $coordinates
+     * @return ImmutableOrganizer
+     */
+    public function withGeoCoordinates(Coordinates $coordinates)
+    {
+        $c = clone $this;
+        $c->coordinates = $coordinates;
+        return $c;
+    }
+
+    /**
+     * @return ImmutableOrganizer
+     */
+    public function withoutGeoCoordinates()
+    {
+        $c = clone $this;
+        $c->coordinates = null;
         return $c;
     }
 

@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\MediaObject;
 
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
@@ -54,6 +53,14 @@ class MediaObjectIDParserTest extends TestCase
             ],
             'trailing_slash' => [
                 'url' => 'http://io.uitdatabank.be/media/118353f3-dd1a-4c8f-845a-f0c625261332/',
+                'uuid' => '118353f3-dd1a-4c8f-845a-f0c625261332',
+            ],
+            'image' => [
+                'url' => 'http://io.uitdatabank.be/image/118353f3-dd1a-4c8f-845a-f0c625261332',
+                'uuid' => '118353f3-dd1a-4c8f-845a-f0c625261332',
+            ],
+            'images' => [
+                'url' => 'http://io.uitdatabank.be/images/118353f3-dd1a-4c8f-845a-f0c625261332',
                 'uuid' => '118353f3-dd1a-4c8f-845a-f0c625261332',
             ],
         ];

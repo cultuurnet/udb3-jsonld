@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Contact;
 
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
@@ -27,7 +29,10 @@ class BookingInfoTest extends TestCase
         $website = $this->getWebsiteLink();
         $bookingInfo = $this->getBookingInfo();
 
-        $updatedWebsite = $website->withLabel(new WebsiteLabel('Google v2'));
+        $newWebsiteLabel = $this->getWebsiteLabel()
+            ->withTranslation(new Language('fr'), new WebsiteLabel('Google FR'));
+
+        $updatedWebsite = $website->withLabel($newWebsiteLabel);
         $updatedBookingInfo = $bookingInfo->withWebsite($updatedWebsite);
 
         $withoutWebsite = $updatedBookingInfo->withoutWebsite();
@@ -114,11 +119,14 @@ class BookingInfoTest extends TestCase
     }
 
     /**
-     * @return WebsiteLabel
+     * @return TranslatedWebsiteLabel
      */
     private function getWebsiteLabel()
     {
-        return new WebsiteLabel('Google');
+        return new TranslatedWebsiteLabel(
+            new Language('nl'),
+            new WebsiteLabel('Google')
+        );
     }
 
     /**

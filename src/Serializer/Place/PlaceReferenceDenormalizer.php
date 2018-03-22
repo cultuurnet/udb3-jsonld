@@ -53,12 +53,12 @@ class PlaceReferenceDenormalizer implements DenormalizerInterface
         }
 
         // @todo Support dummy locations.
-        $placeIdUrl = new Url($data['location']['@id']);
+        $placeIdUrl = new Url($data['@id']);
         $placeId = $this->placeIDParser->fromUrl($placeIdUrl);
         $place = null;
-        if (count($data['location']) > 1) {
+        if (count($data) > 1) {
             try {
-                $place = $this->placeDenormalizer->denormalize($data['location'], Place::class);
+                $place = $this->placeDenormalizer->denormalize($data, Place::class);
             } catch (\Exception $e) {
                 $place = null;
             }
