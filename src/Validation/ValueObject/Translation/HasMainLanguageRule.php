@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\Model\Validation\ValueObject\Translation;
 
 use CultuurNet\UDB3\Model\Validation\GroupedValidationExceptionWithoutMainMessage;
-use Respect\Validation\Exceptions\NestedValidationException;
 use Respect\Validation\Exceptions\ValidationException;
 use Respect\Validation\Validatable;
 
