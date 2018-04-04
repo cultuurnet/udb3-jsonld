@@ -164,11 +164,17 @@ class HasMainLanguageRule implements Validatable
             }
 
             if (!isset($propertyReference[$nestedPropertyName])) {
-                return $errors;
+                // Is either optional or should be handled by a different rule.
+                return [];
             }
 
             $propertyReference = $propertyReference[$nestedPropertyName];
             $traversedProperties[] = $nestedPropertyName;
+        }
+
+        if (!is_array($propertyReference)) {
+            // Should be handled by a different rule.
+            return [];
         }
 
         if (!isset($propertyReference[$mainLanguage])) {
