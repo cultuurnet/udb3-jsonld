@@ -121,11 +121,12 @@ class HasMainLanguageRule implements Validatable
             return [];
         }
 
+        $mainLanguageValidator = new LanguageValidator();
         if (!$mainLanguage) {
             $mainLanguage = isset($input[$this->mainLanguageProperty]) ? $input[$this->mainLanguageProperty] : null;
         }
 
-        if (!$mainLanguage) {
+        if (!$mainLanguageValidator->validate($mainLanguage)) {
             // Should be handled by a different rule.
             return [];
         }
