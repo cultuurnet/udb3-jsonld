@@ -149,7 +149,7 @@ class HasMainLanguageRuleTest extends TestCase
         $this->assertValidationException(
             $rule,
             $input,
-            ['name requires mainLanguage (fr) value']
+            ['name must have a value for the mainLanguage (fr)']
         );
     }
 
@@ -172,7 +172,7 @@ class HasMainLanguageRuleTest extends TestCase
         $this->assertValidationException(
             $rule,
             $input,
-            ['bookingInfo.urlLabel requires mainLanguage (fr) value']
+            ['bookingInfo.urlLabel must have a value for the mainLanguage (fr)']
         );
     }
 
@@ -205,8 +205,8 @@ class HasMainLanguageRuleTest extends TestCase
             $rule,
             $input,
             [
-                'priceInfo[0].name requires mainLanguage (en) value',
-                'priceInfo[2].name requires mainLanguage (en) value',
+                'priceInfo[0].name must have a value for the mainLanguage (en)',
+                'priceInfo[2].name must have a value for the mainLanguage (en)',
             ]
         );
     }

@@ -40,7 +40,7 @@ class HasMainLanguageRule implements Validatable
     {
         $this->path = (string) rtrim($path, '.');
         $this->mainLanguageProperty = (string) $mainLanguageProperty;
-        $this->template = '{{name}} requires mainLanguage ({{mainLanguage}}) value';
+        $this->template = '{{name}} must have a value for the mainLanguage ({{mainLanguage}})';
     }
 
     /**
