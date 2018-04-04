@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Model\Validation\Place;
 
 use CultuurNet\UDB3\Model\Validation\Offer\OfferValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Geography\TranslatedAddressValidator;
+use CultuurNet\UDB3\Model\Validation\ValueObject\Translation\HasMainLanguageRule;
 use Respect\Validation\Rules\Key;
 use Respect\Validation\Validator;
 
@@ -23,6 +24,7 @@ class PlaceValidator extends OfferValidator
         // just set them to null.
         $rules = [
             new Key('address', new TranslatedAddressValidator(), true),
+            new HasMainLanguageRule('address'),
         ];
 
         $rules = array_merge($rules, $extraRules);

@@ -149,6 +149,7 @@ class OrganizerValidatorTest extends TestCase
 
         $expectedErrors = [
             'name must have a length greater than 1',
+            'name must have a value for the mainLanguage (nl)',
         ];
 
         $this->assertValidationErrors($organizer, $expectedErrors);
@@ -184,6 +185,7 @@ class OrganizerValidatorTest extends TestCase
             '@id' => 'https://io.uitdatabank.be/organizers/b19d4090-db47-4520-ac1a-880684357ec9',
             'mainLanguage' => 'nl',
             'name' => [
+                'nl' => 'Publiq vzw',
                 'foo' => 'Publiq vzw',
             ],
             'url' => 'https://www.publiq.be',
@@ -404,6 +406,7 @@ class OrganizerValidatorTest extends TestCase
 
         $expectedErrors = [
             'address must have a length greater than 1',
+            'address must have a value for the mainLanguage (nl)',
         ];
 
         $this->assertValidationErrors($organizer, $expectedErrors);
@@ -450,6 +453,12 @@ class OrganizerValidatorTest extends TestCase
             ],
             'url' => 'https://www.publiq.be',
             'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
                 'foo' => [
                     'streetAddress' => 'Henegouwenkaai 41-43',
                     'postalCode' => '1080',
