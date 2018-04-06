@@ -176,6 +176,7 @@ class PlaceValidatorTest extends TestCase
 
         $expectedErrors = [
             'name must have a length greater than 1',
+            'name must have a value for the mainLanguage (nl)',
         ];
 
         $this->assertValidationErrors($place, $expectedErrors);
@@ -992,6 +993,7 @@ class PlaceValidatorTest extends TestCase
 
         $expectedErrors = [
             'address must have a length greater than 1',
+            'address must have a value for the mainLanguage (nl)',
         ];
 
         $this->assertValidationErrors($place, $expectedErrors);
@@ -1054,6 +1056,12 @@ class PlaceValidatorTest extends TestCase
                 ],
             ],
             'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
                 'foo' => [
                     'streetAddress' => 'Henegouwenkaai 41-43',
                     'postalCode' => '1080',
@@ -1366,6 +1374,7 @@ class PlaceValidatorTest extends TestCase
 
         $expectedErrors = [
             'description must have a length greater than 1',
+            'description must have a value for the mainLanguage (nl)',
         ];
 
         $this->assertValidationErrors($place, $expectedErrors);
@@ -1440,6 +1449,7 @@ class PlaceValidatorTest extends TestCase
                 ],
             ],
             'description' => [
+                'nl' => 'Test beschrijving',
                 'foo' => 'Test description',
             ],
         ];

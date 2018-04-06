@@ -144,6 +144,7 @@ class EventValidatorTest extends TestCase
 
         $expectedErrors = [
             'name must have a length greater than 1',
+            'name must have a value for the mainLanguage (nl)',
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);
@@ -1626,6 +1627,7 @@ class EventValidatorTest extends TestCase
 
         $expectedErrors = [
             'description must have a length greater than 1',
+            'description must have a value for the mainLanguage (nl)',
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);
@@ -1684,6 +1686,7 @@ class EventValidatorTest extends TestCase
                 ]
             ],
             'description' => [
+                'nl' => 'Test beschrijving',
                 'foo' => 'Test description',
             ],
         ];

@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Model\Validation\ValueObject\Price\PriceInfoValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Taxonomy\Category\CategoriesValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Taxonomy\Label\LabelsValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Text\TranslatedStringValidator;
+use CultuurNet\UDB3\Model\Validation\ValueObject\Translation\HasMainLanguageRule;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Translation\LanguageValidator;
 use Respect\Validation\Rules\Date;
 use Respect\Validation\Rules\Key;
@@ -30,6 +31,7 @@ abstract class OfferValidator extends Validator
             new Key('@id', $this->getIDValidator(), true),
             new Key('mainLanguage', new LanguageValidator(), true),
             new Key('name', new TranslatedStringValidator('name'), true),
+            new HasMainLanguageRule('name'),
             new Key('terms', new CategoriesValidator(1), true),
         ];
 
@@ -37,13 +39,16 @@ abstract class OfferValidator extends Validator
 
         $optionalRules = [
             new Key('description', new TranslatedStringValidator('description'), false),
+            new HasMainLanguageRule('description'),
             new Key('labels', new LabelsValidator(), false),
             new Key('hiddenLabels', new LabelsValidator(), false),
             new Key('organizer', new OrganizerReferenceValidator(), false),
             new Key('typicalAgeRange', new AgeRangeValidator(), false),
             new Key('contactPoint', new ContactPointValidator(), false),
             new Key('bookingInfo', new BookingInfoValidator(), false),
+            new HasMainLanguageRule('bookingInfo.urlLabel'),
             new Key('priceInfo', new PriceInfoValidator(), false),
+            new HasMainLanguageRule('priceInfo.[].name'),
             new Key('mediaObject', new MediaObjectsValidator(), false),
             new Key('workflowStatus', new WorkflowStatusValidator(), false),
             new Key('availableFrom', new Date(\DATE_ATOM), false),
