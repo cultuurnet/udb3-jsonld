@@ -86,7 +86,7 @@ class EventValidatorTest extends TestCase
 
         // @codingStandardsIgnoreStart
         $expectedErrors = [
-            '@id must validate against "/\\\/event[s]?\\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})[\\\/]?/"',
+            '@id must validate against "/\\\/event[s]?\\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12})[\\\/]?/"',
         ];
         // @codingStandardsIgnoreEnd
 
@@ -1106,7 +1106,7 @@ class EventValidatorTest extends TestCase
         $expectedErrors = [
             'All of the required rules must pass for location @id',
             'location @id must be an URL',
-            'location @id must validate against "/\\\/place[s]?\\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})[\\\/]?/"',
+            'location @id must validate against "/\\\/place[s]?\\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12})[\\\/]?/"',
         ];
         // @codingStandardsIgnoreEnd
 
@@ -1783,7 +1783,7 @@ class EventValidatorTest extends TestCase
 
         // @codingStandardsIgnoreStart
         $expectedErrors = [
-            'organizer @id must validate against "/\\\/organizer[s]?\\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})[\\\/]?/"'
+            'organizer @id must validate against "/\\\/organizer[s]?\\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12})[\\\/]?/"'
         ];
         // @codingStandardsIgnoreEnd
 
