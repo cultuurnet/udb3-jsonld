@@ -3,19 +3,30 @@
 namespace CultuurNet\UDB3\Model\ValueObject\Identity;
 
 use TwoDotsTwice\ValueObject\String\Behaviour\IsString;
-use TwoDotsTwice\ValueObject\String\Behaviour\MatchesUUIDPattern;
+use TwoDotsTwice\ValueObject\String\Behaviour\MatchesRegexPattern;
 
 class UUID
 {
+
+    /**
+     * Ensures backwards compatibility with older, malformed, uuids present in UDB.
+     */
+    const BC_REGEX = '\\A[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12}\\z';
+
     use IsString;
-    use MatchesUUIDPattern;
+    use MatchesRegexPattern;
 
     /**
      * @param string $value
      */
     public function __construct($value)
     {
-        $this->guardUUIDPattern($value);
+        $this->guardRegexPattern(
+            '/' . self::BC_REGEX . '/',
+            $value,
+            $value . ' is not a valid uuid.'
+        );
+
         $this->setValue($value);
     }
 }
