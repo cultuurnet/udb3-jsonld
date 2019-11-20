@@ -1105,7 +1105,7 @@ class EventValidatorTest extends TestCase
         // @codingStandardsIgnoreStart
         $expectedErrors = [
             'All of the required rules must pass for location @id',
-            'location @id must be an URL',
+            'location @id must be a URL',
             'location @id must validate against "/\\\/place[s]?\\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12})[\\\/]?/"',
         ];
         // @codingStandardsIgnoreEnd
@@ -2148,7 +2148,7 @@ class EventValidatorTest extends TestCase
         ];
 
         $expectedErrors = [
-            'each url must be an URL',
+            'each url must be a URL',
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);
@@ -2721,7 +2721,7 @@ class EventValidatorTest extends TestCase
 
         $expectedErrors = [
             'These rules must pass for bookingInfo',
-            'url must be an URL',
+            'url must be a URL',
             'Key urlLabel must be present',
         ];
 
@@ -2755,7 +2755,7 @@ class EventValidatorTest extends TestCase
 
         $expectedErrors = [
             'These rules must pass for bookingInfo',
-            'url must be an URL',
+            'url must be a URL',
             'Key urlLabel must be present',
         ];
 
@@ -2994,8 +2994,8 @@ class EventValidatorTest extends TestCase
 
         $expectedErrors = [
             'These rules must pass for each mediaObject',
-            'contentUrl must be an URL',
-            'thumbnailUrl must be an URL',
+            'contentUrl must be a URL',
+            'thumbnailUrl must be a URL',
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);

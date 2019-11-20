@@ -232,7 +232,7 @@ class OrganizerValidatorTest extends TestCase
         ];
 
         $expectedErrors = [
-            'url must be an URL',
+            'url must be a URL',
         ];
 
         $this->assertValidationErrors($organizer, $expectedErrors);
@@ -596,7 +596,7 @@ class OrganizerValidatorTest extends TestCase
         ];
 
         $expectedErrors = [
-            'each url must be an URL',
+            'each url must be a URL',
         ];
 
         $this->assertValidationErrors($organizer, $expectedErrors);
@@ -716,11 +716,6 @@ class OrganizerValidatorTest extends TestCase
             $this->fail('No error messages found.');
         } catch (NestedValidationException $e) {
             $actualMessages = $e->getMessages();
-
-            if (count(array_diff($actualMessages, $expectedMessages)) > 0) {
-                var_dump($actualMessages);
-            }
-
             $this->assertEquals($expectedMessages, $actualMessages);
         }
     }

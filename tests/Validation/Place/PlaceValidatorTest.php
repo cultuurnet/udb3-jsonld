@@ -2023,7 +2023,7 @@ class PlaceValidatorTest extends TestCase
         ];
 
         $expectedErrors = [
-            'each url must be an URL',
+            'each url must be a URL',
         ];
 
         $this->assertValidationErrors($place, $expectedErrors);
@@ -2716,7 +2716,7 @@ class PlaceValidatorTest extends TestCase
 
         $expectedErrors = [
             'These rules must pass for bookingInfo',
-            'url must be an URL',
+            'url must be a URL',
             'Key urlLabel must be present',
         ];
 
@@ -2758,7 +2758,7 @@ class PlaceValidatorTest extends TestCase
 
         $expectedErrors = [
             'These rules must pass for bookingInfo',
-            'url must be an URL',
+            'url must be a URL',
             'Key urlLabel must be present',
         ];
 
@@ -3053,8 +3053,8 @@ class PlaceValidatorTest extends TestCase
 
         $expectedErrors = [
             'These rules must pass for each mediaObject',
-            'contentUrl must be an URL',
-            'thumbnailUrl must be an URL',
+            'contentUrl must be a URL',
+            'thumbnailUrl must be a URL',
         ];
 
         $this->assertValidationErrors($place, $expectedErrors);
