@@ -20,6 +20,8 @@ class AgeRange
      */
     public function __construct(Age $from = null, Age $to = null)
     {
+        $from = $from ?: new Age(0);
+
         if ($from && $to && $from->gt($to)) {
             throw new \InvalidArgumentException('"From" age should not be greater than the "to" age.');
         }
@@ -29,7 +31,7 @@ class AgeRange
     }
 
     /**
-     * @return Age|null
+     * @return Age
      */
     public function getFrom()
     {
