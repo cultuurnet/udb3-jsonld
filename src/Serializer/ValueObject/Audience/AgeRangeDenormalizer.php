@@ -25,8 +25,8 @@ class AgeRangeDenormalizer implements DenormalizerInterface
         $from = $parts[1];
         $to = $parts[2];
 
-        $from = empty($from) ? null : new Age(intval($from));
-        $to = empty($to) ? null : new Age(intval($to));
+        $from = empty($from) ? new Age(0) : new Age((int) $from);
+        $to = empty($to) ? null : new Age((int) $to);
 
         return new AgeRange($from, $to);
     }
