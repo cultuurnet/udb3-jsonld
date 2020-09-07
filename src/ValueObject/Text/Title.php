@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Text;
 
-use TwoDotsTwice\ValueObject\String\Behaviour\IsNotEmpty;
-use TwoDotsTwice\ValueObject\String\Behaviour\IsString;
-use TwoDotsTwice\ValueObject\String\Behaviour\Trims;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsNotEmpty;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Trims;
 
 class Title
 {

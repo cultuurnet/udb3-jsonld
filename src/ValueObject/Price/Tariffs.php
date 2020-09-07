@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Price;
 
-use TwoDotsTwice\ValueObject\Collection\Collection;
+use CultuurNet\UDB3\Model\ValueObject\Collection\Collection;
 
 class Tariffs extends Collection
 {

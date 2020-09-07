@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label;
 
-use TwoDotsTwice\ValueObject\String\Behaviour\IsString;
-use TwoDotsTwice\ValueObject\String\Behaviour\Trims;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Trims;
 
 class LabelName
 {

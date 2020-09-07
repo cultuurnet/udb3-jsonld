@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Translation;
 
-use TwoDotsTwice\ValueObject\String\Behaviour\IsString;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 
 class MockValueObjectString
 {

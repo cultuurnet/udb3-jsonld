@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Web;
 
-use TwoDotsTwice\ValueObject\Collection\Collection;
+use CultuurNet\UDB3\Model\ValueObject\Collection\Collection;
 
 class Urls extends Collection
 {

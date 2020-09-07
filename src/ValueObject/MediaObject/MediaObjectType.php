@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\MediaObject;
 
-use TwoDotsTwice\ValueObject\String\Enum;
+use CultuurNet\UDB3\Model\ValueObject\String\Enum;
 
 /**
  * @method static MediaObjectType imageObject()
