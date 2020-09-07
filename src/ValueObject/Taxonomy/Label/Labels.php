@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label;
 
-use TwoDotsTwice\ValueObject\Collection\Behaviour\HasUniqueValues;
-use TwoDotsTwice\ValueObject\Collection\Collection;
+use CultuurNet\UDB3\Model\ValueObject\Collection\Behaviour\HasUniqueValues;
+use CultuurNet\UDB3\Model\ValueObject\Collection\Collection;
 
 class Labels extends Collection
 {

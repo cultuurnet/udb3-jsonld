@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Geography;
 
-use TwoDotsTwice\ValueObject\String\Behaviour\IsNotEmpty;
-use TwoDotsTwice\ValueObject\String\Behaviour\IsString;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsNotEmpty;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 
 class Locality
 {

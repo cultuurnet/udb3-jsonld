@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\MediaObject;
 
-use TwoDotsTwice\ValueObject\Collection\Collection;
+use CultuurNet\UDB3\Model\ValueObject\Collection\Collection;
 
 class MediaObjectReferences extends Collection
 {

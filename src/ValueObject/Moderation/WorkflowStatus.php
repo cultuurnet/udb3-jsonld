@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Moderation;
 
-use TwoDotsTwice\ValueObject\String\Enum;
+use CultuurNet\UDB3\Model\ValueObject\String\Enum;
 
 /**
  * @method static WorkflowStatus READY_FOR_VALIDATION()

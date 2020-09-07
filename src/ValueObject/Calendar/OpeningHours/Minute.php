@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours;
 
-use TwoDotsTwice\ValueObject\Integer\Behaviour\IsInteger;
+use CultuurNet\UDB3\Model\ValueObject\Integer\Behaviour\IsInteger;
 
 class Minute
 {

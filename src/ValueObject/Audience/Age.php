@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Audience;
 
-use TwoDotsTwice\ValueObject\Integer\Behaviour\IsInteger;
-use TwoDotsTwice\ValueObject\Integer\Behaviour\IsNatural;
+use CultuurNet\UDB3\Model\ValueObject\Integer\Behaviour\IsInteger;
+use CultuurNet\UDB3\Model\ValueObject\Integer\Behaviour\IsNatural;
 
 class Age
 {

@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Identity;
 
-use TwoDotsTwice\ValueObject\String\Behaviour\IsString;
-use TwoDotsTwice\ValueObject\String\Behaviour\MatchesRegexPattern;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\MatchesRegexPattern;
 
 class UUID
 {

@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Translation;
 
-use TwoDotsTwice\ValueObject\Collection\Behaviour\FiltersDuplicates;
-use TwoDotsTwice\ValueObject\Collection\Collection;
+use CultuurNet\UDB3\Model\ValueObject\Collection\Behaviour\FiltersDuplicates;
+use CultuurNet\UDB3\Model\ValueObject\Collection\Collection;
 
 class Languages extends Collection
 {
