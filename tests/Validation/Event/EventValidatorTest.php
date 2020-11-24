@@ -623,6 +623,117 @@ class EventValidatorTest extends TestCase
     /**
      * @test
      */
+    public function it_should_throw_an_exception_if_calendarType_is_multiple_and_a_subEvent_has_a_string_reason()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name'
+            ],
+            'calendarType' => 'multiple',
+            'startDate' => '2018-02-28T13:44:09+01:00',
+            'endDate' => '2018-03-05T13:44:09+01:00',
+            'subEvent' => [
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2018-02-24T13:44:09+01:00',
+                    'endDate' => '2018-02-24T15:44:09+01:00',
+                    'eventStatus' => 'https://schema.org/EventScheduled',
+                ],
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2018-02-26T13:44:09+01:00',
+                    'endDate' => '2018-02-26T15:44:09+01:00',
+                    'eventStatus' => 'https://schema.org/EventPostponed',
+                    'eventStatusReason' => 'This should be an object instead of a string.',
+                ],
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2018-02-28T13:44:09+01:00',
+                    'endDate' => '2018-02-28T15:44:09+01:00',
+                    'eventStatus' => 'https://schema.org/EventCancelled',
+                ],
+            ],
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            'eventStatusReason must be of the type array',
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_calendarType_is_multiple_and_a_subEvent_has_an_invalid_reason_language()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name'
+            ],
+            'calendarType' => 'multiple',
+            'startDate' => '2018-02-28T13:44:09+01:00',
+            'endDate' => '2018-03-05T13:44:09+01:00',
+            'subEvent' => [
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2018-02-24T13:44:09+01:00',
+                    'endDate' => '2018-02-24T15:44:09+01:00',
+                    'eventStatus' => 'https://schema.org/EventScheduled',
+                ],
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2018-02-26T13:44:09+01:00',
+                    'endDate' => '2018-02-26T15:44:09+01:00',
+                    'eventStatus' => 'https://schema.org/EventPostponed',
+                    'eventStatusReason' => [
+                        0 => 'Should be keyed by language',
+                        'Invalid language' => 'Invalid language key',
+                        'nl' => '',
+                    ],
+                ],
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2018-02-28T13:44:09+01:00',
+                    'endDate' => '2018-02-28T15:44:09+01:00',
+                    'eventStatus' => 'https://schema.org/EventCancelled',
+                ],
+            ],
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            'Each item in { "Should be keyed by language", "Invalid language": "Invalid language key", "nl": "" } must be valid',
+            '0 must validate against "/^[a-z]{2}$/"',
+            '"Invalid language" must validate against "/^[a-z]{2}$/"',
+            'eventStatusReason value must not be empty',
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_throw_an_exception_if_calendarType_is_multiple_and_endDate_is_after_startDate()
     {
         $event = [
