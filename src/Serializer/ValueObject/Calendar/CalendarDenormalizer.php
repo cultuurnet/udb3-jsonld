@@ -5,6 +5,8 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRanges;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\EventStatus;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\EventStatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleDateRangesCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
@@ -16,11 +18,22 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleDateRangeCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedEventStatusReason;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class CalendarDenormalizer implements DenormalizerInterface
 {
+    /**
+     * @var TranslatedEventStatusReasonDenormalizer
+     */
+    private $eventStatusReasonDenormalizer;
+
+    public function __construct()
+    {
+        $this->eventStatusReasonDenormalizer = new TranslatedEventStatusReasonDenormalizer();
+    }
+
     /**
      * @inheritdoc
      */
@@ -39,7 +52,7 @@ class CalendarDenormalizer implements DenormalizerInterface
 
         switch ($data['calendarType']) {
             case 'single':
-                $dateRange = $this->denormalizeDateRange($data);
+                $dateRange = $this->denormalizeDateRange($data['subEvent'][0]);
                 $calendar = new SingleDateRangeCalendar($dateRange);
                 break;
 
@@ -133,9 +146,35 @@ class CalendarDenormalizer implements DenormalizerInterface
     {
         $startDate = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $dateRangeData['startDate']);
         $endDate = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $dateRangeData['endDate']);
+
+        $eventStatusType = null;
+        if (isset($dateRangeData['eventStatus'])) {
+            $withoutPrefix = str_replace('https://schema.org/', '', $dateRangeData['eventStatus']);
+            $eventStatusType = new EventStatusType($withoutPrefix);
+        }
+
+        $eventStatusReason = null;
+        if (
+            isset($dateRangeData['eventStatusReason']) &&
+            $eventStatusType &&
+            !$eventStatusType->sameAs(EventStatusType::EventScheduled())
+        ) {
+            /** @var TranslatedEventStatusReason $eventStatusReason */
+            $eventStatusReason = $this->eventStatusReasonDenormalizer->denormalize(
+                $dateRangeData['eventStatusReason'],
+                TranslatedEventStatusReason::class
+            );
+        }
+
+        $eventStatus = null;
+        if ($eventStatusType) {
+            $eventStatus = new EventStatus($eventStatusType, $eventStatusReason);
+        }
+
         return new DateRange(
             $startDate,
-            $endDate
+            $endDate,
+            $eventStatus
         );
     }
 }

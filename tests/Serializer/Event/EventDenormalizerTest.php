@@ -11,6 +11,9 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRanges;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\EventStatus;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\EventStatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\EventStatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleDateRangesCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
@@ -22,6 +25,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleDateRangeCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedEventStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
@@ -213,7 +217,82 @@ class EventDenormalizerTest extends TestCase
             new SingleDateRangeCalendar(
                 new DateRange(
                     \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00'),
+                    new EventStatus(
+                        EventStatusType::EventScheduled()
+                    )
+                )
+            ),
+            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            new Categories(
+                new Category(
+                    new CategoryID('0.50.1.0.1')
+                )
+            )
+        );
+
+        $actual = $this->denormalizer->denormalize($eventData, ImmutableEvent::class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_denormalize_event_data_with_a_single_date_range_calendar_and_event_status_and_reason()
+    {
+        $eventData = [
+            '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
+            '@type' => 'Event',
+            '@context' => '/contexts/event',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Titel voorbeeld',
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.be/place/dbe91250-4e4b-495c-b692-3da9563b0d52',
+            ],
+            'calendarType' => 'single',
+            'startDate' => '2018-01-01T13:00:00+01:00',
+            'endDate' => '2018-01-01T17:00:00+01:00',
+            'subEvent' => [
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2018-01-01T13:00:00+01:00',
+                    'endDate' => '2018-01-01T17:00:00+01:00',
+                    'eventStatus' => 'https://schema.org/EventCancelled',
+                    'eventStatusReason' => [
+                        'nl' => 'Nederlandse reden',
+                        'fr' => 'Franse reden',
+                    ],
+                ],
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.1',
+                ]
+            ],
+        ];
+
+        $expected = new ImmutableEvent(
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Language('nl'),
+            new TranslatedTitle(
+                new Language('nl'),
+                new Title('Titel voorbeeld')
+            ),
+            new SingleDateRangeCalendar(
+                new DateRange(
+                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
+                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00'),
+                    new EventStatus(
+                        EventStatusType::EventCancelled(),
+                        (new TranslatedEventStatusReason(
+                            new Language('nl'),
+                            new EventStatusReason('Nederlandse reden')
+                        ))
+                            ->withTranslation(new Language('fr'), new EventStatusReason('Franse reden'))
+                    )
                 )
             ),
             PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
@@ -283,15 +362,140 @@ class EventDenormalizerTest extends TestCase
                 new DateRanges(
                     new DateRange(
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00'),
+                        new EventStatus(
+                            EventStatusType::EventScheduled()
+                        )
                     ),
                     new DateRange(
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T13:00:00+01:00'),
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T17:00:00+01:00')
+                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T17:00:00+01:00'),
+                        new EventStatus(
+                            EventStatusType::EventScheduled()
+                        )
                     ),
                     new DateRange(
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T13:00:00+01:00'),
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00')
+                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00'),
+                        new EventStatus(
+                            EventStatusType::EventScheduled()
+                        )
+                    )
+                )
+            ),
+            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            new Categories(
+                new Category(
+                    new CategoryID('0.50.1.0.1')
+                )
+            )
+        );
+
+        $actual = $this->denormalizer->denormalize($eventData, ImmutableEvent::class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_denormalize_event_data_with_a_multiple_date_ranges_calendar_and_event_status_and_reason()
+    {
+        $eventData = [
+            '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
+            '@type' => 'Event',
+            '@context' => '/contexts/event',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Titel voorbeeld',
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.be/place/dbe91250-4e4b-495c-b692-3da9563b0d52',
+            ],
+            'calendarType' => 'multiple',
+            'startDate' => '2018-01-01T13:00:00+01:00',
+            'endDate' => '2018-01-10T17:00:00+01:00',
+            'subEvent' => [
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2018-01-01T13:00:00+01:00',
+                    'endDate' => '2018-01-01T17:00:00+01:00',
+                    'eventStatus' => 'https://schema.org/EventCancelled',
+                    'eventStatusReason' => [
+                        'nl' => 'Nederlandse reden',
+                        'fr' => 'Franse reden',
+                    ],
+                ],
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2018-01-03T13:00:00+01:00',
+                    'endDate' => '2018-01-03T17:00:00+01:00',
+                    'eventStatus' => 'https://schema.org/EventScheduled',
+                ],
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2018-01-10T13:00:00+01:00',
+                    'endDate' => '2018-01-10T17:00:00+01:00',
+                    'eventStatus' => 'https://schema.org/EventPostponed',
+                ],
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2018-01-10T13:00:00+01:00',
+                    'endDate' => '2018-01-10T17:00:00+01:00',
+                    'eventStatusReason' => [
+                        'nl' => 'Nederlandse reden zonder status',
+                        'fr' => 'Franse reden zonder status',
+                    ],
+                ],
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.1',
+                ]
+            ],
+        ];
+
+        $expected = new ImmutableEvent(
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Language('nl'),
+            new TranslatedTitle(
+                new Language('nl'),
+                new Title('Titel voorbeeld')
+            ),
+            new MultipleDateRangesCalendar(
+                new DateRanges(
+                    new DateRange(
+                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
+                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00'),
+                        new EventStatus(
+                            EventStatusType::EventCancelled(),
+                            (new TranslatedEventStatusReason(
+                                new Language('nl'),
+                                new EventStatusReason('Nederlandse reden')
+                            ))
+                                ->withTranslation(new Language('fr'), new EventStatusReason('Franse reden'))
+                        )
+                    ),
+                    new DateRange(
+                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T13:00:00+01:00'),
+                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T17:00:00+01:00'),
+                        new EventStatus(
+                            EventStatusType::EventScheduled()
+                        )
+                    ),
+                    new DateRange(
+                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T13:00:00+01:00'),
+                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00'),
+                        new EventStatus(
+                            EventStatusType::EventPostponed()
+                        )
+                    ),
+                    new DateRange(
+                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T13:00:00+01:00'),
+                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00'),
+                        new EventStatus(
+                            EventStatusType::EventScheduled()
+                        )
                     )
                 )
             ),
