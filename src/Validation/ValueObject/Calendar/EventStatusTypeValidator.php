@@ -9,7 +9,8 @@ class EventStatusTypeValidator extends EnumValidator
 {
     protected function getAllowedValues(): array
     {
-        // The JSON-LD values should be "https://schema.org/EventScheduled", but internally we just use "EventScheduled".
+        // The JSON-LD values should be "https://schema.org/EventScheduled", but internally we just use
+        // "EventScheduled".
         return array_map(
             function (string $allowedValue) {
                 return 'https://schema.org/' . $allowedValue;

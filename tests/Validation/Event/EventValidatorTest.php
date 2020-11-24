@@ -675,7 +675,7 @@ class EventValidatorTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_calendarType_is_multiple_and_a_subEvent_has_an_invalid_reason_language()
+    public function it_should_throw_an_exception_if_calendarType_is_multiple_and_subEvent_has_invalid_reason_language()
     {
         $event = [
             '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
@@ -722,7 +722,8 @@ class EventValidatorTest extends TestCase
         ];
 
         $expectedErrors = [
-            'Each item in { "Should be keyed by language", "Invalid language": "Invalid language key", "nl": "" } must be valid',
+            'Each item in { "Should be keyed by language", "Invalid language": "Invalid language key", "nl": "" } ' .
+                "must be valid",
             '0 must validate against "/^[a-z]{2}$/"',
             '"Invalid language" must validate against "/^[a-z]{2}$/"',
             'eventStatusReason value must not be empty',

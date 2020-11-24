@@ -154,8 +154,7 @@ class CalendarDenormalizer implements DenormalizerInterface
         }
 
         $eventStatusReason = null;
-        if (
-            isset($dateRangeData['eventStatusReason']) &&
+        if (isset($dateRangeData['eventStatusReason']) &&
             $eventStatusType &&
             !$eventStatusType->sameAs(EventStatusType::EventScheduled())
         ) {
