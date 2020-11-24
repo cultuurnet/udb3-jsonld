@@ -585,7 +585,7 @@ class EventValidatorTest extends TestCase
                     '@type' => 'Event',
                     'startDate' => '2018-02-24T13:44:09+01:00',
                     'endDate' => '2018-02-24T15:44:09+01:00',
-                    'eventStatus' => 'EventScheduled',
+                    'eventStatus' => 'https://schema.org/EventScheduled',
                 ],
                 [
                     '@type' => 'Event',
@@ -597,7 +597,7 @@ class EventValidatorTest extends TestCase
                     '@type' => 'Event',
                     'startDate' => '2018-02-28T13:44:09+01:00',
                     'endDate' => '2018-02-28T15:44:09+01:00',
-                    'eventStatus' => 'EventCancelled',
+                    'eventStatus' => 'https://schema.org/EventCancelled',
                 ],
             ],
             'location' => [
@@ -612,9 +612,9 @@ class EventValidatorTest extends TestCase
 
         $expectedErrors = [
             'At least one of these rules must pass for eventStatus',
-            'eventStatus must be equal to "EventScheduled"',
-            'eventStatus must be equal to "EventPostponed"',
-            'eventStatus must be equal to "EventCancelled"',
+            'eventStatus must be equal to "https://schema.org/EventScheduled"',
+            'eventStatus must be equal to "https://schema.org/EventPostponed"',
+            'eventStatus must be equal to "https://schema.org/EventCancelled"',
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);
