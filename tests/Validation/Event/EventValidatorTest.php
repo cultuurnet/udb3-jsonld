@@ -569,6 +569,60 @@ class EventValidatorTest extends TestCase
     /**
      * @test
      */
+    public function it_should_throw_an_exception_if_calendarType_is_multiple_and_a_subEvent_has_an_invalid_status()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name'
+            ],
+            'calendarType' => 'multiple',
+            'startDate' => '2018-02-28T13:44:09+01:00',
+            'endDate' => '2018-03-05T13:44:09+01:00',
+            'subEvent' => [
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2018-02-24T13:44:09+01:00',
+                    'endDate' => '2018-02-24T15:44:09+01:00',
+                    'eventStatus' => 'EventScheduled',
+                ],
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2018-02-26T13:44:09+01:00',
+                    'endDate' => '2018-02-26T15:44:09+01:00',
+                    'eventStatus' => 'foo',
+                ],
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2018-02-28T13:44:09+01:00',
+                    'endDate' => '2018-02-28T15:44:09+01:00',
+                    'eventStatus' => 'EventCancelled',
+                ],
+            ],
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            'At least one of these rules must pass for eventStatus',
+            'eventStatus must be equal to "EventScheduled"',
+            'eventStatus must be equal to "EventPostponed"',
+            'eventStatus must be equal to "EventCancelled"',
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_throw_an_exception_if_calendarType_is_multiple_and_endDate_is_after_startDate()
     {
         $event = [
