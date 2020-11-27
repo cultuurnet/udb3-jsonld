@@ -260,7 +260,7 @@ class EventDenormalizerTest extends TestCase
                     '@type' => 'Event',
                     'startDate' => '2018-01-01T13:00:00+01:00',
                     'endDate' => '2018-01-01T17:00:00+01:00',
-                    'eventStatus' => 'https://schema.org/Unavailable',
+                    'eventStatus' => 'Unavailable',
                     'eventStatusReason' => [
                         'nl' => 'Nederlandse reden',
                         'fr' => 'Franse reden',
@@ -420,7 +420,7 @@ class EventDenormalizerTest extends TestCase
                     '@type' => 'Event',
                     'startDate' => '2018-01-01T13:00:00+01:00',
                     'endDate' => '2018-01-01T17:00:00+01:00',
-                    'eventStatus' => 'https://schema.org/Unavailable',
+                    'eventStatus' => 'Unavailable',
                     'eventStatusReason' => [
                         'nl' => 'Nederlandse reden',
                         'fr' => 'Franse reden',
@@ -430,13 +430,13 @@ class EventDenormalizerTest extends TestCase
                     '@type' => 'Event',
                     'startDate' => '2018-01-03T13:00:00+01:00',
                     'endDate' => '2018-01-03T17:00:00+01:00',
-                    'eventStatus' => 'https://schema.org/Available',
+                    'eventStatus' => 'Available',
                 ],
                 [
                     '@type' => 'Event',
                     'startDate' => '2018-01-10T13:00:00+01:00',
                     'endDate' => '2018-01-10T17:00:00+01:00',
-                    'eventStatus' => 'https://schema.org/TemporarilyUnavailable',
+                    'eventStatus' => 'TemporarilyUnavailable',
                 ],
                 [
                     '@type' => 'Event',

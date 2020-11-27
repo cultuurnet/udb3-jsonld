@@ -149,8 +149,7 @@ class CalendarDenormalizer implements DenormalizerInterface
 
         $statusType = null;
         if (isset($dateRangeData['eventStatus'])) {
-            $withoutPrefix = str_replace('https://schema.org/', '', $dateRangeData['eventStatus']);
-            $statusType = new StatusType($withoutPrefix);
+            $statusType = new StatusType($dateRangeData['eventStatus']);
         }
 
         $statusReason = null;
