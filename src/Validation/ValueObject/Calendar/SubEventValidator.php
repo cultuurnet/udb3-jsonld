@@ -26,7 +26,7 @@ class SubEventValidator extends Validator
                 new KeyValue('endDate', 'min', 'startDate'),
                 new AlwaysValid()
             ),
-            new Key('status', new EventStatusTypeValidator(), false),
+            new Key('status', new StatusTypeValidator(), false),
             new Key('statusReason', new TranslatedStringValidator('statusReason'), false)
         ];
 
