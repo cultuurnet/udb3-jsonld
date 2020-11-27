@@ -260,10 +260,12 @@ class EventDenormalizerTest extends TestCase
                     '@type' => 'Event',
                     'startDate' => '2018-01-01T13:00:00+01:00',
                     'endDate' => '2018-01-01T17:00:00+01:00',
-                    'status' => 'Unavailable',
-                    'statusReason' => [
-                        'nl' => 'Nederlandse reden',
-                        'fr' => 'Franse reden',
+                    'status' => [
+                        'type' => 'Unavailable',
+                        'reason' => [
+                            'nl' => 'Nederlandse reden',
+                            'fr' => 'Franse reden',
+                        ],
                     ],
                 ],
             ],
@@ -420,31 +422,39 @@ class EventDenormalizerTest extends TestCase
                     '@type' => 'Event',
                     'startDate' => '2018-01-01T13:00:00+01:00',
                     'endDate' => '2018-01-01T17:00:00+01:00',
-                    'status' => 'Unavailable',
-                    'statusReason' => [
-                        'nl' => 'Nederlandse reden',
-                        'fr' => 'Franse reden',
+                    'status' => [
+                        'type' => 'Unavailable',
+                        'reason' => [
+                            'nl' => 'Nederlandse reden',
+                            'fr' => 'Franse reden',
+                        ],
                     ],
                 ],
                 [
                     '@type' => 'Event',
                     'startDate' => '2018-01-03T13:00:00+01:00',
                     'endDate' => '2018-01-03T17:00:00+01:00',
-                    'status' => 'Available',
+                    'status' => [
+                        'type' => 'Available',
+                    ],
                 ],
                 [
                     '@type' => 'Event',
                     'startDate' => '2018-01-10T13:00:00+01:00',
                     'endDate' => '2018-01-10T17:00:00+01:00',
-                    'status' => 'TemporarilyUnavailable',
+                    'status' => [
+                        'type' => 'TemporarilyUnavailable',
+                    ],
                 ],
                 [
                     '@type' => 'Event',
                     'startDate' => '2018-01-10T13:00:00+01:00',
                     'endDate' => '2018-01-10T17:00:00+01:00',
-                    'statusReason' => [
-                        'nl' => 'Nederlandse reden zonder status',
-                        'fr' => 'Franse reden zonder status',
+                    'status' => [
+                        'reason' => [
+                            'nl' => 'Nederlandse reden zonder status type',
+                            'fr' => 'Franse reden zonder status type',
+                        ],
                     ],
                 ],
             ],
@@ -494,7 +504,15 @@ class EventDenormalizerTest extends TestCase
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T13:00:00+01:00'),
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00'),
                         new Status(
-                            StatusType::Available()
+                            StatusType::Available(),
+                            (new TranslatedStatusReason(
+                                new Language('nl'),
+                                new StatusReason('Nederlandse reden zonder status type')
+                            ))
+                                ->withTranslation(
+                                    new Language('fr'),
+                                    new StatusReason('Franse reden zonder status type')
+                                )
                         )
                     )
                 )

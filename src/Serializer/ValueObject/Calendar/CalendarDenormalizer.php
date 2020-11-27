@@ -147,27 +147,22 @@ class CalendarDenormalizer implements DenormalizerInterface
         $startDate = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $dateRangeData['startDate']);
         $endDate = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $dateRangeData['endDate']);
 
-        $statusType = null;
-        if (isset($dateRangeData['status'])) {
-            $statusType = new StatusType($dateRangeData['status']);
+        $statusType = StatusType::Available();
+        $statusReason = null;
+
+        if (isset($dateRangeData['status']['type'])) {
+            $statusType = new StatusType($dateRangeData['status']['type']);
         }
 
-        $statusReason = null;
-        if (isset($dateRangeData['statusReason']) &&
-            $statusType &&
-            !$statusType->sameAs(StatusType::Available())
-        ) {
+        if (isset($dateRangeData['status']['reason'])) {
             /** @var TranslatedStatusReason $statusReason */
             $statusReason = $this->statusReasonDenormalizer->denormalize(
-                $dateRangeData['statusReason'],
+                $dateRangeData['status']['reason'],
                 TranslatedStatusReason::class
             );
         }
 
-        $status = null;
-        if ($statusType) {
-            $status = new Status($statusType, $statusReason);
-        }
+        $status = new Status($statusType, $statusReason);
 
         return new DateRange(
             $startDate,
