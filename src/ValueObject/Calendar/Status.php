@@ -4,30 +4,30 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
-final class EventStatus
+final class Status
 {
     /**
-     * @var EventStatusType
+     * @var StatusType
      */
     private $type;
 
     /**
-     * @var TranslatedEventStatusReason|null
+     * @var TranslatedStatusReason|null
      */
     private $reason;
 
-    public function __construct(EventStatusType $type, ?TranslatedEventStatusReason $reason = null)
+    public function __construct(StatusType $type, ?TranslatedStatusReason $reason = null)
     {
         $this->type = $type;
         $this->reason = $reason;
     }
 
-    public function getType(): EventStatusType
+    public function getType(): StatusType
     {
         return $this->type;
     }
 
-    public function getReason(): ?TranslatedEventStatusReason
+    public function getReason(): ?TranslatedStatusReason
     {
         return $this->reason;
     }

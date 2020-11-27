@@ -4,10 +4,10 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Translation\TranslatedValueObject;
 
-class TranslatedEventStatusReason extends TranslatedValueObject
+class TranslatedStatusReason extends TranslatedValueObject
 {
     protected function getValueObjectClassName(): string
     {
-        return EventStatusReason::class;
+        return StatusReason::class;
     }
 }

@@ -3,8 +3,8 @@
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Translation\TranslatedValueObjectDenormalizer;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\EventStatusReason;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedEventStatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
 class TranslatedEventStatusReasonDenormalizer extends TranslatedValueObjectDenormalizer
@@ -14,7 +14,7 @@ class TranslatedEventStatusReasonDenormalizer extends TranslatedValueObjectDenor
      */
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return $type === TranslatedEventStatusReason::class;
+        return $type === TranslatedStatusReason::class;
     }
 
     /**
@@ -22,7 +22,7 @@ class TranslatedEventStatusReasonDenormalizer extends TranslatedValueObjectDenor
      */
     protected function createTranslatedValueObject(Language $originalLanguage, $originalValue)
     {
-        return new TranslatedEventStatusReason($originalLanguage, $originalValue);
+        return new TranslatedStatusReason($originalLanguage, $originalValue);
     }
 
     /**
@@ -30,6 +30,6 @@ class TranslatedEventStatusReasonDenormalizer extends TranslatedValueObjectDenor
      */
     protected function createValueObject($value)
     {
-        return new EventStatusReason($value);
+        return new StatusReason($value);
     }
 }

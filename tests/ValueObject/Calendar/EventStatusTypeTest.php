@@ -11,9 +11,9 @@ class EventStatusTypeTest extends TestCase
      */
     public function it_should_have_exactly_three_values(): void
     {
-        $scheduled = EventStatusType::EventScheduled();
-        $cancelled = EventStatusType::EventCancelled();
-        $postponed = EventStatusType::EventPostponed();
+        $scheduled = StatusType::EventScheduled();
+        $cancelled = StatusType::EventCancelled();
+        $postponed = StatusType::EventPostponed();
 
         $this->assertEquals('EventScheduled', $scheduled->toString());
         $this->assertEquals('EventCancelled', $cancelled->toString());

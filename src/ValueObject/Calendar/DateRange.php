@@ -7,15 +7,15 @@ use CultuurNet\UDB3\Model\ValueObject\DateTimeImmutableRange;
 class DateRange extends DateTimeImmutableRange
 {
     /**
-     * @var EventStatus
+     * @var Status
      */
     private $status;
 
-    public function __construct(\DateTimeImmutable $from, \DateTimeImmutable $to, ?EventStatus $eventStatus = null)
+    public function __construct(\DateTimeImmutable $from, \DateTimeImmutable $to, ?Status $eventStatus = null)
     {
         // Override the constructor to make both from and to required.
         parent::__construct($from, $to);
-        $this->status = $eventStatus ?? new EventStatus(EventStatusType::EventScheduled());
+        $this->status = $eventStatus ?? new Status(StatusType::EventScheduled());
     }
 
     /**
@@ -46,7 +46,7 @@ class DateRange extends DateTimeImmutableRange
         return 0;
     }
 
-    public function getEventStatus(): EventStatus
+    public function getEventStatus(): Status
     {
         return $this->status;
     }

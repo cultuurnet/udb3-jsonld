@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsNotEmpty;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 
-final class EventStatusReason
+final class StatusReason
 {
     use IsString;
     use IsNotEmpty;

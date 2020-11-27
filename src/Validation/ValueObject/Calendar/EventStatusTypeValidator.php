@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Model\Validation\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\Validation\ValueObject\EnumValidator;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\EventStatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 
 class EventStatusTypeValidator extends EnumValidator
 {
@@ -15,7 +15,7 @@ class EventStatusTypeValidator extends EnumValidator
             function (string $allowedValue) {
                 return 'https://schema.org/' . $allowedValue;
             },
-            EventStatusType::getAllowedValues()
+            StatusType::getAllowedValues()
         );
     }
 }

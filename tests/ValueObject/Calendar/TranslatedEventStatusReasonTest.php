@@ -13,13 +13,13 @@ class TranslatedEventStatusReasonTest extends TestCase
      */
     public function it_should_only_accept_an_event_status_reason_as_original_text_value(): void
     {
-        $className = EventStatusReason::class;
+        $className = StatusReason::class;
         $invalidClassName = Title::class;
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage("The given object is a {$invalidClassName}, expected {$className}.");
 
-        new TranslatedEventStatusReason(new Language('nl'), new Title('foo'));
+        new TranslatedStatusReason(new Language('nl'), new Title('foo'));
     }
 
     /**
@@ -28,10 +28,10 @@ class TranslatedEventStatusReasonTest extends TestCase
     public function it_should_only_accept_an_event_status_reason_as_translation()
     {
         $nl = new Language('nl');
-        $nlValue = new EventStatusReason('foo');
-        $translatedDescription = (new TranslatedEventStatusReason($nl, $nlValue));
+        $nlValue = new StatusReason('foo');
+        $translatedDescription = (new TranslatedStatusReason($nl, $nlValue));
 
-        $className = EventStatusReason::class;
+        $className = StatusReason::class;
         $invalidClassName = Title::class;
 
         $this->expectException(\InvalidArgumentException::class);

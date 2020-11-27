@@ -5,11 +5,11 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\String\Enum;
 
 /**
- * @method static EventStatusType EventScheduled()
- * @method static EventStatusType EventPostponed()
- * @method static EventStatusType EventCancelled()
+ * @method static StatusType EventScheduled()
+ * @method static StatusType EventPostponed()
+ * @method static StatusType EventCancelled()
  */
-class EventStatusType extends Enum
+class StatusType extends Enum
 {
     /**
      * @inheritdoc

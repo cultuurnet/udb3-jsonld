@@ -14,7 +14,7 @@ class EventStatusReasonTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Given string should not be empty.');
 
-        new EventStatusReason('');
+        new StatusReason('');
     }
 
     /**
@@ -23,7 +23,7 @@ class EventStatusReasonTest extends TestCase
     public function it_should_return_the_original_string(): void
     {
         $string = 'test foo bar';
-        $reason = new EventStatusReason($string);
+        $reason = new StatusReason($string);
         $this->assertEquals($string, $reason->toString());
     }
 }

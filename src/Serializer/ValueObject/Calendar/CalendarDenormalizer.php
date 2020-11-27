@@ -5,8 +5,8 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRanges;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\EventStatus;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\EventStatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleDateRangesCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
@@ -18,7 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleDateRangeCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedEventStatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -150,24 +150,24 @@ class CalendarDenormalizer implements DenormalizerInterface
         $eventStatusType = null;
         if (isset($dateRangeData['eventStatus'])) {
             $withoutPrefix = str_replace('https://schema.org/', '', $dateRangeData['eventStatus']);
-            $eventStatusType = new EventStatusType($withoutPrefix);
+            $eventStatusType = new StatusType($withoutPrefix);
         }
 
         $eventStatusReason = null;
         if (isset($dateRangeData['eventStatusReason']) &&
             $eventStatusType &&
-            !$eventStatusType->sameAs(EventStatusType::EventScheduled())
+            !$eventStatusType->sameAs(StatusType::EventScheduled())
         ) {
-            /** @var TranslatedEventStatusReason $eventStatusReason */
+            /** @var TranslatedStatusReason $eventStatusReason */
             $eventStatusReason = $this->eventStatusReasonDenormalizer->denormalize(
                 $dateRangeData['eventStatusReason'],
-                TranslatedEventStatusReason::class
+                TranslatedStatusReason::class
             );
         }
 
         $eventStatus = null;
         if ($eventStatusType) {
-            $eventStatus = new EventStatus($eventStatusType, $eventStatusReason);
+            $eventStatus = new Status($eventStatusType, $eventStatusReason);
         }
 
         return new DateRange(

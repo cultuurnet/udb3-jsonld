@@ -11,9 +11,9 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRanges;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\EventStatus;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\EventStatusReason;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\EventStatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleDateRangesCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
@@ -25,7 +25,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleDateRangeCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedEventStatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
@@ -218,8 +218,8 @@ class EventDenormalizerTest extends TestCase
                 new DateRange(
                     \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
                     \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00'),
-                    new EventStatus(
-                        EventStatusType::EventScheduled()
+                    new Status(
+                        StatusType::EventScheduled()
                     )
                 )
             ),
@@ -285,13 +285,13 @@ class EventDenormalizerTest extends TestCase
                 new DateRange(
                     \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
                     \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00'),
-                    new EventStatus(
-                        EventStatusType::EventCancelled(),
-                        (new TranslatedEventStatusReason(
+                    new Status(
+                        StatusType::EventCancelled(),
+                        (new TranslatedStatusReason(
                             new Language('nl'),
-                            new EventStatusReason('Nederlandse reden')
+                            new StatusReason('Nederlandse reden')
                         ))
-                            ->withTranslation(new Language('fr'), new EventStatusReason('Franse reden'))
+                            ->withTranslation(new Language('fr'), new StatusReason('Franse reden'))
                     )
                 )
             ),
@@ -363,22 +363,22 @@ class EventDenormalizerTest extends TestCase
                     new DateRange(
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00'),
-                        new EventStatus(
-                            EventStatusType::EventScheduled()
+                        new Status(
+                            StatusType::EventScheduled()
                         )
                     ),
                     new DateRange(
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T13:00:00+01:00'),
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T17:00:00+01:00'),
-                        new EventStatus(
-                            EventStatusType::EventScheduled()
+                        new Status(
+                            StatusType::EventScheduled()
                         )
                     ),
                     new DateRange(
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T13:00:00+01:00'),
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00'),
-                        new EventStatus(
-                            EventStatusType::EventScheduled()
+                        new Status(
+                            StatusType::EventScheduled()
                         )
                     )
                 )
@@ -467,34 +467,34 @@ class EventDenormalizerTest extends TestCase
                     new DateRange(
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00'),
-                        new EventStatus(
-                            EventStatusType::EventCancelled(),
-                            (new TranslatedEventStatusReason(
+                        new Status(
+                            StatusType::EventCancelled(),
+                            (new TranslatedStatusReason(
                                 new Language('nl'),
-                                new EventStatusReason('Nederlandse reden')
+                                new StatusReason('Nederlandse reden')
                             ))
-                                ->withTranslation(new Language('fr'), new EventStatusReason('Franse reden'))
+                                ->withTranslation(new Language('fr'), new StatusReason('Franse reden'))
                         )
                     ),
                     new DateRange(
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T13:00:00+01:00'),
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T17:00:00+01:00'),
-                        new EventStatus(
-                            EventStatusType::EventScheduled()
+                        new Status(
+                            StatusType::EventScheduled()
                         )
                     ),
                     new DateRange(
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T13:00:00+01:00'),
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00'),
-                        new EventStatus(
-                            EventStatusType::EventPostponed()
+                        new Status(
+                            StatusType::EventPostponed()
                         )
                     ),
                     new DateRange(
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T13:00:00+01:00'),
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00'),
-                        new EventStatus(
-                            EventStatusType::EventScheduled()
+                        new Status(
+                            StatusType::EventScheduled()
                         )
                     )
                 )
