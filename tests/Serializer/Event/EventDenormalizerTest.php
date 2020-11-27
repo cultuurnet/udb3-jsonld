@@ -239,7 +239,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_event_data_with_a_single_date_range_calendar_and_event_status_and_reason()
+    public function it_should_denormalize_event_data_with_a_single_date_range_calendar_and_status_and_reason()
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
@@ -399,7 +399,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_denormalize_event_data_with_a_multiple_date_ranges_calendar_and_event_status_and_reason()
+    public function it_should_denormalize_event_data_with_a_multiple_date_ranges_calendar_and_status_and_reason()
     {
         $eventData = [
             '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',

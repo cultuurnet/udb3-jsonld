@@ -11,7 +11,7 @@ class TranslatedStatusReasonTest extends TestCase
     /**
      * @test
      */
-    public function it_should_only_accept_an_event_status_reason_as_original_text_value(): void
+    public function it_should_only_accept_an_status_reason_as_original_text_value(): void
     {
         $className = StatusReason::class;
         $invalidClassName = Title::class;
@@ -25,7 +25,7 @@ class TranslatedStatusReasonTest extends TestCase
     /**
      * @test
      */
-    public function it_should_only_accept_an_event_status_reason_as_translation()
+    public function it_should_only_accept_an_status_reason_as_translation()
     {
         $nl = new Language('nl');
         $nlValue = new StatusReason('foo');
