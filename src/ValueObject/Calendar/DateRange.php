@@ -11,11 +11,11 @@ class DateRange extends DateTimeImmutableRange
      */
     private $status;
 
-    public function __construct(\DateTimeImmutable $from, \DateTimeImmutable $to, ?Status $eventStatus = null)
+    public function __construct(\DateTimeImmutable $from, \DateTimeImmutable $to, ?Status $status = null)
     {
         // Override the constructor to make both from and to required.
         parent::__construct($from, $to);
-        $this->status = $eventStatus ?? new Status(StatusType::Available());
+        $this->status = $status ?? new Status(StatusType::Available());
     }
 
     /**

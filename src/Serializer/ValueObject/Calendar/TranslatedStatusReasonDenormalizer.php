@@ -7,7 +7,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
-class TranslatedEventStatusReasonDenormalizer extends TranslatedValueObjectDenormalizer
+class TranslatedStatusReasonDenormalizer extends TranslatedValueObjectDenormalizer
 {
     /**
      * @inheritdoc

@@ -25,13 +25,13 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 class CalendarDenormalizer implements DenormalizerInterface
 {
     /**
-     * @var TranslatedEventStatusReasonDenormalizer
+     * @var TranslatedStatusReasonDenormalizer
      */
-    private $eventStatusReasonDenormalizer;
+    private $statusReasonDenormalizer;
 
     public function __construct()
     {
-        $this->eventStatusReasonDenormalizer = new TranslatedEventStatusReasonDenormalizer();
+        $this->statusReasonDenormalizer = new TranslatedStatusReasonDenormalizer();
     }
 
     /**
@@ -147,33 +147,33 @@ class CalendarDenormalizer implements DenormalizerInterface
         $startDate = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $dateRangeData['startDate']);
         $endDate = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $dateRangeData['endDate']);
 
-        $eventStatusType = null;
+        $statusType = null;
         if (isset($dateRangeData['eventStatus'])) {
             $withoutPrefix = str_replace('https://schema.org/', '', $dateRangeData['eventStatus']);
-            $eventStatusType = new StatusType($withoutPrefix);
+            $statusType = new StatusType($withoutPrefix);
         }
 
-        $eventStatusReason = null;
+        $statusReason = null;
         if (isset($dateRangeData['eventStatusReason']) &&
-            $eventStatusType &&
-            !$eventStatusType->sameAs(StatusType::Available())
+            $statusType &&
+            !$statusType->sameAs(StatusType::Available())
         ) {
-            /** @var TranslatedStatusReason $eventStatusReason */
-            $eventStatusReason = $this->eventStatusReasonDenormalizer->denormalize(
+            /** @var TranslatedStatusReason $statusReason */
+            $statusReason = $this->statusReasonDenormalizer->denormalize(
                 $dateRangeData['eventStatusReason'],
                 TranslatedStatusReason::class
             );
         }
 
-        $eventStatus = null;
-        if ($eventStatusType) {
-            $eventStatus = new Status($eventStatusType, $eventStatusReason);
+        $status = null;
+        if ($statusType) {
+            $status = new Status($statusType, $statusReason);
         }
 
         return new DateRange(
             $startDate,
             $endDate,
-            $eventStatus
+            $status
         );
     }
 }
