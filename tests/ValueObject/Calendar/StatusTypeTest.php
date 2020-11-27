@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use PHPUnit\Framework\TestCase;
 
-class EventStatusTypeTest extends TestCase
+class StatusTypeTest extends TestCase
 {
     /**
      * @test

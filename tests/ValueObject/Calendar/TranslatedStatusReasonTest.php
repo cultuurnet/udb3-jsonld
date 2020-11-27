@@ -6,7 +6,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
 
-class TranslatedEventStatusReasonTest extends TestCase
+class TranslatedStatusReasonTest extends TestCase
 {
     /**
      * @test
