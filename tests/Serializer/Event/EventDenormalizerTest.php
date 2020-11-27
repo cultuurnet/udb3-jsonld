@@ -219,7 +219,7 @@ class EventDenormalizerTest extends TestCase
                     \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
                     \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00'),
                     new Status(
-                        StatusType::EventScheduled()
+                        StatusType::Available()
                     )
                 )
             ),
@@ -260,7 +260,7 @@ class EventDenormalizerTest extends TestCase
                     '@type' => 'Event',
                     'startDate' => '2018-01-01T13:00:00+01:00',
                     'endDate' => '2018-01-01T17:00:00+01:00',
-                    'eventStatus' => 'https://schema.org/EventCancelled',
+                    'eventStatus' => 'https://schema.org/Unavailable',
                     'eventStatusReason' => [
                         'nl' => 'Nederlandse reden',
                         'fr' => 'Franse reden',
@@ -286,7 +286,7 @@ class EventDenormalizerTest extends TestCase
                     \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
                     \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00'),
                     new Status(
-                        StatusType::EventCancelled(),
+                        StatusType::Unavailable(),
                         (new TranslatedStatusReason(
                             new Language('nl'),
                             new StatusReason('Nederlandse reden')
@@ -364,21 +364,21 @@ class EventDenormalizerTest extends TestCase
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00'),
                         new Status(
-                            StatusType::EventScheduled()
+                            StatusType::Available()
                         )
                     ),
                     new DateRange(
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T13:00:00+01:00'),
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T17:00:00+01:00'),
                         new Status(
-                            StatusType::EventScheduled()
+                            StatusType::Available()
                         )
                     ),
                     new DateRange(
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T13:00:00+01:00'),
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00'),
                         new Status(
-                            StatusType::EventScheduled()
+                            StatusType::Available()
                         )
                     )
                 )
@@ -420,7 +420,7 @@ class EventDenormalizerTest extends TestCase
                     '@type' => 'Event',
                     'startDate' => '2018-01-01T13:00:00+01:00',
                     'endDate' => '2018-01-01T17:00:00+01:00',
-                    'eventStatus' => 'https://schema.org/EventCancelled',
+                    'eventStatus' => 'https://schema.org/Unavailable',
                     'eventStatusReason' => [
                         'nl' => 'Nederlandse reden',
                         'fr' => 'Franse reden',
@@ -430,13 +430,13 @@ class EventDenormalizerTest extends TestCase
                     '@type' => 'Event',
                     'startDate' => '2018-01-03T13:00:00+01:00',
                     'endDate' => '2018-01-03T17:00:00+01:00',
-                    'eventStatus' => 'https://schema.org/EventScheduled',
+                    'eventStatus' => 'https://schema.org/Available',
                 ],
                 [
                     '@type' => 'Event',
                     'startDate' => '2018-01-10T13:00:00+01:00',
                     'endDate' => '2018-01-10T17:00:00+01:00',
-                    'eventStatus' => 'https://schema.org/EventPostponed',
+                    'eventStatus' => 'https://schema.org/TemporarilyUnavailable',
                 ],
                 [
                     '@type' => 'Event',
@@ -468,7 +468,7 @@ class EventDenormalizerTest extends TestCase
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00'),
                         new Status(
-                            StatusType::EventCancelled(),
+                            StatusType::Unavailable(),
                             (new TranslatedStatusReason(
                                 new Language('nl'),
                                 new StatusReason('Nederlandse reden')
@@ -480,21 +480,21 @@ class EventDenormalizerTest extends TestCase
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T13:00:00+01:00'),
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T17:00:00+01:00'),
                         new Status(
-                            StatusType::EventScheduled()
+                            StatusType::Available()
                         )
                     ),
                     new DateRange(
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T13:00:00+01:00'),
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00'),
                         new Status(
-                            StatusType::EventPostponed()
+                            StatusType::TemporarilyUnavailable()
                         )
                     ),
                     new DateRange(
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T13:00:00+01:00'),
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00'),
                         new Status(
-                            StatusType::EventScheduled()
+                            StatusType::Available()
                         )
                     )
                 )

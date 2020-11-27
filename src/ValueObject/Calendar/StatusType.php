@@ -5,9 +5,9 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\String\Enum;
 
 /**
- * @method static StatusType EventScheduled()
- * @method static StatusType EventPostponed()
- * @method static StatusType EventCancelled()
+ * @method static StatusType Available()
+ * @method static StatusType TemporarilyUnavailable()
+ * @method static StatusType Unavailable()
  */
 class StatusType extends Enum
 {
@@ -17,9 +17,9 @@ class StatusType extends Enum
     public static function getAllowedValues(): array
     {
         return [
-            'EventScheduled',
-            'EventPostponed',
-            'EventCancelled',
+            'Available',
+            'TemporarilyUnavailable',
+            'Unavailable',
         ];
     }
 }

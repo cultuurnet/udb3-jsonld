@@ -11,12 +11,12 @@ class EventStatusTypeTest extends TestCase
      */
     public function it_should_have_exactly_three_values(): void
     {
-        $scheduled = StatusType::EventScheduled();
-        $cancelled = StatusType::EventCancelled();
-        $postponed = StatusType::EventPostponed();
+        $available = StatusType::Available();
+        $unavailable = StatusType::Unavailable();
+        $temporarilyUnavailable = StatusType::TemporarilyUnavailable();
 
-        $this->assertEquals('EventScheduled', $scheduled->toString());
-        $this->assertEquals('EventCancelled', $cancelled->toString());
-        $this->assertEquals('EventPostponed', $postponed->toString());
+        $this->assertEquals('Available', $available->toString());
+        $this->assertEquals('Unavailable', $unavailable->toString());
+        $this->assertEquals('TemporarilyUnavailable', $temporarilyUnavailable->toString());
     }
 }

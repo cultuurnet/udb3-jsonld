@@ -15,7 +15,7 @@ class DateRange extends DateTimeImmutableRange
     {
         // Override the constructor to make both from and to required.
         parent::__construct($from, $to);
-        $this->status = $eventStatus ?? new Status(StatusType::EventScheduled());
+        $this->status = $eventStatus ?? new Status(StatusType::Available());
     }
 
     /**
