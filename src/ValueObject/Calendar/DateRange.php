@@ -46,7 +46,7 @@ class DateRange extends DateTimeImmutableRange
         return 0;
     }
 
-    public function getEventStatus(): Status
+    public function getStatus(): Status
     {
         return $this->status;
     }
