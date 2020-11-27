@@ -26,8 +26,8 @@ class SubEventValidator extends Validator
                 new KeyValue('endDate', 'min', 'startDate'),
                 new AlwaysValid()
             ),
-            new Key('eventStatus', new EventStatusTypeValidator(), false),
-            new Key('eventStatusReason', new TranslatedStringValidator('eventStatusReason'), false)
+            new Key('status', new EventStatusTypeValidator(), false),
+            new Key('statusReason', new TranslatedStringValidator('statusReason'), false)
         ];
 
         parent::__construct($rules);

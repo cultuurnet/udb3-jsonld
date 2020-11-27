@@ -260,8 +260,8 @@ class EventDenormalizerTest extends TestCase
                     '@type' => 'Event',
                     'startDate' => '2018-01-01T13:00:00+01:00',
                     'endDate' => '2018-01-01T17:00:00+01:00',
-                    'eventStatus' => 'Unavailable',
-                    'eventStatusReason' => [
+                    'status' => 'Unavailable',
+                    'statusReason' => [
                         'nl' => 'Nederlandse reden',
                         'fr' => 'Franse reden',
                     ],
@@ -420,8 +420,8 @@ class EventDenormalizerTest extends TestCase
                     '@type' => 'Event',
                     'startDate' => '2018-01-01T13:00:00+01:00',
                     'endDate' => '2018-01-01T17:00:00+01:00',
-                    'eventStatus' => 'Unavailable',
-                    'eventStatusReason' => [
+                    'status' => 'Unavailable',
+                    'statusReason' => [
                         'nl' => 'Nederlandse reden',
                         'fr' => 'Franse reden',
                     ],
@@ -430,19 +430,19 @@ class EventDenormalizerTest extends TestCase
                     '@type' => 'Event',
                     'startDate' => '2018-01-03T13:00:00+01:00',
                     'endDate' => '2018-01-03T17:00:00+01:00',
-                    'eventStatus' => 'Available',
+                    'status' => 'Available',
                 ],
                 [
                     '@type' => 'Event',
                     'startDate' => '2018-01-10T13:00:00+01:00',
                     'endDate' => '2018-01-10T17:00:00+01:00',
-                    'eventStatus' => 'TemporarilyUnavailable',
+                    'status' => 'TemporarilyUnavailable',
                 ],
                 [
                     '@type' => 'Event',
                     'startDate' => '2018-01-10T13:00:00+01:00',
                     'endDate' => '2018-01-10T17:00:00+01:00',
-                    'eventStatusReason' => [
+                    'statusReason' => [
                         'nl' => 'Nederlandse reden zonder status',
                         'fr' => 'Franse reden zonder status',
                     ],

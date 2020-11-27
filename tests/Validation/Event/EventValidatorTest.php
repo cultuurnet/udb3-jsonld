@@ -585,19 +585,19 @@ class EventValidatorTest extends TestCase
                     '@type' => 'Event',
                     'startDate' => '2018-02-24T13:44:09+01:00',
                     'endDate' => '2018-02-24T15:44:09+01:00',
-                    'eventStatus' => 'Available',
+                    'status' => 'Available',
                 ],
                 [
                     '@type' => 'Event',
                     'startDate' => '2018-02-26T13:44:09+01:00',
                     'endDate' => '2018-02-26T15:44:09+01:00',
-                    'eventStatus' => 'foo',
+                    'status' => 'foo',
                 ],
                 [
                     '@type' => 'Event',
                     'startDate' => '2018-02-28T13:44:09+01:00',
                     'endDate' => '2018-02-28T15:44:09+01:00',
-                    'eventStatus' => 'Unavailable',
+                    'status' => 'Unavailable',
                 ],
             ],
             'location' => [
@@ -611,10 +611,10 @@ class EventValidatorTest extends TestCase
         ];
 
         $expectedErrors = [
-            'At least one of these rules must pass for eventStatus',
-            'eventStatus must be equal to "Available"',
-            'eventStatus must be equal to "TemporarilyUnavailable"',
-            'eventStatus must be equal to "Unavailable"',
+            'At least one of these rules must pass for status',
+            'status must be equal to "Available"',
+            'status must be equal to "TemporarilyUnavailable"',
+            'status must be equal to "Unavailable"',
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);
@@ -639,20 +639,20 @@ class EventValidatorTest extends TestCase
                     '@type' => 'Event',
                     'startDate' => '2018-02-24T13:44:09+01:00',
                     'endDate' => '2018-02-24T15:44:09+01:00',
-                    'eventStatus' => 'Available',
+                    'status' => 'Available',
                 ],
                 [
                     '@type' => 'Event',
                     'startDate' => '2018-02-26T13:44:09+01:00',
                     'endDate' => '2018-02-26T15:44:09+01:00',
-                    'eventStatus' => 'TemporarilyUnavailable',
-                    'eventStatusReason' => 'This should be an object instead of a string.',
+                    'status' => 'TemporarilyUnavailable',
+                    'statusReason' => 'This should be an object instead of a string.',
                 ],
                 [
                     '@type' => 'Event',
                     'startDate' => '2018-02-28T13:44:09+01:00',
                     'endDate' => '2018-02-28T15:44:09+01:00',
-                    'eventStatus' => 'Unavailable',
+                    'status' => 'Unavailable',
                 ],
             ],
             'location' => [
@@ -666,7 +666,7 @@ class EventValidatorTest extends TestCase
         ];
 
         $expectedErrors = [
-            'eventStatusReason must be of the type array',
+            'statusReason must be of the type array',
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);
@@ -691,14 +691,14 @@ class EventValidatorTest extends TestCase
                     '@type' => 'Event',
                     'startDate' => '2018-02-24T13:44:09+01:00',
                     'endDate' => '2018-02-24T15:44:09+01:00',
-                    'eventStatus' => 'Available',
+                    'status' => 'Available',
                 ],
                 [
                     '@type' => 'Event',
                     'startDate' => '2018-02-26T13:44:09+01:00',
                     'endDate' => '2018-02-26T15:44:09+01:00',
-                    'eventStatus' => 'TemporarilyUnavailable',
-                    'eventStatusReason' => [
+                    'status' => 'TemporarilyUnavailable',
+                    'statusReason' => [
                         0 => 'Should be keyed by language',
                         'Invalid language' => 'Invalid language key',
                         'nl' => '',
@@ -708,7 +708,7 @@ class EventValidatorTest extends TestCase
                     '@type' => 'Event',
                     'startDate' => '2018-02-28T13:44:09+01:00',
                     'endDate' => '2018-02-28T15:44:09+01:00',
-                    'eventStatus' => 'Unavailable',
+                    'status' => 'Unavailable',
                 ],
             ],
             'location' => [
@@ -726,7 +726,7 @@ class EventValidatorTest extends TestCase
                 "must be valid",
             '0 must validate against "/^[a-z]{2}$/"',
             '"Invalid language" must validate against "/^[a-z]{2}$/"',
-            'eventStatusReason value must not be empty',
+            'statusReason value must not be empty',
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);
