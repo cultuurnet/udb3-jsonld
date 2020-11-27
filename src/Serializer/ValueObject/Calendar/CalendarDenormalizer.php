@@ -52,7 +52,10 @@ class CalendarDenormalizer implements DenormalizerInterface
 
         switch ($data['calendarType']) {
             case 'single':
-                $dateRange = $this->denormalizeDateRange($data['subEvent'][0]);
+                $dateRange = $this->denormalizeDateRange($data);
+                if (isset($data['subEvent'][0])) {
+                    $dateRange = $this->denormalizeDateRange($data['subEvent'][0]);
+                }
                 $calendar = new SingleDateRangeCalendar($dateRange);
                 break;
 
