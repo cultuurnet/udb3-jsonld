@@ -9,12 +9,12 @@ class MultipleDateRangesCalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_require_at_least_two_date_ranges()
+    public function it_should_require_at_least_two_sub_events()
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018');
-        $dateRanges = new DateRanges(
-            new DateRange($startDate, $endDate)
+        $dateRanges = new SubEvents(
+            new SubEvent(new DateRange($startDate, $endDate), new Status(StatusType::Available()))
         );
 
         $this->expectException(\InvalidArgumentException::class);
@@ -31,14 +31,20 @@ class MultipleDateRangesCalendarTest extends TestCase
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
 
-        $dateRanges = new DateRanges(
-            new DateRange(
-                $startDate,
-                \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
+        $dateRanges = new SubEvents(
+            new SubEvent(
+                new DateRange(
+                    $startDate,
+                    \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
+                ),
+                new Status(StatusType::Available())
             ),
-            new DateRange(
-                \DateTimeImmutable::createFromFormat('d/m/Y', '17/12/2018'),
-                $endDate
+            new SubEvent(
+                new DateRange(
+                    \DateTimeImmutable::createFromFormat('d/m/Y', '17/12/2018'),
+                    $endDate
+                ),
+                new Status(StatusType::Available())
             )
         );
 
@@ -56,14 +62,20 @@ class MultipleDateRangesCalendarTest extends TestCase
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
 
-        $dateRanges = new DateRanges(
-            new DateRange(
-                $startDate,
-                \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
+        $dateRanges = new SubEvents(
+            new SubEvent(
+                new DateRange(
+                    $startDate,
+                    \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
+                ),
+                new Status(StatusType::Available())
             ),
-            new DateRange(
-                \DateTimeImmutable::createFromFormat('d/m/Y', '17/12/2018'),
-                $endDate
+            new SubEvent(
+                new DateRange(
+                    \DateTimeImmutable::createFromFormat('d/m/Y', '17/12/2018'),
+                    $endDate
+                ),
+                new Status(StatusType::Available())
             )
         );
 
@@ -80,14 +92,20 @@ class MultipleDateRangesCalendarTest extends TestCase
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
 
-        $dateRanges = new DateRanges(
-            new DateRange(
-                $startDate,
-                \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
+        $dateRanges = new SubEvents(
+            new SubEvent(
+                new DateRange(
+                    $startDate,
+                    \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
+                ),
+                new Status(StatusType::Available())
             ),
-            new DateRange(
-                \DateTimeImmutable::createFromFormat('d/m/Y', '17/12/2018'),
-                $endDate
+            new SubEvent(
+                new DateRange(
+                    \DateTimeImmutable::createFromFormat('d/m/Y', '17/12/2018'),
+                    $endDate
+                ),
+                new Status(StatusType::Available())
             )
         );
 
