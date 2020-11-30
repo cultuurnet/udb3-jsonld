@@ -27,10 +27,10 @@ class HourTest extends TestCase
     {
         return [
             'negative' => [
-                'hour' => -1,
+                -1,
             ],
             'over_twenty_three' => [
-                'hour' => 24,
+                24,
             ],
         ];
     }

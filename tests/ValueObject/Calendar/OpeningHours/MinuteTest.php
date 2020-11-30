@@ -27,10 +27,10 @@ class MinuteTest extends TestCase
     {
         return [
             'negative' => [
-                'hour' => -1,
+                -1,
             ],
             'over_fifty_nine' => [
-                'hour' => 60,
+                60,
             ],
         ];
     }
