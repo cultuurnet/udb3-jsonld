@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
-class SingleDateRangeCalendar implements CalendarWithDateRange, CalendarWithSubEvents
+class SingleSubEventCalendar implements CalendarWithDateRange, CalendarWithSubEvents
 {
     /**
      * @var SubEvent

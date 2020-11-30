@@ -25,7 +25,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleDateRangeCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
@@ -215,7 +215,7 @@ class EventDenormalizerTest extends TestCase
                 new Language('nl'),
                 new Title('Titel voorbeeld')
             ),
-            new SingleDateRangeCalendar(
+            new SingleSubEventCalendar(
                 new SubEvent(
                     new DateRange(
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
@@ -286,7 +286,7 @@ class EventDenormalizerTest extends TestCase
                 new Language('nl'),
                 new Title('Titel voorbeeld')
             ),
-            new SingleDateRangeCalendar(
+            new SingleSubEventCalendar(
                 new SubEvent(
                     new DateRange(
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
@@ -348,7 +348,7 @@ class EventDenormalizerTest extends TestCase
                 new Language('nl'),
                 new Title('Titel voorbeeld')
             ),
-            new SingleDateRangeCalendar(
+            new SingleSubEventCalendar(
                 new SubEvent(
                     new DateRange(
                         \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),

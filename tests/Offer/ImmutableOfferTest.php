@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleDateRangeCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
@@ -590,7 +590,7 @@ class ImmutableOfferTest extends TestCase
      */
     private function getCalendar()
     {
-        return new SingleDateRangeCalendar(
+        return new SingleSubEventCalendar(
             new SubEvent(
                 new DateRange(
                     \DateTimeImmutable::createFromFormat('d/m/Y', '10/01/2018'),

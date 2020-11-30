@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use PHPUnit\Framework\TestCase;
 
-class SingleDateRangeCalendarTest extends TestCase
+class SingleSubEventCalendarTest extends TestCase
 {
     /**
      * @test
@@ -13,7 +13,7 @@ class SingleDateRangeCalendarTest extends TestCase
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-        $calendar = new SingleDateRangeCalendar(
+        $calendar = new SingleSubEventCalendar(
             new SubEvent(
                 new DateRange($startDate, $endDate),
                 new Status(StatusType::Available())
@@ -30,7 +30,7 @@ class SingleDateRangeCalendarTest extends TestCase
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-        $calendar = new SingleDateRangeCalendar(
+        $calendar = new SingleSubEventCalendar(
             new SubEvent(
                 new DateRange($startDate, $endDate),
                 new Status(StatusType::Available())
@@ -48,7 +48,7 @@ class SingleDateRangeCalendarTest extends TestCase
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-        $calendar = new SingleDateRangeCalendar(
+        $calendar = new SingleSubEventCalendar(
             new SubEvent(
                 new DateRange($startDate, $endDate),
                 new Status(StatusType::Available())

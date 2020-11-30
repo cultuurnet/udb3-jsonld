@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleDateRangeCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
@@ -57,7 +57,7 @@ class CalendarDenormalizer implements DenormalizerInterface
                 if (isset($data['subEvent'][0])) {
                     $subEvent = $this->denormalizeSubEvent($data['subEvent'][0]);
                 }
-                $calendar = new SingleDateRangeCalendar($subEvent);
+                $calendar = new SingleSubEventCalendar($subEvent);
                 break;
 
             case 'multiple':

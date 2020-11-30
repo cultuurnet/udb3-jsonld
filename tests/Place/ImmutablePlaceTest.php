@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleDateRangeCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
@@ -59,7 +59,7 @@ class ImmutablePlaceTest extends TestCase
      */
     public function it_should_throw_an_exception_if_an_unsupported_calendar_is_injected()
     {
-        $calendar = new SingleDateRangeCalendar(
+        $calendar = new SingleSubEventCalendar(
         new SubEvent(
             new DateRange(
                 \DateTimeImmutable::createFromFormat('d/m/Y', '10/01/2018'),

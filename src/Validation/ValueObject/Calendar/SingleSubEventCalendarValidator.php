@@ -13,7 +13,7 @@ use Respect\Validation\Rules\Length;
 use Respect\Validation\Rules\When;
 use Respect\Validation\Validator;
 
-class SingleDateRangeCalendarValidator extends Validator
+class SingleSubEventCalendarValidator extends Validator
 {
     public function __construct()
     {
