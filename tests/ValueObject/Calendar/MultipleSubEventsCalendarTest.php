@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use PHPUnit\Framework\TestCase;
 
-class MultipleDateRangesCalendarTest extends TestCase
+class MultipleSubEventsCalendarTest extends TestCase
 {
     /**
      * @test
@@ -20,7 +20,7 @@ class MultipleDateRangesCalendarTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Multiple date ranges calendar requires at least 2 date ranges.');
 
-        new MultipleDateRangesCalendar($dateRanges);
+        new MultipleSubEventsCalendar($dateRanges);
     }
 
     /**
@@ -48,7 +48,7 @@ class MultipleDateRangesCalendarTest extends TestCase
             )
         );
 
-        $calendar = new MultipleDateRangesCalendar($dateRanges);
+        $calendar = new MultipleSubEventsCalendar($dateRanges);
 
         $this->assertEquals($startDate, $calendar->getStartDate());
         $this->assertEquals($endDate, $calendar->getEndDate());
@@ -79,7 +79,7 @@ class MultipleDateRangesCalendarTest extends TestCase
             )
         );
 
-        $calendar = new MultipleDateRangesCalendar($dateRanges);
+        $calendar = new MultipleSubEventsCalendar($dateRanges);
 
         $this->assertEquals($dateRanges, $calendar->getSubEvents());
     }
@@ -109,7 +109,7 @@ class MultipleDateRangesCalendarTest extends TestCase
             )
         );
 
-        $calendar = new MultipleDateRangesCalendar($dateRanges);
+        $calendar = new MultipleSubEventsCalendar($dateRanges);
 
         $this->assertEquals(CalendarType::multiple(), $calendar->getType());
     }

@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Model\Validation\Offer;
 
 use CultuurNet\UDB3\Model\Validation\Organizer\OrganizerReferenceValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Audience\AgeRangeValidator;
-use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\MultipleDateRangeCalendarValidator;
+use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\MultipleSubEventsCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\PeriodicCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\PermanentCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\SingleSubEventCalendarValidator;

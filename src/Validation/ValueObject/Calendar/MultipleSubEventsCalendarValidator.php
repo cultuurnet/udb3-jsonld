@@ -11,7 +11,7 @@ use Respect\Validation\Rules\KeyValue;
 use Respect\Validation\Rules\When;
 use Respect\Validation\Validator;
 
-class MultipleDateRangeCalendarValidator extends Validator
+class MultipleSubEventsCalendarValidator extends Validator
 {
     public function __construct()
     {

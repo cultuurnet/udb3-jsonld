@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleDateRangesCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
@@ -422,7 +422,7 @@ class EventDenormalizerTest extends TestCase
                 new Language('nl'),
                 new Title('Titel voorbeeld')
             ),
-            new MultipleDateRangesCalendar(
+            new MultipleSubEventsCalendar(
                 new SubEvents(
                     new SubEvent(
                         new DateRange(
@@ -540,7 +540,7 @@ class EventDenormalizerTest extends TestCase
                 new Language('nl'),
                 new Title('Titel voorbeeld')
             ),
-            new MultipleDateRangesCalendar(
+            new MultipleSubEventsCalendar(
                 new SubEvents(
                     new SubEvent(
                         new DateRange(

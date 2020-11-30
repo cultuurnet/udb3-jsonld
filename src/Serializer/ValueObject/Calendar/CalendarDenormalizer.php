@@ -7,7 +7,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleDateRangesCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
@@ -63,7 +63,7 @@ class CalendarDenormalizer implements DenormalizerInterface
             case 'multiple':
                 $subEvents = array_map([$this, 'denormalizeSubEvent'], $data['subEvent']);
                 $subEvents = new SubEvents(...$subEvents);
-                $calendar = new MultipleDateRangesCalendar($subEvents);
+                $calendar = new MultipleSubEventsCalendar($subEvents);
                 break;
 
             case 'periodic':
