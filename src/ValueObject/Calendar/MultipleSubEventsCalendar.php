@@ -9,9 +9,6 @@ class MultipleSubEventsCalendar implements CalendarWithDateRange, CalendarWithSu
      */
     private $dateRanges;
 
-    /**
-     * @param SubEvents $dateRanges
-     */
     public function __construct(SubEvents $dateRanges)
     {
         if ($dateRanges->getLength() < 2) {
@@ -21,26 +18,17 @@ class MultipleSubEventsCalendar implements CalendarWithDateRange, CalendarWithSu
         $this->dateRanges = $dateRanges;
     }
 
-    /**
-     * @return CalendarType
-     */
-    public function getType()
+    public function getType(): CalendarType
     {
         return CalendarType::multiple();
     }
 
-    /**
-     * @return \DateTimeImmutable
-     */
-    public function getStartDate()
+    public function getStartDate(): \DateTimeImmutable
     {
         return $this->dateRanges->getStartDate();
     }
 
-    /**
-     * @return \DateTimeImmutable
-     */
-    public function getEndDate()
+    public function getEndDate(): \DateTimeImmutable
     {
         return $this->dateRanges->getEndDate();
     }

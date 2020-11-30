@@ -14,26 +14,17 @@ class SingleSubEventCalendar implements CalendarWithDateRange, CalendarWithSubEv
         $this->subEvent = $subEvent;
     }
 
-    /**
-     * @return CalendarType
-     */
-    public function getType()
+    public function getType(): CalendarType
     {
         return CalendarType::single();
     }
 
-    /**
-     * @return \DateTimeImmutable
-     */
-    public function getStartDate()
+    public function getStartDate(): \DateTimeImmutable
     {
         return $this->subEvent->getDateRange()->getFrom();
     }
 
-    /**
-     * @return \DateTimeImmutable
-     */
-    public function getEndDate()
+    public function getEndDate(): \DateTimeImmutable
     {
         return $this->subEvent->getDateRange()->getTo();
     }

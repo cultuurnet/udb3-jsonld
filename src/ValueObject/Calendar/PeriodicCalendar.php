@@ -16,10 +16,6 @@ class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeningHour
      */
     private $openingHours;
 
-    /**
-     * @param DateRange $dateRange
-     * @param OpeningHours $openingHours
-     */
     public function __construct(
         DateRange $dateRange,
         OpeningHours $openingHours
@@ -28,34 +24,22 @@ class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeningHour
         $this->openingHours = $openingHours;
     }
 
-    /**
-     * @return CalendarType
-     */
-    public function getType()
+    public function getType(): CalendarType
     {
         return CalendarType::periodic();
     }
 
-    /**
-     * @return \DateTimeImmutable
-     */
-    public function getStartDate()
+    public function getStartDate(): \DateTimeImmutable
     {
         return $this->dateRange->getFrom();
     }
 
-    /**
-     * @return \DateTimeImmutable
-     */
-    public function getEndDate()
+    public function getEndDate(): \DateTimeImmutable
     {
         return $this->dateRange->getTo();
     }
 
-    /**
-     * @return OpeningHours
-     */
-    public function getOpeningHours()
+    public function getOpeningHours(): OpeningHours
     {
         return $this->openingHours;
     }
