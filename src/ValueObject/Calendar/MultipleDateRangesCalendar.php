@@ -45,10 +45,7 @@ class MultipleDateRangesCalendar implements CalendarWithDateRange, CalendarWithS
         return $this->dateRanges->getEndDate();
     }
 
-    /**
-     * @return SubEvents
-     */
-    public function getSubEvents()
+    public function getSubEvents(): SubEvents
     {
         return $this->dateRanges;
     }

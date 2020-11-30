@@ -38,10 +38,7 @@ class SingleDateRangeCalendar implements CalendarWithDateRange, CalendarWithSubE
         return $this->subEvent->getDateRange()->getTo();
     }
 
-    /**
-     * @return SubEvents
-     */
-    public function getSubEvents()
+    public function getSubEvents(): SubEvents
     {
         return new SubEvents($this->subEvent);
     }
