@@ -4,8 +4,5 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 interface CalendarWithSubEvents
 {
-    /**
-     * @return DateRanges
-     */
-    public function getSubEvents();
+    public function getSubEvents(): SubEvents;
 }

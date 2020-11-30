@@ -10,11 +10,12 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRanges;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleDateRangesCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
@@ -24,7 +25,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleDateRangeCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
@@ -214,10 +215,12 @@ class EventDenormalizerTest extends TestCase
                 new Language('nl'),
                 new Title('Titel voorbeeld')
             ),
-            new SingleDateRangeCalendar(
-                new DateRange(
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00'),
+            new SingleSubEventCalendar(
+                new SubEvent(
+                    new DateRange(
+                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
+                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                    ),
                     new Status(
                         StatusType::Available()
                     )
@@ -283,10 +286,12 @@ class EventDenormalizerTest extends TestCase
                 new Language('nl'),
                 new Title('Titel voorbeeld')
             ),
-            new SingleDateRangeCalendar(
-                new DateRange(
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00'),
+            new SingleSubEventCalendar(
+                new SubEvent(
+                    new DateRange(
+                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
+                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                    ),
                     new Status(
                         StatusType::Unavailable(),
                         (new TranslatedStatusReason(
@@ -343,10 +348,12 @@ class EventDenormalizerTest extends TestCase
                 new Language('nl'),
                 new Title('Titel voorbeeld')
             ),
-            new SingleDateRangeCalendar(
-                new DateRange(
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
-                    \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00'),
+            new SingleSubEventCalendar(
+                new SubEvent(
+                    new DateRange(
+                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
+                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                    ),
                     new Status(
                         StatusType::Available()
                     )
@@ -415,25 +422,31 @@ class EventDenormalizerTest extends TestCase
                 new Language('nl'),
                 new Title('Titel voorbeeld')
             ),
-            new MultipleDateRangesCalendar(
-                new DateRanges(
-                    new DateRange(
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00'),
+            new MultipleSubEventsCalendar(
+                new SubEvents(
+                    new SubEvent(
+                        new DateRange(
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                        ),
                         new Status(
                             StatusType::Available()
                         )
                     ),
-                    new DateRange(
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T13:00:00+01:00'),
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T17:00:00+01:00'),
+                    new SubEvent(
+                        new DateRange(
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T13:00:00+01:00'),
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T17:00:00+01:00')
+                        ),
                         new Status(
                             StatusType::Available()
                         )
                     ),
-                    new DateRange(
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T13:00:00+01:00'),
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00'),
+                    new SubEvent(
+                        new DateRange(
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T13:00:00+01:00'),
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00')
+                        ),
                         new Status(
                             StatusType::Available()
                         )
@@ -527,11 +540,13 @@ class EventDenormalizerTest extends TestCase
                 new Language('nl'),
                 new Title('Titel voorbeeld')
             ),
-            new MultipleDateRangesCalendar(
-                new DateRanges(
-                    new DateRange(
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00'),
+            new MultipleSubEventsCalendar(
+                new SubEvents(
+                    new SubEvent(
+                        new DateRange(
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                        ),
                         new Status(
                             StatusType::Unavailable(),
                             (new TranslatedStatusReason(
@@ -541,23 +556,29 @@ class EventDenormalizerTest extends TestCase
                                 ->withTranslation(new Language('fr'), new StatusReason('Franse reden'))
                         )
                     ),
-                    new DateRange(
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T13:00:00+01:00'),
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T17:00:00+01:00'),
+                    new SubEvent(
+                        new DateRange(
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T13:00:00+01:00'),
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-03T17:00:00+01:00')
+                        ),
                         new Status(
                             StatusType::Available()
                         )
                     ),
-                    new DateRange(
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T13:00:00+01:00'),
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00'),
+                    new SubEvent(
+                        new DateRange(
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T13:00:00+01:00'),
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00')
+                        ),
                         new Status(
                             StatusType::TemporarilyUnavailable()
                         )
                     ),
-                    new DateRange(
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T13:00:00+01:00'),
-                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00'),
+                    new SubEvent(
+                        new DateRange(
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T13:00:00+01:00'),
+                            \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-10T17:00:00+01:00')
+                        ),
                         new Status(
                             StatusType::Available(),
                             (new TranslatedStatusReason(

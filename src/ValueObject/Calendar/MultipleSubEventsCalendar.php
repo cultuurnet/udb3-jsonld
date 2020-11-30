@@ -2,17 +2,14 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
-class MultipleDateRangesCalendar implements CalendarWithDateRange, CalendarWithSubEvents
+class MultipleSubEventsCalendar implements CalendarWithDateRange, CalendarWithSubEvents
 {
     /**
-     * @var DateRanges
+     * @var SubEvents
      */
     private $dateRanges;
 
-    /**
-     * @param DateRanges $dateRanges
-     */
-    public function __construct(DateRanges $dateRanges)
+    public function __construct(SubEvents $dateRanges)
     {
         if ($dateRanges->getLength() < 2) {
             throw new \InvalidArgumentException('Multiple date ranges calendar requires at least 2 date ranges.');
@@ -21,34 +18,22 @@ class MultipleDateRangesCalendar implements CalendarWithDateRange, CalendarWithS
         $this->dateRanges = $dateRanges;
     }
 
-    /**
-     * @return CalendarType
-     */
-    public function getType()
+    public function getType(): CalendarType
     {
         return CalendarType::multiple();
     }
 
-    /**
-     * @return \DateTimeImmutable
-     */
-    public function getStartDate()
+    public function getStartDate(): \DateTimeImmutable
     {
         return $this->dateRanges->getStartDate();
     }
 
-    /**
-     * @return \DateTimeImmutable
-     */
-    public function getEndDate()
+    public function getEndDate(): \DateTimeImmutable
     {
         return $this->dateRanges->getEndDate();
     }
 
-    /**
-     * @return DateRanges
-     */
-    public function getSubEvents()
+    public function getSubEvents(): SubEvents
     {
         return $this->dateRanges;
     }

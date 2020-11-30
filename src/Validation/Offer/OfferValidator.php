@@ -4,10 +4,10 @@ namespace CultuurNet\UDB3\Model\Validation\Offer;
 
 use CultuurNet\UDB3\Model\Validation\Organizer\OrganizerReferenceValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Audience\AgeRangeValidator;
-use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\MultipleDateRangeCalendarValidator;
+use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\MultipleSubEventsCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\PeriodicCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\PermanentCalendarValidator;
-use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\SingleDateRangeCalendarValidator;
+use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\SingleSubEventCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\ConfigurableEnumValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Contact\BookingInfoValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Contact\ContactPointValidator;
@@ -82,8 +82,8 @@ abstract class OfferValidator extends Validator
         $allowedTypes = $this->getAllowedCalendarTypes();
 
         $availableRules = [
-            'single' => new SingleDateRangeCalendarValidator(),
-            'multiple' => new MultipleDateRangeCalendarValidator(),
+            'single' => new SingleSubEventCalendarValidator(),
+            'multiple' => new MultipleSubEventsCalendarValidator(),
             'periodic' => new PeriodicCalendarValidator(),
             'permanent' => new PermanentCalendarValidator(),
         ];

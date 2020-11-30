@@ -11,26 +11,17 @@ class PermanentCalendar implements CalendarWithOpeningHours
      */
     private $openingHours;
 
-    /**
-     * @param OpeningHours $openingHours
-     */
     public function __construct(OpeningHours $openingHours)
     {
         $this->openingHours = $openingHours;
     }
 
-    /**
-     * @return CalendarType
-     */
-    public function getType()
+    public function getType(): CalendarType
     {
         return CalendarType::permanent();
     }
 
-    /**
-     * @return OpeningHours
-     */
-    public function getOpeningHours()
+    public function getOpeningHours(): OpeningHours
     {
         return $this->openingHours;
     }

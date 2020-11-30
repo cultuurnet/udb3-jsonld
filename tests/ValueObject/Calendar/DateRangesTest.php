@@ -16,7 +16,7 @@ class DateRangesTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Array should not be empty.');
 
-        new DateRanges();
+        new SubEvents();
     }
 
     /**
@@ -44,20 +44,23 @@ class DateRangesTest extends TestCase
             ['2018-07-01T00:00:00+01:00', '2018-08-31T00:00:00+01:00'],
         ];
 
-        $mapToDateRange = function (array $range) {
+        $mapToSubEvents = function (array $range) {
             $from = $range[0];
             $to = $range[1];
 
-            return new DateRange(
-                DateTimeImmutable::createFromFormat(DATE_ATOM, $from),
-                DateTimeImmutable::createFromFormat(DATE_ATOM, $to)
+            return new SubEvent(
+                new DateRange(
+                    DateTimeImmutable::createFromFormat(DATE_ATOM, $from),
+                    DateTimeImmutable::createFromFormat(DATE_ATOM, $to)
+                ),
+                new Status(StatusType::Available())
             );
         };
 
-        $given = array_map($mapToDateRange, $given);
-        $expected = array_map($mapToDateRange, $expected);
+        $given = array_map($mapToSubEvents, $given);
+        $expected = array_map($mapToSubEvents, $expected);
 
-        $ranges = new DateRanges(...$given);
+        $ranges = new SubEvents(...$given);
 
         $this->assertEquals($expected, $ranges->toArray());
         $this->assertEquals(7, $ranges->getLength());
