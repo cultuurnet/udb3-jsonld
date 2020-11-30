@@ -450,7 +450,7 @@ class EventDenormalizerTest extends TestCase
                         new Status(
                             StatusType::Available()
                         )
-                    ),
+                    )
                 )
             ),
             PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
