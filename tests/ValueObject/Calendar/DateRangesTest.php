@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
+use const DATE_ATOM;
 
 class DateRangesTest extends TestCase
 {
@@ -23,23 +25,23 @@ class DateRangesTest extends TestCase
     public function it_should_sort_the_given_date_ranges_and_return_a_start_and_end_date()
     {
         $given = [
-            ['2018-07-01', '2018-08-31'],
-            ['2018-07-01', '2018-08-30'],
-            ['2018-05-30', '2018-09-01'],
-            ['2018-01-01', '2018-01-01'],
-            ['2018-05-30', '2018-08-30'],
-            ['2018-01-01', '2018-12-01'],
-            ['2018-07-01', '2018-08-31'],
+            ['2018-07-01T00:00:00+01:00', '2018-08-31T00:00:00+01:00'],
+            ['2018-07-01T00:00:00+01:00', '2018-08-30T00:00:00+01:00'],
+            ['2018-05-30T00:00:00+01:00', '2018-09-01T00:00:00+01:00'],
+            ['2018-01-01T00:00:00+01:00', '2018-01-01T00:00:00+01:00'],
+            ['2018-05-30T00:00:00+01:00', '2018-08-30T00:00:00+01:00'],
+            ['2018-01-01T00:00:00+01:00', '2018-12-01T00:00:00+01:00'],
+            ['2018-07-01T00:00:00+01:00', '2018-08-31T00:00:00+01:00'],
         ];
 
         $expected = [
-            ['2018-01-01', '2018-01-01'],
-            ['2018-01-01', '2018-12-01'],
-            ['2018-05-30', '2018-08-30'],
-            ['2018-05-30', '2018-09-01'],
-            ['2018-07-01', '2018-08-30'],
-            ['2018-07-01', '2018-08-31'],
-            ['2018-07-01', '2018-08-31'],
+            ['2018-01-01T00:00:00+01:00', '2018-01-01T00:00:00+01:00'],
+            ['2018-01-01T00:00:00+01:00', '2018-12-01T00:00:00+01:00'],
+            ['2018-05-30T00:00:00+01:00', '2018-08-30T00:00:00+01:00'],
+            ['2018-05-30T00:00:00+01:00', '2018-09-01T00:00:00+01:00'],
+            ['2018-07-01T00:00:00+01:00', '2018-08-30T00:00:00+01:00'],
+            ['2018-07-01T00:00:00+01:00', '2018-08-31T00:00:00+01:00'],
+            ['2018-07-01T00:00:00+01:00', '2018-08-31T00:00:00+01:00'],
         ];
 
         $mapToDateRange = function (array $range) {
@@ -47,8 +49,8 @@ class DateRangesTest extends TestCase
             $to = $range[1];
 
             return new DateRange(
-                \DateTimeImmutable::createFromFormat('Y-m-d', $from),
-                \DateTimeImmutable::createFromFormat('Y-m-d', $to)
+                DateTimeImmutable::createFromFormat(DATE_ATOM, $from),
+                DateTimeImmutable::createFromFormat(DATE_ATOM, $to)
             );
         };
 
@@ -59,7 +61,13 @@ class DateRangesTest extends TestCase
 
         $this->assertEquals($expected, $ranges->toArray());
         $this->assertEquals(7, $ranges->getLength());
-        $this->assertEquals(\DateTimeImmutable::createFromFormat('Y-m-d', '2018-01-01'), $ranges->getStartDate());
-        $this->assertEquals(\DateTimeImmutable::createFromFormat('Y-m-d', '2018-08-31'), $ranges->getEndDate());
+        $this->assertEquals(
+            DateTimeImmutable::createFromFormat(DATE_ATOM, '2018-01-01T00:00:00+01:00'),
+            $ranges->getStartDate()
+        );
+        $this->assertEquals(
+            DateTimeImmutable::createFromFormat(DATE_ATOM, '2018-08-31T00:00:00+01:00'),
+            $ranges->getEndDate()
+        );
     }
 }
