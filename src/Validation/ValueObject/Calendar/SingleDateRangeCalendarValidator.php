@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Model\Validation\ValueObject\Calendar;
 use Respect\Validation\Rules\AllOf;
 use Respect\Validation\Rules\AlwaysValid;
 use Respect\Validation\Rules\Date;
+use Respect\Validation\Rules\Each;
 use Respect\Validation\Rules\Equals;
 use Respect\Validation\Rules\Key;
 use Respect\Validation\Rules\KeyValue;
@@ -32,9 +33,14 @@ class SingleDateRangeCalendarValidator extends Validator
                     ),
                     new Key(
                         'subEvent',
-                        (new Length(0, 1))
-                            ->setName('calendarType single')
-                            ->setTemplate('{{name}} should have exactly one subEvent'),
+                        new AllOf(
+                            (new Length(0, 1))
+                                ->setName('calendarType single')
+                                ->setTemplate('{{name}} should have exactly one subEvent'),
+                            new Each(
+                                (new SubEventValidator())->setName('subEvent')
+                            )
+                        ),
                         false
                     )
                 ))->setName('calendarType single'),

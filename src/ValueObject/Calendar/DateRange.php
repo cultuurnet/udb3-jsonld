@@ -7,13 +7,15 @@ use CultuurNet\UDB3\Model\ValueObject\DateTimeImmutableRange;
 class DateRange extends DateTimeImmutableRange
 {
     /**
-     * @param \DateTimeImmutable $from
-     * @param \DateTimeImmutable $to
+     * @var Status
      */
-    public function __construct(\DateTimeImmutable $from, \DateTimeImmutable $to)
+    private $status;
+
+    public function __construct(\DateTimeImmutable $from, \DateTimeImmutable $to, ?Status $status = null)
     {
         // Override the constructor to make both from and to required.
         parent::__construct($from, $to);
+        $this->status = $status ?? new Status(StatusType::Available());
     }
 
     /**
@@ -42,5 +44,10 @@ class DateRange extends DateTimeImmutableRange
         }
 
         return 0;
+    }
+
+    public function getStatus(): Status
+    {
+        return $this->status;
     }
 }

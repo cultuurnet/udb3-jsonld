@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\Validation\ValueObject\Calendar;
 
+use CultuurNet\UDB3\Model\Validation\ValueObject\Text\TranslatedStringValidator;
 use Respect\Validation\Rules\AllOf;
 use Respect\Validation\Rules\AlwaysValid;
 use Respect\Validation\Rules\Date;
@@ -25,6 +26,7 @@ class SubEventValidator extends Validator
                 new KeyValue('endDate', 'min', 'startDate'),
                 new AlwaysValid()
             ),
+            new Key('status', new StatusValidator(), false)
         ];
 
         parent::__construct($rules);
