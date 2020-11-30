@@ -5,16 +5,13 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 class SingleDateRangeCalendar implements CalendarWithDateRange, CalendarWithSubEvents
 {
     /**
-     * @var DateRange
+     * @var SubEvent
      */
-    private $dateRange;
+    private $subEvent;
 
-    /**
-     * @param DateRange $dateRange
-     */
-    public function __construct(DateRange $dateRange)
+    public function __construct(SubEvent $subEvent)
     {
-        $this->dateRange = $dateRange;
+        $this->subEvent = $subEvent;
     }
 
     /**
@@ -30,7 +27,7 @@ class SingleDateRangeCalendar implements CalendarWithDateRange, CalendarWithSubE
      */
     public function getStartDate()
     {
-        return $this->dateRange->getFrom();
+        return $this->subEvent->getDateRange()->getFrom();
     }
 
     /**
@@ -38,14 +35,14 @@ class SingleDateRangeCalendar implements CalendarWithDateRange, CalendarWithSubE
      */
     public function getEndDate()
     {
-        return $this->dateRange->getTo();
+        return $this->subEvent->getDateRange()->getTo();
     }
 
     /**
-     * @return DateRanges
+     * @return SubEvents
      */
     public function getSubEvents()
     {
-        return new DateRanges($this->dateRange);
+        return new SubEvents($this->subEvent);
     }
 }

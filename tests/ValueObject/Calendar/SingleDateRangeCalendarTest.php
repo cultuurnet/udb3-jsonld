@@ -13,7 +13,12 @@ class SingleDateRangeCalendarTest extends TestCase
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-        $calendar = new SingleDateRangeCalendar(new DateRange($startDate, $endDate));
+        $calendar = new SingleDateRangeCalendar(
+            new SubEvent(
+                new DateRange($startDate, $endDate),
+                new Status(StatusType::Available())
+            )
+        );
 
         $this->assertEquals(CalendarType::single(), $calendar->getType());
     }
@@ -25,7 +30,12 @@ class SingleDateRangeCalendarTest extends TestCase
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-        $calendar = new SingleDateRangeCalendar(new DateRange($startDate, $endDate));
+        $calendar = new SingleDateRangeCalendar(
+            new SubEvent(
+                new DateRange($startDate, $endDate),
+                new Status(StatusType::Available())
+            )
+        );
 
         $this->assertEquals($startDate, $calendar->getStartDate());
         $this->assertEquals($endDate, $calendar->getEndDate());
@@ -38,10 +48,18 @@ class SingleDateRangeCalendarTest extends TestCase
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
-        $calendar = new SingleDateRangeCalendar(new DateRange($startDate, $endDate));
+        $calendar = new SingleDateRangeCalendar(
+            new SubEvent(
+                new DateRange($startDate, $endDate),
+                new Status(StatusType::Available())
+            )
+        );
 
-        $expected = new DateRanges(
-            new DateRange($startDate, $endDate)
+        $expected = new SubEvents(
+            new SubEvent(
+                new DateRange($startDate, $endDate),
+                new Status(StatusType::Available())
+            )
         );
 
         $this->assertEquals($expected, $calendar->getSubEvents());
