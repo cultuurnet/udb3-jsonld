@@ -60,14 +60,14 @@ class ImmutablePlaceTest extends TestCase
     public function it_should_throw_an_exception_if_an_unsupported_calendar_is_injected()
     {
         $calendar = new SingleSubEventCalendar(
-        new SubEvent(
-            new DateRange(
-                \DateTimeImmutable::createFromFormat('d/m/Y', '10/01/2018'),
-                \DateTimeImmutable::createFromFormat('d/m/Y', '11/01/2018')
-            ),
-            new Status(StatusType::Available())
-        )
-    );
+            new SubEvent(
+                new DateRange(
+                    \DateTimeImmutable::createFromFormat('d/m/Y', '10/01/2018'),
+                    \DateTimeImmutable::createFromFormat('d/m/Y', '11/01/2018')
+                ),
+                new Status(StatusType::Available())
+            )
+        );
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Given calendar should have opening hours.');
