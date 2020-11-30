@@ -8,6 +8,9 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleDateRangeCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
@@ -133,9 +136,12 @@ class ImmutableEventTest extends TestCase
     private function getCalendar()
     {
         return new SingleDateRangeCalendar(
-            new DateRange(
-                \DateTimeImmutable::createFromFormat('d/m/Y', '10/01/2018'),
-                \DateTimeImmutable::createFromFormat('d/m/Y', '11/01/2018')
+            new SubEvent(
+                new DateRange(
+                    \DateTimeImmutable::createFromFormat('d/m/Y', '10/01/2018'),
+                    \DateTimeImmutable::createFromFormat('d/m/Y', '11/01/2018')
+                ),
+                new Status(StatusType::Available())
             )
         );
     }

@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRanges;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleDateRangesCalendar;
@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleDateRangeCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -52,17 +53,17 @@ class CalendarDenormalizer implements DenormalizerInterface
 
         switch ($data['calendarType']) {
             case 'single':
-                $dateRange = $this->denormalizeDateRange($data);
+                $subEvent = $this->denormalizeSubEvent($data);
                 if (isset($data['subEvent'][0])) {
-                    $dateRange = $this->denormalizeDateRange($data['subEvent'][0]);
+                    $subEvent = $this->denormalizeSubEvent($data['subEvent'][0]);
                 }
-                $calendar = new SingleDateRangeCalendar($dateRange);
+                $calendar = new SingleDateRangeCalendar($subEvent);
                 break;
 
             case 'multiple':
-                $dateRanges = array_map([$this, 'denormalizeDateRange'], $data['subEvent']);
-                $dateRanges = new DateRanges(...$dateRanges);
-                $calendar = new MultipleDateRangesCalendar($dateRanges);
+                $subEvents = array_map([$this, 'denormalizeSubEvent'], $data['subEvent']);
+                $subEvents = new SubEvents(...$subEvents);
+                $calendar = new MultipleDateRangesCalendar($subEvents);
                 break;
 
             case 'periodic':
@@ -140,36 +141,39 @@ class CalendarDenormalizer implements DenormalizerInterface
         return new Time($hour, $minute);
     }
 
-    /**
-     * @todo Extract to a separate DateRangeDenormalizer
-     * @param array $dateRangeData
-     * @return DateRange
-     */
-    private function denormalizeDateRange(array $dateRangeData)
+    private function denormalizeDateRange(array $dateRangeData): DateRange
     {
         $startDate = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $dateRangeData['startDate']);
         $endDate = \DateTimeImmutable::createFromFormat(\DATE_ATOM, $dateRangeData['endDate']);
 
+        return new DateRange($startDate, $endDate);
+    }
+
+    /**
+     * @param array $subEventData
+     * @return SubEvent
+     */
+    private function denormalizeSubEvent(array $subEventData): SubEvent
+    {
         $statusType = StatusType::Available();
         $statusReason = null;
 
-        if (isset($dateRangeData['status']['type'])) {
-            $statusType = new StatusType($dateRangeData['status']['type']);
+        if (isset($subEventData['status']['type'])) {
+            $statusType = new StatusType($subEventData['status']['type']);
         }
 
-        if (isset($dateRangeData['status']['reason'])) {
+        if (isset($subEventData['status']['reason'])) {
             /** @var TranslatedStatusReason $statusReason */
             $statusReason = $this->statusReasonDenormalizer->denormalize(
-                $dateRangeData['status']['reason'],
+                $subEventData['status']['reason'],
                 TranslatedStatusReason::class
             );
         }
 
         $status = new Status($statusType, $statusReason);
 
-        return new DateRange(
-            $startDate,
-            $endDate,
+        return new SubEvent(
+            $this->denormalizeDateRange($subEventData),
             $status
         );
     }
