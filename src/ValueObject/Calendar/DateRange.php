@@ -6,6 +6,12 @@ use CultuurNet\UDB3\Model\ValueObject\DateTimeImmutableRange;
 
 class DateRange extends DateTimeImmutableRange
 {
+    public function __construct(\DateTimeImmutable $from, \DateTimeImmutable $to)
+    {
+        // Override the constructor to make both from and to required.
+        parent::__construct($from, $to);
+    }
+
     /**
      * @param DateRange $dateRange
      * @return int
