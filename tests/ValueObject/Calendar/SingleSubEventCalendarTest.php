@@ -33,11 +33,11 @@ class SingleSubEventCalendarTest extends TestCase
         $calendar = new SingleSubEventCalendar(
             new SubEvent(
                 new DateRange($startDate, $endDate),
-                new Status(StatusType::Available())
+                new Status(StatusType::Unavailable())
             )
         );
 
-        $this->assertEquals(new Status(StatusType::Available()), $calendar->getStatus());
+        $this->assertEquals(new Status(StatusType::Unavailable()), $calendar->getStatus());
     }
 
     /**

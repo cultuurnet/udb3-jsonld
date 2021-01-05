@@ -128,19 +128,19 @@ class MultipleSubEventsCalendarTest extends TestCase
                     $startDate,
                     \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
                 ),
-                new Status(StatusType::Available())
+                new Status(StatusType::Unavailable())
             ),
             new SubEvent(
                 new DateRange(
                     \DateTimeImmutable::createFromFormat('d/m/Y', '17/12/2018'),
                     $endDate
                 ),
-                new Status(StatusType::Available())
+                new Status(StatusType::TemporarilyUnavailable())
             )
         );
 
         $calendar = new MultipleSubEventsCalendar($dateRanges);
 
-        $this->assertEquals(new Status(StatusType::Available()), $calendar->getStatus());
+        $this->assertEquals(new Status(StatusType::TemporarilyUnavailable()), $calendar->getStatus());
     }
 }
