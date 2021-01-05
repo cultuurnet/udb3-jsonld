@@ -9,14 +9,25 @@ class SingleSubEventCalendar implements CalendarWithDateRange, CalendarWithSubEv
      */
     private $subEvent;
 
+    /**
+     * @var Status
+     */
+    private $status;
+
     public function __construct(SubEvent $subEvent)
     {
         $this->subEvent = $subEvent;
+        $this->status = new Status(StatusType::Available());
     }
 
     public function getType(): CalendarType
     {
         return CalendarType::single();
+    }
+
+    public function getStatus(): Status
+    {
+        return $this->status;
     }
 
     public function getStartDate(): \DateTimeImmutable
