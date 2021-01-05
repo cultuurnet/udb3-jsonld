@@ -25,6 +25,16 @@ class PermanentCalendarTest extends TestCase
     /**
      * @test
      */
+    public function it_should_return_a_status()
+    {
+        $calendar = new PermanentCalendar(new OpeningHours());
+
+        $this->assertEquals(new Status(StatusType::Available()), $calendar->getStatus());
+    }
+
+    /**
+     * @test
+     */
     public function it_should_return_the_injected_opening_hours()
     {
         $days = new Days(

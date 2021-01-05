@@ -26,6 +26,23 @@ class SingleSubEventCalendarTest extends TestCase
     /**
      * @test
      */
+    public function it_should_return_a_status()
+    {
+        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
+        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
+        $calendar = new SingleSubEventCalendar(
+            new SubEvent(
+                new DateRange($startDate, $endDate),
+                new Status(StatusType::Available())
+            )
+        );
+
+        $this->assertEquals(new Status(StatusType::Available()), $calendar->getStatus());
+    }
+
+    /**
+     * @test
+     */
     public function it_should_return_the_injected_start_and_end_date()
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
