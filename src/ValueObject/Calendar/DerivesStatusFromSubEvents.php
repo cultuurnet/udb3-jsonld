@@ -9,6 +9,9 @@ trait DerivesStatusFromSubEvents
         return new Status($this->statusTypeFromSubEvents($subEvents));
     }
 
+    /**
+     * @internal Use DerivesStatusFromSubEvents::statusFromSubEvents
+     */
     private function statusTypeFromSubEvents(SubEvents $subEvents): StatusType
     {
         $statusTypeCounts = [];
