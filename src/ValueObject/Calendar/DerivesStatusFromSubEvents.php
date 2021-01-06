@@ -4,12 +4,12 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 trait DerivesStatusFromSubEvents
 {
-    public function statusFromSubEvents(SubEvents $subEvents): Status
+    private function statusFromSubEvents(SubEvents $subEvents): Status
     {
         return new Status($this->statusTypeFromSubEvents($subEvents));
     }
 
-    public function statusTypeFromSubEvents(SubEvents $subEvents): StatusType
+    private function statusTypeFromSubEvents(SubEvents $subEvents): StatusType
     {
         $statusTypeCounts = [];
         $statusTypeCounts[StatusType::Available()->toString()] = 0;
