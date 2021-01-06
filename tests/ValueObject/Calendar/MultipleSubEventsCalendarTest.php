@@ -170,7 +170,7 @@ class MultipleSubEventsCalendarTest extends TestCase
         );
 
         $calendar = new MultipleSubEventsCalendar($dateRanges);
-        
+
         $calendar = $calendar->withStatus(new Status(StatusType::Available()));
 
         $this->assertEquals(new Status(StatusType::Available()), $calendar->getStatus());
