@@ -26,6 +26,13 @@ class MultipleSubEventsCalendar implements CalendarWithDateRange, CalendarWithSu
         $this->status = $this->statusFromSubEvents($dateRanges);
     }
 
+    public function withStatus(Status $status): Calendar
+    {
+        $clone = clone $this;
+        $clone->status = $status;
+        return $clone;
+    }
+
     public function getType(): CalendarType
     {
         return CalendarType::multiple();

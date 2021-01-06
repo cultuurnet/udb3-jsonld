@@ -22,6 +22,13 @@ class PermanentCalendar implements CalendarWithOpeningHours
         $this->status = new Status(StatusType::Available());
     }
 
+    public function withStatus(Status $status): Calendar
+    {
+        $clone = clone $this;
+        $clone->status = $status;
+        return $clone;
+    }
+
     public function getType(): CalendarType
     {
         return CalendarType::permanent();

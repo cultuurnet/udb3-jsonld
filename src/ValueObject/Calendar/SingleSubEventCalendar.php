@@ -22,6 +22,13 @@ class SingleSubEventCalendar implements CalendarWithDateRange, CalendarWithSubEv
         $this->status = $this->statusFromSubEvents(new SubEvents($subEvent));
     }
 
+    public function withStatus(Status $status): Calendar
+    {
+        $clone = clone $this;
+        $clone->status = $status;
+        return $clone;
+    }
+
     public function getType(): CalendarType
     {
         return CalendarType::single();
