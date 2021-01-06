@@ -2026,6 +2026,45 @@ class EventValidatorTest extends TestCase
     /**
      * @test
      */
+    public function it_should_throw_an_exception_if_status_is_invalid()
+    {
+        $event = [
+            '@id' => 'https://io.uitdatabank.be/events/b19d4090-db47-4520-ac1a-880684357ec9',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Example name'
+            ],
+            'status' => 'should not be a string',
+            'calendarType' => 'single',
+            'startDate' => '2018-02-28T13:44:09+01:00',
+            'endDate' => '2018-03-05T13:44:09+01:00',
+            'subEvent' => [
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2018-02-28T13:44:09+01:00',
+                    'endDate' => '2018-03-01T13:44:09+01:00',
+                ],
+            ],
+            'location' => [
+                '@id' => 'http://io.uitdatabank.be/place/9a344f43-1174-4149-ad9a-3e2e92565e35',
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.0',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            'status must be of the type array',
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_throw_an_exception_if_organizer_id_is_in_an_invalid_format()
     {
         $event = [
