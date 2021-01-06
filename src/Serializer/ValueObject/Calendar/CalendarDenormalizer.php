@@ -77,6 +77,12 @@ class CalendarDenormalizer implements DenormalizerInterface
                 break;
         }
 
+        if (isset($data['status'])) {
+            $calendar = $calendar->withStatus(
+                $this->denormalizeStatus($data['status'])
+            );
+        }
+
         return $calendar;
     }
 
@@ -176,5 +182,16 @@ class CalendarDenormalizer implements DenormalizerInterface
             $this->denormalizeDateRange($subEventData),
             $status
         );
+    }
+
+    private function denormalizeStatus(array $status): Status
+    {
+        $statusType = new StatusType($status['type']);
+        $statusReason = $this->statusReasonDenormalizer->denormalize(
+            $status['reason'],
+            TranslatedStatusReason::class
+        );
+
+        return new Status($statusType, $statusReason);
     }
 }
