@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\MultipleSubEventsCalen
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\PeriodicCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\PermanentCalendarValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\SingleSubEventCalendarValidator;
+use CultuurNet\UDB3\Model\Validation\ValueObject\Calendar\StatusValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\ConfigurableEnumValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Contact\BookingInfoValidator;
 use CultuurNet\UDB3\Model\Validation\ValueObject\Contact\ContactPointValidator;
@@ -40,6 +41,7 @@ abstract class OfferValidator extends Validator
         $optionalRules = [
             new Key('description', new TranslatedStringValidator('description'), false),
             new HasMainLanguageRule('description'),
+            new Key('status', new StatusValidator(), false),
             new Key('labels', new LabelsValidator(), false),
             new Key('hiddenLabels', new LabelsValidator(), false),
             new Key('organizer', new OrganizerReferenceValidator(), false),

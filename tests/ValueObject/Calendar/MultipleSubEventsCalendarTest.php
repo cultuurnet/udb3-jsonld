@@ -113,4 +113,66 @@ class MultipleSubEventsCalendarTest extends TestCase
 
         $this->assertEquals(CalendarType::multiple(), $calendar->getType());
     }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_default_available_status()
+    {
+        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
+        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
+
+        $dateRanges = new SubEvents(
+            new SubEvent(
+                new DateRange(
+                    $startDate,
+                    \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
+                ),
+                new Status(StatusType::Unavailable())
+            ),
+            new SubEvent(
+                new DateRange(
+                    \DateTimeImmutable::createFromFormat('d/m/Y', '17/12/2018'),
+                    $endDate
+                ),
+                new Status(StatusType::TemporarilyUnavailable())
+            )
+        );
+
+        $calendar = new MultipleSubEventsCalendar($dateRanges);
+
+        $this->assertEquals(new Status(StatusType::Available()), $calendar->getStatus());
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_setting_an_explicit_status()
+    {
+        $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
+        $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
+
+        $dateRanges = new SubEvents(
+            new SubEvent(
+                new DateRange(
+                    $startDate,
+                    \DateTimeImmutable::createFromFormat('d/m/Y', '11/12/2018')
+                ),
+                new Status(StatusType::Unavailable())
+            ),
+            new SubEvent(
+                new DateRange(
+                    \DateTimeImmutable::createFromFormat('d/m/Y', '17/12/2018'),
+                    $endDate
+                ),
+                new Status(StatusType::TemporarilyUnavailable())
+            )
+        );
+
+        $calendar = new MultipleSubEventsCalendar($dateRanges);
+
+        $calendar = $calendar->withStatus(new Status(StatusType::Available()));
+
+        $this->assertEquals(new Status(StatusType::Available()), $calendar->getStatus());
+    }
 }

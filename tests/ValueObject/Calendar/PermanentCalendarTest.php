@@ -25,6 +25,27 @@ class PermanentCalendarTest extends TestCase
     /**
      * @test
      */
+    public function it_should_return_a_default_available_status()
+    {
+        $calendar = new PermanentCalendar(new OpeningHours());
+
+        $this->assertEquals(new Status(StatusType::Available()), $calendar->getStatus());
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_setting_an_explicit_status()
+    {
+        $calendar = new PermanentCalendar(new OpeningHours());
+        $calendar = $calendar->withStatus(new Status(StatusType::Unavailable()));
+
+        $this->assertEquals(new Status(StatusType::Unavailable()), $calendar->getStatus());
+    }
+
+    /**
+     * @test
+     */
     public function it_should_return_the_injected_opening_hours()
     {
         $days = new Days(

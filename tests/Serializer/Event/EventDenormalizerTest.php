@@ -129,6 +129,69 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
+    public function it_should_denormalize_event_data_with_status()
+    {
+        $eventData = [
+            '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
+            '@type' => 'Event',
+            '@context' => '/contexts/event',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Titel voorbeeld',
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.be/place/dbe91250-4e4b-495c-b692-3da9563b0d52',
+            ],
+            'status' => [
+                'type' => 'Unavailable',
+                'reason' => [
+                    'nl' => 'Nederlandse reden',
+                    'fr' => 'Franse reden',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.1',
+                ]
+            ],
+        ];
+
+        $expectedCalendar = (new PermanentCalendar(new OpeningHours()))->withStatus(
+            new Status(
+                StatusType::Unavailable(),
+                (new TranslatedStatusReason(
+                    new Language('nl'),
+                    new StatusReason('Nederlandse reden')
+                ))
+                    ->withTranslation(new Language('fr'), new StatusReason('Franse reden'))
+            )
+        );
+
+        $expected = new ImmutableEvent(
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Language('nl'),
+            new TranslatedTitle(
+                new Language('nl'),
+                new Title('Titel voorbeeld')
+            ),
+            $expectedCalendar,
+            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            new Categories(
+                new Category(
+                    new CategoryID('0.50.1.0.1')
+                )
+            )
+        );
+
+        $actual = $this->denormalizer->denormalize($eventData, ImmutableEvent::class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_denormalize_event_data_with_title_translations()
     {
         $eventData = [
