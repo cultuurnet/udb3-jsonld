@@ -7,4 +7,6 @@ interface Calendar
     public function getType(): CalendarType;
 
     public function getStatus(): Status;
+
+    public function withStatus(Status $status): Calendar;
 }
