@@ -26,7 +26,7 @@ class SingleSubEventCalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_default_status()
+    public function it_should_return_a_default_available_status()
     {
         $startDate = \DateTimeImmutable::createFromFormat('d/m/Y', '10/12/2018');
         $endDate = \DateTimeImmutable::createFromFormat('d/m/Y', '18/12/2018');
@@ -37,7 +37,7 @@ class SingleSubEventCalendarTest extends TestCase
             )
         );
 
-        $this->assertEquals(new Status(StatusType::Unavailable()), $calendar->getStatus());
+        $this->assertEquals(new Status(StatusType::Available()), $calendar->getStatus());
     }
 
     /**

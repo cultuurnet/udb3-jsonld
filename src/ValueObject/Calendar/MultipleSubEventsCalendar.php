@@ -4,8 +4,6 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 class MultipleSubEventsCalendar implements CalendarWithDateRange, CalendarWithSubEvents
 {
-    use DerivesStatusFromSubEvents;
-
     /**
      * @var SubEvents
      */
@@ -23,7 +21,7 @@ class MultipleSubEventsCalendar implements CalendarWithDateRange, CalendarWithSu
         }
 
         $this->dateRanges = $dateRanges;
-        $this->status = $this->statusFromSubEvents($dateRanges);
+        $this->status = new Status(StatusType::Available());
     }
 
     public function withStatus(Status $status): Calendar

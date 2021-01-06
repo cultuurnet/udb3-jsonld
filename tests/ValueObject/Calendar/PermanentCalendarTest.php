@@ -25,7 +25,7 @@ class PermanentCalendarTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_a_default_status()
+    public function it_should_return_a_default_available_status()
     {
         $calendar = new PermanentCalendar(new OpeningHours());
 
