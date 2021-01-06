@@ -20,6 +20,10 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
@@ -117,6 +121,82 @@ class PlaceDenormalizerTest extends TestCase
                 new Title('Titel voorbeeld')
             ),
             new PermanentCalendar(new OpeningHours()),
+            new TranslatedAddress(
+                new Language('nl'),
+                new Address(
+                    new Street('Henegouwenkaai 41-43'),
+                    new PostalCode('1080'),
+                    new Locality('Brussel'),
+                    new CountryCode('BE')
+                )
+            ),
+            new Categories(
+                new Category(
+                    new CategoryID('0.50.1.0.1')
+                )
+            )
+        );
+
+        $actual = $this->denormalizer->denormalize($placeData, ImmutablePlace::class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_denormalize_place_data_with_status()
+    {
+        $placeData = [
+            '@id' => 'https://io.uitdatabank.be/place/9f34efc7-a528-4ea8-a53e-a183f21abbab',
+            '@type' => 'Place',
+            '@context' => '/contexts/place',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Titel voorbeeld',
+            ],
+            'address' => [
+                'nl' => [
+                    'streetAddress' => 'Henegouwenkaai 41-43',
+                    'postalCode' => '1080',
+                    'addressLocality' => 'Brussel',
+                    'addressCountry' => 'BE',
+                ],
+            ],
+            'status' => [
+                'type' => 'Unavailable',
+                'reason' => [
+                    'nl' => 'Nederlandse reden',
+                    'fr' => 'Franse reden',
+                ],
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.1',
+                ]
+            ],
+        ];
+
+        $expectedCalendar = (new PermanentCalendar(new OpeningHours()))->withStatus(
+            new Status(
+                StatusType::Unavailable(),
+                (new TranslatedStatusReason(
+                    new Language('nl'),
+                    new StatusReason('Nederlandse reden')
+                ))
+                    ->withTranslation(new Language('fr'), new StatusReason('Franse reden'))
+            )
+        );
+
+        $expected = new ImmutablePlace(
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Language('nl'),
+            new TranslatedTitle(
+                new Language('nl'),
+                new Title('Titel voorbeeld')
+            ),
+            $expectedCalendar,
             new TranslatedAddress(
                 new Language('nl'),
                 new Address(
