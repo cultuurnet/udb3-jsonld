@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 class MultipleSubEventsCalendar implements CalendarWithDateRange, CalendarWithSubEvents
 {
-    use DeriveFromSubEvents;
+    use DerivesStatusFromSubEvents;
 
     /**
      * @var SubEvents

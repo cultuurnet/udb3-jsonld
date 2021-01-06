@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 class DeriveFromSubEventsTest extends TestCase
 {
-    use DeriveFromSubEvents;
+    use DerivesStatusFromSubEvents;
 
     /**
      * @test

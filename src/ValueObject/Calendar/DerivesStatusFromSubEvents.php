@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
-trait DeriveFromSubEvents
+trait DerivesStatusFromSubEvents
 {
     public function statusFromSubEvents(SubEvents $subEvents): Status
     {
