@@ -747,6 +747,88 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
+    public function it_should_denormalize_event_data_with_single_sub_event_and_apply_status_to_sub_event_with_no_status()
+    {
+        $eventData = [
+            '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
+            '@type' => 'Event',
+            '@context' => '/contexts/event',
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Titel voorbeeld',
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.be/place/dbe91250-4e4b-495c-b692-3da9563b0d52',
+            ],
+            'calendarType' => 'single',
+            'status' => [
+                'type' => 'TemporarilyUnavailable',
+                'reason' => [
+                    'nl' => 'Nederlands',
+                    'fr' => 'Frans',
+                ],
+            ],
+            'startDate' => '2018-01-01T13:00:00+01:00',
+            'endDate' => '2018-01-01T17:00:00+01:00',
+            'subEvent' => [
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2018-01-01T13:00:00+01:00',
+                    'endDate' => '2018-01-01T17:00:00+01:00',
+                ],
+            ],
+            'terms' => [
+                [
+                    'id' => '0.50.1.0.1',
+                ]
+            ],
+        ];
+
+        $expected = new ImmutableEvent(
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Language('nl'),
+            new TranslatedTitle(
+                new Language('nl'),
+                new Title('Titel voorbeeld')
+            ),
+            (new SingleSubEventCalendar(
+                new SubEvent(
+                    new DateRange(
+                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T13:00:00+01:00'),
+                        \DateTimeImmutable::createFromFormat(\DATE_ATOM, '2018-01-01T17:00:00+01:00')
+                    ),
+                    new Status(
+                        StatusType::TemporarilyUnavailable(),
+                        (new TranslatedStatusReason(
+                            new Language('nl'),
+                            new StatusReason('Nederlands')
+                        ))->withTranslation(new Language('fr'), new StatusReason('Frans'))
+                    )
+                )
+            ))->withStatus(
+                new Status(
+                    StatusType::TemporarilyUnavailable(),
+                    (new TranslatedStatusReason(
+                        new Language('nl'),
+                        new StatusReason('Nederlands')
+                    ))->withTranslation(new Language('fr'), new StatusReason('Frans'))
+                )
+            ),
+            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            new Categories(
+                new Category(
+                    new CategoryID('0.50.1.0.1')
+                )
+            )
+        );
+
+        $actual = $this->denormalizer->denormalize($eventData, ImmutableEvent::class);
+
+        $this->assertEquals($expected, $actual);
+    }
+    /**
+     * @test
+     */
     public function it_should_denormalize_event_data_with_a_periodic_calendar_and_no_opening_hours()
     {
         $eventData = [
