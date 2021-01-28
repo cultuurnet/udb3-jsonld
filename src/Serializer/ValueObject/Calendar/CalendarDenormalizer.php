@@ -51,17 +51,24 @@ class CalendarDenormalizer implements DenormalizerInterface
         $openingHoursData = isset($data['openingHours']) ? $data['openingHours'] : [];
         $openingHours = $this->denormalizeOpeningHours($openingHoursData);
 
+        $topLevelStatus = isset($data['status']) ? $this->denormalizeStatus($data['status']) : null;
+
         switch ($data['calendarType']) {
             case 'single':
-                $subEvent = $this->denormalizeSubEvent($data);
+                $subEvent = $this->denormalizeSubEvent($data, $topLevelStatus);
                 if (isset($data['subEvent'][0])) {
-                    $subEvent = $this->denormalizeSubEvent($data['subEvent'][0]);
+                    $subEvent = $this->denormalizeSubEvent($data['subEvent'][0], $topLevelStatus);
                 }
                 $calendar = new SingleSubEventCalendar($subEvent);
                 break;
 
             case 'multiple':
-                $subEvents = array_map([$this, 'denormalizeSubEvent'], $data['subEvent']);
+                $subEvents = array_map(
+                    function (array $subEvent) use ($topLevelStatus) {
+                        return $this->denormalizeSubEvent($subEvent, $topLevelStatus);
+                    },
+                    $data['subEvent']
+                );
                 $subEvents = new SubEvents(...$subEvents);
                 $calendar = new MultipleSubEventsCalendar($subEvents);
                 break;
@@ -155,14 +162,10 @@ class CalendarDenormalizer implements DenormalizerInterface
         return new DateRange($startDate, $endDate);
     }
 
-    /**
-     * @param array $subEventData
-     * @return SubEvent
-     */
-    private function denormalizeSubEvent(array $subEventData): SubEvent
+    private function denormalizeSubEvent(array $subEventData, ?Status $topLevelStatus): SubEvent
     {
-        $statusType = StatusType::Available();
-        $statusReason = null;
+        $statusType = $topLevelStatus ? $topLevelStatus->getType() : StatusType::Available();
+        $statusReason = $topLevelStatus ? $topLevelStatus->getReason() : null;
 
         if (isset($subEventData['status']['type'])) {
             $statusType = new StatusType($subEventData['status']['type']);
